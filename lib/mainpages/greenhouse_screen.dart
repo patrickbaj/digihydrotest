@@ -66,7 +66,7 @@ class green extends State<greenhPage> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
                     child: Text(
-                      'Greenhouses',
+                      'Greenhouse',
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 26,
@@ -86,68 +86,144 @@ class green extends State<greenhPage> {
                       title:  Text('Air Temperature: ' + snapshot.child('airTemp').value.toString()),
                       subtitle: Text('Humidity: ' + snapshot.child('humid').value.toString()),
                 );*/
-                  return Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text('Air Temperature: ' + snapshot.child('airTemp').value.toString() + ' °c',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text('Humidity: ' + snapshot.child('humid').value.toString() + ' %',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text('Acidity: ' + snapshot.child('ph').value.toString() + ' pH',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text('TDS: ' + snapshot.child('tds').value.toString() + ' PPM',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text('Water Temperature: ' + snapshot.child('waterTemp').value.toString() + ' °c',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
+                return Column(
+                  children: [
+                    Container(
+                      margin:  EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
                           ),
                         ],
                       ),
-                  );
+                      child: Row(
+                        children: [
+                          Text('Air Temperature: ' + snapshot.child('airTemp').value.toString() + ' °c',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Container(
+                      margin:  EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Text('Humidity: ' + snapshot.child('humid').value.toString() + ' %',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Container(
+                      margin:  EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Text('Acidity: ' + snapshot.child('ph').value.toString() + ' pH',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Container(
+                      margin:  EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Text('TDS: ' + snapshot.child('tds').value.toString() + ' PPM',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Container(
+                      margin:  EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Text('Water Temperature: ' + snapshot.child('waterTemp').value.toString() + ' °c',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
               },
             ), 
           ),
