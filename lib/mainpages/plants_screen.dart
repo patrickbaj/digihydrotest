@@ -88,7 +88,7 @@ class home extends State<homePage> {
                     return Container(
                       margin:  EdgeInsets.symmetric(vertical: 10),
                       padding: EdgeInsets.all(10),
-                      height: 150,
+                      height: 250,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -107,12 +107,18 @@ class home extends State<homePage> {
                         children: [
                           Row(
                             children: [
-                              Text('Batch Name: ' + snapshot.child('batchName').value.toString(),
+                              Text(snapshot.child('batchName').value.toString(),
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 20,
                                   color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
                                 )
                               ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(' ')
                             ],
                           ),
 
@@ -140,6 +146,59 @@ class home extends State<homePage> {
 
                           Row(
                             children: [
+                              Text('Grow Method: ' + snapshot.child('growMethod').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Nutrient Solution: ' + snapshot.child('nutrientSol').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(' ')
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Sow Type: ' + snapshot.child('sowType').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Sow Date: ' + snapshot.child('sowDate').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(' ')
+                            ],
+                          ),
+                          Row(
+                            children: [
                               Text('Reservoir: ' + snapshot.child('reserv').value.toString(),
                               style: TextStyle(
                                   fontSize: 16,
@@ -159,19 +218,7 @@ class home extends State<homePage> {
                               ),
                             ],
                           ),
-
-                          Row(
-                            children: [
-                              Text('Sow Date: ' + snapshot.child('sowDate').value.toString(),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
-                          ),
-
-                    
+                          
                         ],
                       ),
                     );

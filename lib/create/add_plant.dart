@@ -16,22 +16,7 @@ class DropDown1 extends StatefulWidget {
 
 
 class addPlant extends State<DropDown1> {
-  var _plantType = [
-    "Cucumber",
-    "Lettuce",
-    "Pechay",
-    "Spinach",
-    "Basil",
-    "Cherry Tomatoes"
-  ];
-  var _selectedVal = "Cucumber";
 
-  //addPlant() {
-  //  _selectedVal = _plantType[0];
-  //}
-  String value = "";
-  var Dates = ['10/25/2020', '10/26/2020', '10/27/2020', '10/28/2020'];
-  var _current = '10/25/2020';
 
   TextEditingController batch = TextEditingController();
   TextEditingController varty = TextEditingController();
@@ -41,6 +26,8 @@ class addPlant extends State<DropDown1> {
   TextEditingController date = TextEditingController();
 
   var _value="-1";
+  var _selectedMethod = "-1";
+  var _selectedNutrient = "-1";
 
   final fb = FirebaseDatabase.instance;
 
@@ -275,12 +262,87 @@ class addPlant extends State<DropDown1> {
                   value: _value,
                   items: [
                     DropdownMenuItem(child: Text("-Select Sow type-"), value: "-1",),
-                    DropdownMenuItem(child: Text("Direct"), value: "1",),
-                    DropdownMenuItem(child: Text("Indirect"), value: "2",),
+                    DropdownMenuItem(child: Text("Direct"), value: "Direct",),
+                    DropdownMenuItem(child: Text("Indirect"), value: "Indirect",),
                   ],
-                  onChanged:(v){},
+                  onChanged:(selectedType){
+                    setState(() {
+                      _value = selectedType!;
+                    });
+                  },
                 ),
               ),
+
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Text(
+                  "Choose Growing Method:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.all(10),
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                  value: _selectedMethod,
+                  items: [
+                    DropdownMenuItem(child: Text("-Select Growing Method-"), value: "-1",),
+                    DropdownMenuItem(child: Text("Dft"), value: "Dft",),
+                    DropdownMenuItem(child: Text("Nft"), value: "Nft",),
+                  ],
+                  onChanged:(newMethod){
+                    setState(() {
+                      _selectedMethod = newMethod!;
+                    });
+                  },
+                ),
+              ),
+
+               Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Text(
+                  "Choose Growing Method:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.all(10),
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                  value: _selectedNutrient,
+                  items: [
+                    DropdownMenuItem(child: Text("-Select Nutrient Solution-"), value: "-1",),
+                    DropdownMenuItem(child: Text("SNAP"), value: "SNAP",),
+                    DropdownMenuItem(child: Text("NutriHydro"), value: "NutriHydro",),
+                  ],
+                  onChanged:(newNutrient){
+                    setState(() {
+                      _selectedNutrient = newNutrient!;
+                    });
+                  },
+                ),
+              ),
+              
+              
+              
               
               Container(
                 margin: EdgeInsets.fromLTRB(240, 25, 40, 0),
@@ -304,7 +366,10 @@ class addPlant extends State<DropDown1> {
                       "plantType": typ.text,
                       "reserv": res.text,
                       "greenhouse": greenh.text,
-                      "sowDate": date.text
+                      "sowDate": date.text,
+                      "sowType":_value,
+                      "growMethod": _selectedMethod,
+                      "nutrientSol": _selectedNutrient,
                     }).asStream();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => homePage()));
