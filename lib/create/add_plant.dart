@@ -35,6 +35,12 @@ class addPlant extends State<DropDown1> {
 
   TextEditingController batch = TextEditingController();
   TextEditingController varty = TextEditingController();
+  TextEditingController typ = TextEditingController();
+  TextEditingController res = TextEditingController();
+  TextEditingController greenh = TextEditingController();
+  TextEditingController date = TextEditingController();
+
+  var _value="-1";
 
   final fb = FirebaseDatabase.instance;
 
@@ -101,7 +107,7 @@ class addPlant extends State<DropDown1> {
               Container(
                 margin: EdgeInsets.fromLTRB(30, 10, 0, 0),
                 child: Text(
-                  "Batch Name",
+                  "Batch Name:",
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey[600],
@@ -125,7 +131,7 @@ class addPlant extends State<DropDown1> {
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
-                  "Plant Variety",
+                  "Plant Variety:",
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey[600],
@@ -146,10 +152,138 @@ class addPlant extends State<DropDown1> {
                   ),
                 ),
               ),
-              
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Text(
+                  "Plant type:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.all(10),
+                child: TextField(
+                  controller: typ,
+                  decoration: InputDecoration(
+                    hintText: 'Enter Plant type',
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Text(
+                  "Reservoir:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.all(10),
+                child: TextField(
+                  controller: res,
+                  decoration: InputDecoration(
+                    hintText: 'Enter Reservoir',
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Text(
+                  "Greenhouse:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.all(10),
+                child: TextField(
+                  controller: greenh,
+                  decoration: InputDecoration(
+                    hintText: 'Enter Greenhouse',
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Text(
+                  "Sow Date:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.all(10),
+                child: TextField(
+                  controller: date,
+                  decoration: InputDecoration(
+                    hintText: 'Enter Sow Date',
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                child: Text(
+                  "Choose Sow type:",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.all(10),
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                  value: _value,
+                  items: [
+                    DropdownMenuItem(child: Text("-Select Sow type-"), value: "-1",),
+                    DropdownMenuItem(child: Text("Direct"), value: "1",),
+                    DropdownMenuItem(child: Text("Indirect"), value: "2",),
+                  ],
+                  onChanged:(v){},
+                ),
+              ),
               
               Container(
-                margin: EdgeInsets.fromLTRB(260, 25, 40, 0),
+                margin: EdgeInsets.fromLTRB(240, 25, 40, 0),
                 child: ElevatedButton(
                   child: Text('ADD'),
                   style: ElevatedButton.styleFrom(
@@ -167,6 +301,10 @@ class addPlant extends State<DropDown1> {
                     ref.set({
                       "batchName": batch.text,
                       "plantVar": varty.text,
+                      "plantType": typ.text,
+                      "reserv": res.text,
+                      "greenhouse": greenh.text,
+                      "sowDate": date.text
                     }).asStream();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => homePage()));

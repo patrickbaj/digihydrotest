@@ -6,6 +6,7 @@ import 'package:digihydro/create/add_plant.dart';
 import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class homePage extends StatefulWidget{
   @override
@@ -14,7 +15,7 @@ class homePage extends StatefulWidget{
 
 class home extends State<homePage> {
   final auth = FirebaseAuth.instance;
-  final ref = FirebaseDatabase.instance.ref('Plants').orderByChild('plantVar');
+  final ref = FirebaseDatabase.instance.ref('Plants');
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +84,97 @@ class home extends State<homePage> {
             child: FirebaseAnimatedList(
                   query: ref,
                   itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-                    return ListTile(
-                      title:  Text('Batch Name: ' + snapshot.child('batchName').value.toString()),
-                      subtitle: Text('Plant Variety: ' + snapshot.child('plantVar').value.toString()),
-                );
+                   
+                    return Container(
+                      margin:  EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text('Batch Name: ' + snapshot.child('batchName').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Plant Type: ' + snapshot.child('plantType').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Plant Variety: ' + snapshot.child('plantVar').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Reservoir: ' + snapshot.child('reserv').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Greenhouse: ' + snapshot.child('greenhouse').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Sow Date: ' + snapshot.child('sowDate').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                    
+                        ],
+                      ),
+                    );
               },
             ), 
           ),
