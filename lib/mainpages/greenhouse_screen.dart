@@ -82,10 +82,72 @@ class green extends State<greenhPage> {
             child: FirebaseAnimatedList(
                   query: ref,
                   itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-                    return ListTile(
+                    /*return ListTile(
                       title:  Text('Air Temperature: ' + snapshot.child('airTemp').value.toString()),
                       subtitle: Text('Humidity: ' + snapshot.child('humid').value.toString()),
-                );
+                );*/
+                  return Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text('Air Temperature: ' + snapshot.child('airTemp').value.toString() + ' °c',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Humidity: ' + snapshot.child('humid').value.toString() + ' %',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Acidity: ' + snapshot.child('ph').value.toString() + ' pH',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('TDS: ' + snapshot.child('tds').value.toString() + ' PPM',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Water Temperature: ' + snapshot.child('waterTemp').value.toString() + ' °c',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                  );
               },
             ), 
           ),
