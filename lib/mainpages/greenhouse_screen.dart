@@ -82,10 +82,6 @@ class green extends State<greenhPage> {
             child: FirebaseAnimatedList(
                   query: ref,
                   itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-                    /*return ListTile(
-                      title:  Text('Air Temperature: ' + snapshot.child('airTemp').value.toString()),
-                      subtitle: Text('Humidity: ' + snapshot.child('humid').value.toString()),
-                );*/
                 return Column(
                   children: [
                     Container(

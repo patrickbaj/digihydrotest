@@ -1,9 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/create/add_reser.dart';
 import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class reservoirPage extends StatelessWidget {
+class reservoirPage extends StatefulWidget{
+  @override
+  reserv createState() => reserv();
+}
+
+
+class reserv extends State<reservoirPage> {
+  final auth = FirebaseAuth.instance;
+  final ref = FirebaseDatabase.instance.ref('Reservoir');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,27 +47,13 @@ class reservoirPage extends StatelessWidget {
                 scale: 8,
               ),
             ),
-            /*child: IconButton(
-                  icon: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => profile_IncPage()));
-                  },
-                ),*/
           ),
         ],
       ),
-      body: Center(
-        child: ListView(
-          //padding: EdgeInsets.all(10),
-          children: <Widget>[
-            Container(
+
+      body: Column(
+        children: [
+          Container(
               child: Row(
                 children: <Widget>[
                   Container(
@@ -80,52 +79,98 @@ class reservoirPage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(50, 13, 0, 3),
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: Row(
-                children: <Widget>[
-                  /*Container(
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 50,
-                      color: Colors.grey[500],
-                    ),
-                  ),
-                  Container(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
+          Expanded(
+            child: FirebaseAnimatedList(
+              query: ref,
+                  itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
+
+                    return Wrap(
+                      children: [
+                        Container(
+                          margin:  EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
-                      /*color: Colors.white,
-                          //disabledColor: ,
-                          padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),*/
-                      child: Text(
-                        "What's on your mind?",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
-                        ),
+
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(snapshot.child('reservName').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text(' ')
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Grow Method: ' + snapshot.child('growMethod').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Nutrient Solution: ' + snapshot.child('nutrientSol').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text(' ')
+                            ],
+                          ),
+                          
+                          Row(
+                            children: [
+                              Text('Greenhouse: ' + snapshot.child('greenH').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => createPost()));
-                      },
                     ),
-                  ),*/
-                ],
-              ),
-              /*decoration:
-                  BoxDecoration(border: Border.all(color: Colors.black)),*/
+                  ],
+                );  
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

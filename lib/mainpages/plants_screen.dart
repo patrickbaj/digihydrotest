@@ -85,10 +85,11 @@ class home extends State<homePage> {
                   query: ref,
                   itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
                    
-                    return Container(
+                    return Wrap(
+                      children: [
+                        Container(
                       margin:  EdgeInsets.symmetric(vertical: 10),
                       padding: EdgeInsets.all(10),
-                      height: 250,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -221,7 +222,10 @@ class home extends State<homePage> {
                           
                         ],
                       ),
-                    );
+                    ),
+                  ],
+                );
+                    
               },
             ), 
           ),
