@@ -7,6 +7,7 @@ import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:digihydro/mainpages/greenhouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'index_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class drawerPage extends StatelessWidget {
   @override
@@ -212,6 +213,7 @@ class drawerPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
+                  FirebaseAuth.instance.signOut();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => IndexScreen()));
                 },

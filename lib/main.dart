@@ -12,7 +12,12 @@ void main() async {
   runApp(digihydro());
 }
 
-class digihydro extends StatelessWidget {
+class digihydro extends StatefulWidget{
+  @override
+  loginScreen createState() => loginScreen();
+}
+
+class loginScreen extends State<digihydro> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,10 @@ class addPlant extends State<DropDown1> {
     var rng = Random();
     var num = rng.nextInt(10000);
 
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     final ref = fb.ref().child('Plants/$num');
+    final currentUser = _auth.currentUser;
+    
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
       appBar: AppBar(
@@ -370,6 +374,7 @@ class addPlant extends State<DropDown1> {
                       "sowType":_value,
                       "growMethod": _selectedMethod,
                       "nutrientSol": _selectedNutrient,
+                      "userId": currentUser?.uid,
                     }).asStream();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => homePage()));

@@ -15,7 +15,17 @@ class homePage extends StatefulWidget{
 
 class home extends State<homePage> {
   final auth = FirebaseAuth.instance;
+  late String currentUserID;
   final ref = FirebaseDatabase.instance.ref('Plants');
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = auth.currentUser;
+    if (currentUser != null) {
+      currentUserID = currentUser.uid;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +62,8 @@ class home extends State<homePage> {
           ),
         ],
       ),
-      body: Column(
+      body: 
+      Column(
         children: [
           Container(
               child: Row(
@@ -81,8 +92,10 @@ class home extends State<homePage> {
               ),
             ),
           Expanded(
-            child: FirebaseAnimatedList(
-                  query: ref,
+            child: 
+            
+            FirebaseAnimatedList(
+                  query: ref.orderByChild('userId').equalTo(currentUserID),
                   itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
                    
                     return Wrap(

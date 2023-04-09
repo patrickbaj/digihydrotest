@@ -2,8 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:digihydro/login/signup_screen.dart';
 import 'package:digihydro/login/forgot_pass1.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class IndexScreen extends StatelessWidget {
+class IndexScreen extends StatefulWidget{
+  @override
+  index createState() => index();
+}
+
+class index extends State<IndexScreen> {
+  TextEditingController userEmail = TextEditingController();
+  TextEditingController userPass = TextEditingController();
+
+  Future<void> signIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userEmail.text.trim(),
+        password: userPass.text.trim(),
+      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => homePage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
+
+  @override
+  void dispose(){
+    userEmail.dispose();
+    userPass.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +59,10 @@ class IndexScreen extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(50, 0, 50, 10),
                   margin: EdgeInsets.all(10),
                   child: TextField(
+                    controller: userEmail,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      labelText: 'Username',
+                      labelText: 'Email',
                       isDense: true,
                       contentPadding: const EdgeInsets.all(15.0),
                     ),
@@ -37,6 +72,7 @@ class IndexScreen extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                   margin: EdgeInsets.all(10),
                   child: TextField(
+                    controller: userPass,
                     obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -72,33 +108,24 @@ class IndexScreen extends StatelessWidget {
 
                 Container(
                   height: 50,
-                  margin: EdgeInsets.fromLTRB(30, 0, 10, 0),
-                  padding: EdgeInsets.fromLTRB(30, 10, 250, 0),
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ElevatedButton(
                     // ignore: sort_child_properties_last
-                    child: const Text('Login'),
+                    child: const Text('Login', textAlign: TextAlign.center,),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       backgroundColor: Colors.green,
                       textStyle: const TextStyle(color: Colors.white),
+                      minimumSize: Size(200, 50),
                     ),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => homePage()));
+                      /*Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => homePage()));*/
+                          signIn();
                     },
                   ),
-                  /*child: ElevatedButton(
-                    textColor: Colors.grey,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    color: Colors.white,
-                    child: Text('Login'),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => homePage()));
-                    },
-                  ), */
+                  
                 ),
                 Container(
                   height: 140,
