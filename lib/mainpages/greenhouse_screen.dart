@@ -85,9 +85,10 @@ class green extends State<greenhPage> {
                 return Column(
                   children: [
                     Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                        child:Container(
+              
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child:
+                        Container(
                         width: 118,
                         height: 60,
                         margin:  EdgeInsets.symmetric(vertical: 10),
@@ -127,8 +128,8 @@ class green extends State<greenhPage> {
                   
 
                     Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                      
+                      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                       child:
                       Container(
                       width: 118,
@@ -169,7 +170,7 @@ class green extends State<greenhPage> {
                     ),
 
                     Container(
-                      alignment: Alignment.topRight,
+                      
                       child: 
                         Container(
                         width: 118,
