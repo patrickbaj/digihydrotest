@@ -4,7 +4,7 @@ import 'package:digihydro/login/forgot_pass1.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class IndexScreen extends StatefulWidget{
+class IndexScreen extends StatefulWidget {
   @override
   index createState() => index();
 }
@@ -32,7 +32,7 @@ class index extends State<IndexScreen> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     userEmail.dispose();
     userPass.dispose();
     super.dispose();
@@ -107,25 +107,27 @@ class index extends State<IndexScreen> {
                 ),*/
 
                 Container(
-                  height: 50,
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  height: 40,
+                  margin: EdgeInsets.fromLTRB(60, 0, 250, 0),
                   child: ElevatedButton(
                     // ignore: sort_child_properties_last
-                    child: const Text('Login', textAlign: TextAlign.center,),
+                    child: const Text(
+                      'Login',
+                      textAlign: TextAlign.center,
+                    ),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       backgroundColor: Colors.green,
                       textStyle: const TextStyle(color: Colors.white),
-                      minimumSize: Size(200, 50),
+                      //minimumSize: Size(50, 10),
                     ),
                     onPressed: () {
                       /*Navigator.push(context,
                           MaterialPageRoute(builder: (context) => homePage()));*/
-                          signIn();
+                      signIn();
                     },
                   ),
-                  
                 ),
                 Container(
                   height: 140,
