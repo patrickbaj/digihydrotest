@@ -14,8 +14,19 @@ class reservoirPage extends StatefulWidget{
 
 
 class reserv extends State<reservoirPage> {
+
   final auth = FirebaseAuth.instance;
+  late String currentUserID;
   final ref = FirebaseDatabase.instance.ref('Reservoir');
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = auth.currentUser;
+    if (currentUser != null) {
+      currentUserID = currentUser.uid;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +92,7 @@ class reserv extends State<reservoirPage> {
             ),
           Expanded(
             child: FirebaseAnimatedList(
-              query: ref,
+              query: ref.orderByChild('userId').equalTo(currentUserID),
                   itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
 
                     return Wrap(

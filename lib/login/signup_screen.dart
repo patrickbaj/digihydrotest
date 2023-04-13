@@ -36,24 +36,39 @@ class signUp extends State<signupPage> {
   }
 
   Future userSignUp() async {
-    if (passwordConfirmed()) {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: userEmail.text.trim(), 
-      password: userPass.text.trim()
+  if (passwordConfirmed()) {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: userEmail.text.trim(),
+        password: userPass.text.trim(),
       );
+      User? user = userCredential.user;
+      if (user != null) {
+        await fb.ref().child('Users/${user.uid}').set({
+          'firstName': firstName.text.trim(),
+          'lastName': lastName.text.trim(),
+          'email': userEmail.text.trim(),
+          'password':userPass.text.trim(),
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
     }
   }
+}
   final fb = FirebaseDatabase.instance;
 
   @override
   Widget build(BuildContext context) {
     var rng = Random();
     var num = rng.nextInt(10000);
-
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-
-    final ref = fb.ref().child('Users/$num');
-    final currentUser = _auth.currentUser;
+    //final currentUser = _auth.currentUser;
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 201, 237, 220),
@@ -236,12 +251,7 @@ class signUp extends State<signupPage> {
                             ),
                             onPressed: () {
                               userSignUp();
-                              ref.set({
-                              "firsName": firstName.text,
-                              "lastName": lastName.text,
-                              "email": userEmail.text,
-                              "password": userPass.text,
-                            }).asStream();
+                              
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

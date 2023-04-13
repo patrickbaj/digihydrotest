@@ -6,6 +6,7 @@ import 'package:digihydro/mainpages/reservoir_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 
@@ -30,7 +31,9 @@ class addReserv extends State<DropDownReserv> {
     var rng = Random();
     var num = rng.nextInt(10000);
 
+    final FirebaseAuth _auth = FirebaseAuth.instance;
     final ref = fb.ref().child('Reservoir/$num');
+    final currentUser = _auth.currentUser;
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
@@ -225,6 +228,7 @@ class addReserv extends State<DropDownReserv> {
                       "greenH": greenh.text,
                       "growMethod": _selectedMethod,
                       "nutrientSol": _selectedNutrient,
+                      "userId": currentUser?.uid,
                     }).asStream();
                     Navigator.push(context, MaterialPageRoute(builder: (context) => reservoirPage()));
                   },

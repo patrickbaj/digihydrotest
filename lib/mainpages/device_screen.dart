@@ -7,16 +7,15 @@ import 'package:digihydro/create/add_gh.dart';
 import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class greenhPage extends StatefulWidget{
+class devicePage extends StatefulWidget{
   @override
-  green createState() => green();
+  device createState() => device();
 }
 
-class green extends State<greenhPage> {
+class device extends State<devicePage> {
   @override
-  final auth = FirebaseAuth.instance;
-  final ref = FirebaseDatabase.instance.ref();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +58,7 @@ class green extends State<greenhPage> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
                     child: Icon(
-                      Icons.house_siding_rounded,
+                      Icons.devices_outlined,
                       size: 50,
                       color: Colors.green,
                     ),
@@ -67,55 +66,59 @@ class green extends State<greenhPage> {
                   Container(
                     margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
                     child: Text(
-                      'Greenhouse',
+                      'Devices',
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[600],
-                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          Expanded(
-            child: 
-            FirebaseAnimatedList(
-                  query: ref,
-                  itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-                return Column(
-                  children: [
-                    SizedBox(height: 20),
-                  ],
-                );
-              },
-            ), 
           ),
-          /*Expanded(
-            child: StreamBuilder(
-              stream:  ref.onValue,
-              builder: (context, AsyncSnapshot<DatabaseEvent>snapshot){
-                if(!snapshot.hasData){
-                  return CircularProgressIndicator();
-                }else{
-                  Map<dynamic, dynamic> map = snapshot.data!.snapshot.value as dynamic;
-                  List<dynamic> list = [];
-                  list.clear();
-                  list = map.values.toList();
+          Column(
+            children: [
+              StreamBuilder(
+                stream: FirebaseDatabase.instance.ref().child('SensorsData').onValue,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    // retrieve data from snapshot
+                    DataSnapshot dataValues = snapshot.data!.snapshot;
+                    Map<dynamic, dynamic> values = dataValues.value as Map<dynamic, dynamic>;
 
-                  return ListView.builder(
-                    itemCount: snapshot.data!.snapshot.children.length,
-                    itemBuilder: (context, int index) {
-                  return ListTile(
-                    title: Text(list[index]['0'].toString()),
-                    subtitle: Text(list[index]['1'].toString()),
-                  );
-                });
-                }
-              }
-            )
-          ),*/
+                    // build a ListView to display the data
+                    return SizedBox(
+                      height: 300, // set a fixed height
+                      child: ListView.builder(
+                        itemCount: values.keys.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          // retrieve data for a single item
+                          dynamic key = values.keys.elementAt(index);
+                          dynamic value = values[key];
+
+                          // build and return a widget for a single item
+                          return Container(
+                            alignment: Alignment.topLeft,
+                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Column(
+                              children: [
+                                Text(key.toString()+': ' + value.toString()),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    // display a loading spinner while waiting for data
+                    return Container();
+                  }
+                },
+              ),
+            ],
+          )
         ],
       ),
     );

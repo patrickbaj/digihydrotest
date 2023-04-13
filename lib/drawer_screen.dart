@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'index_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'mainpages/device_screen.dart';
+
 class drawerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -131,6 +133,39 @@ class drawerPage extends StatelessWidget {
                   // Home
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => greenhPage()));
+                },
+              ),
+              /*child: FlatButton(
+                textColor: Colors.grey, //
+                child: Text(
+                  "Profile", //
+                  style: TextStyle(
+                    fontSize: 18, //
+                  ),
+                ),
+                onPressed: () { //
+                  // Home
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => profile_IncPage()));
+                },
+              ),*/
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
+              child: TextButton(
+                child: Text('Devices'),
+                style: TextButton.styleFrom(
+                  textStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 18,
+                  ),
+                ),
+                onPressed: () {
+                  // Home
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => devicePage()));
                 },
               ),
               /*child: FlatButton(

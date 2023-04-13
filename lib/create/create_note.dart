@@ -1,10 +1,31 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/mainpages/notes_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
-class createNote extends StatelessWidget {
+class createNote extends StatefulWidget{
+  @override
+  note createState() => note();
+}
+
+
+class note extends State<createNote> {
+  final fb = FirebaseDatabase.instance;
+
+  
   @override
   Widget build(BuildContext context) {
+    var rng = Random();
+    var num = rng.nextInt(10000);
+
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final ref = fb.ref().child('Notes/$num');
+    final currentUser = _auth.currentUser;
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
       appBar: AppBar(
