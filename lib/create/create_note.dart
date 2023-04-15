@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -6,6 +7,9 @@ import 'package:digihydro/mainpages/notes_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 
 class createNote extends StatefulWidget{
   @override
@@ -14,9 +18,24 @@ class createNote extends StatefulWidget{
 
 
 class note extends State<createNote> {
-  final fb = FirebaseDatabase.instance;
+  TextEditingController title = TextEditingController();
+  TextEditingController userDate = TextEditingController();
+  TextEditingController userNote = TextEditingController();
 
-  
+  String imageUrl = '';
+
+  File? _imageFile;
+
+  Future<void> _pickImage() async {
+    ImagePicker imagePicker = ImagePicker();
+      final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
+    }
+  }
+  final fb = FirebaseDatabase.instance;
   @override
   Widget build(BuildContext context) {
     var rng = Random();
@@ -26,12 +45,13 @@ class note extends State<createNote> {
     final ref = fb.ref().child('Notes/$num');
     final currentUser = _auth.currentUser;
 
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
       appBar: AppBar(
         title: Container(
           child: Text(
-            "Create Post",
+            "Create Note",
             style: TextStyle(
               color: Colors.white,
             ),
@@ -50,50 +70,112 @@ class note extends State<createNote> {
       ),
       body: Form(
         child: Container(
-          margin: EdgeInsets.fromLTRB(10, 80, 10, 90),
+          margin: EdgeInsets.fromLTRB(10, 0, 10, 90),
           child: ListView(
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 40),
-                child: Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    IconButton(
-                      icon: Icon(
-                        Icons.account_circle,
-                        size: 60,
-                      ),
-                      onPressed: () {},
-                    ),
                     Container(
-                      margin: EdgeInsets.only(left: 35, top: 20),
+                      margin: EdgeInsets.only(left: 20, top: 10),
                       child: Text(
-                        "User Name",
+                        "Add Notes",
                         style: TextStyle(
-                          fontSize: 19,
+                          fontSize: 26,
                           fontWeight: FontWeight.bold,
+                          color: Colors.grey[600],
                         ),
                       ),
                     )
                   ],
                 ),
-              ),
               Container(
                 margin: EdgeInsets.only(top: 50, left: 10, right: 10),
                 child: TextField(
+                  controller: title,
+                  decoration: InputDecoration(
+                    hintText: 'Title:',
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: TextField(
+                  controller: userDate,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.calendar_today_rounded),
+                    labelText: 'Date Today:',
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context, 
+                      initialDate: DateTime.now(), 
+                      firstDate: DateTime(1900), 
+                      lastDate: DateTime(3000),
+                    );
+
+                    if(pickedDate != null){
+                      setState(() {
+                        userDate.text = DateFormat('MM-dd-yyyy').format(pickedDate);
+                      });
+                    }
+                  },
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: TextField(
+                  controller: userNote,
                   keyboardType: TextInputType.multiline,
-                  maxLines: 5,
+                  maxLines: 10,
                   style: TextStyle(
                     decoration: TextDecoration.none,
-                    fontSize: 25,
+                    fontSize: 15,
                   ),
                   decoration: new InputDecoration(
-                    hintText: "What's on your mind?",
+                    hintText: "Write your note...",
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
+
               Container(
-                  margin: EdgeInsets.fromLTRB(240, 25, 30, 0),
+                child: Row(
+                  children: [
+                     IconButton(
+                      onPressed: _pickImage,
+                      icon: Icon(Icons.add_a_photo_outlined),
+                      iconSize: 40,
+                      color: Colors.black.withOpacity(0.15),
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                child: Column(
+                  children: [
+                    SizedBox(height: 16),
+                    if (_imageFile != null)
+                      Image.file(
+                        _imageFile!,
+                        height: 300,
+                        width: 300,
+                      )
+                  ],
+                ),
+              ),
+              
+              Container(
+                  margin: EdgeInsets.fromLTRB(200, 25, 30, 0),
                   child: ElevatedButton(
                     child: Text('POST'),
                     style: ElevatedButton.styleFrom(
@@ -107,7 +189,27 @@ class note extends State<createNote> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async{
+
+                      if (_imageFile != null) {
+                      String id = DateTime.now().millisecondsSinceEpoch.toString();
+                      final imageRoot = FirebaseStorage.instance.ref();
+                      final imageRef = imageRoot.child('Images');
+                      final imageUpload = imageRef.child(id);
+                      try {
+                        await imageUpload.putFile(_imageFile!);
+                        imageUrl = await imageUpload.getDownloadURL();
+                      } catch (error) {
+                        
+                      }
+                    }
+                      ref.set({
+                      "title": title.text,
+                      "date": userDate.text,
+                      "userId": currentUser?.uid,
+                      "userNote": userNote.text,
+                      "imageUrl": imageUrl,
+                    }).asStream();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => notesPage()));
                     },
@@ -130,7 +232,7 @@ class note extends State<createNote> {
                   )
             ],
           ),
-          decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+          //decoration: BoxDecoration(border: Border.all(color: Colors.black)),
         ),
       ),
     );
