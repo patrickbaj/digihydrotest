@@ -16,7 +16,9 @@ class devicePage extends StatefulWidget{
 
 class device extends State<devicePage> {
   @override
-
+  final auth = FirebaseAuth.instance;
+  final ref = FirebaseDatabase.instance.ref('Devices');
+  
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -78,47 +80,99 @@ class device extends State<devicePage> {
               ],
             ),
           ),
-          Column(
-            children: [
-              StreamBuilder(
-                stream: FirebaseDatabase.instance.ref().child('SensorsData').onValue,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    // retrieve data from snapshot
-                    DataSnapshot dataValues = snapshot.data!.snapshot;
-                    Map<dynamic, dynamic> values = dataValues.value as Map<dynamic, dynamic>;
-
-                    // build a ListView to display the data
-                    return SizedBox(
-                      height: 300, // set a fixed height
-                      child: ListView.builder(
-                        itemCount: values.keys.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          // retrieve data for a single item
-                          dynamic key = values.keys.elementAt(index);
-                          dynamic value = values[key];
-
-                          // build and return a widget for a single item
-                          return Container(
-                            alignment: Alignment.topLeft,
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Column(
-                              children: [
-                                Text(key.toString()+': ' + value.toString()),
-                              ],
-                            ),
-                          );
-                        },
+          Expanded(
+            child: 
+            FirebaseAnimatedList(
+                  query: ref,
+                  itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
+                return Wrap(
+                      children: [
+                      Container(
+                      margin:  EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
                       ),
-                    );
-                  } else {
-                    // display a loading spinner while waiting for data
-                    return Container();
-                  }
-                },
-              ),
-            ],
-          )
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text('Humidity: '+snapshot.child('Humidity').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Water Temp: ' + snapshot.child('Temperature').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('TDS: ' + snapshot.child('TotalDissolvedSolids').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Water Temp: ' + snapshot.child('WaterTemperature').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                            ],
+                          ),
+
+                          Row(
+                            children: [
+                              Text('Acidity: ' + snapshot.child('pH').value.toString(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ), 
+          ),
         ],
       ),
     );
