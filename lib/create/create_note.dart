@@ -28,7 +28,7 @@ class note extends State<createNote> {
 
   Future<void> _pickImage() async {
     ImagePicker imagePicker = ImagePicker();
-      final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+      final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
         setState(() {
           _imageFile = File(pickedFile.path);

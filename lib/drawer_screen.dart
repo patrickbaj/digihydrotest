@@ -205,7 +205,7 @@ class drawerPage extends StatelessWidget {
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
-                child: Text('User Profile'),
+                child: Text('My Profile'),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,
@@ -214,7 +214,7 @@ class drawerPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => settingsPage()));
+                      MaterialPageRoute(builder: (context) => userProfile()));
                 },
               ),
               /*child: FlatButton(
