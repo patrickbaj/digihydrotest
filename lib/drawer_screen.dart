@@ -205,7 +205,7 @@ class drawerPage extends StatelessWidget {
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
-                child: Text('Settings'),
+                child: Text('User Profile'),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,
