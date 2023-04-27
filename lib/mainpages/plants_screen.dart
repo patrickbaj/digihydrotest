@@ -48,8 +48,8 @@ class home extends State<homePage> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: title,
-        desc: desc,
+        title: "RFLUTTER ALERT",
+        desc: "Flutter is more awesome with RFlutter Alert.",
         buttons: [
           DialogButton(
             child: Text(

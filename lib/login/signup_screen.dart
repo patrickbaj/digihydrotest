@@ -49,6 +49,7 @@ class signUp extends State<signupPage> {
           'lastName': lastName.text.trim(),
           'email': userEmail.text.trim(),
           'password':userPass.text.trim(),
+          'userId':user.uid,
         });
       }
     } on FirebaseAuthException catch (e) {

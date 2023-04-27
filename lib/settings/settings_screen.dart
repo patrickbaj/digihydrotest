@@ -1,28 +1,58 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:digihydro/create/add_plant.dart';
 import 'package:digihydro/drawer_screen.dart';
-import 'package:digihydro/profile/profile_inc.dart';
-import 'package:digihydro/settings/help_screen.dart';
-import 'package:digihydro/settings/privacy_screen.dart';
-import 'package:digihydro/profile/profile_1.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:digihydro/index_screen.dart';
+import 'package:flutter/painting.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
-class settingsPage extends StatelessWidget {
+
+class userProfile extends StatefulWidget{
+  @override
+  _userSettings createState() => _userSettings();
+}
+
+
+
+class _userSettings extends State<userProfile> {
+  final auth = FirebaseAuth.instance;
+  late String currentUserID;
+  final ref = FirebaseDatabase.instance.ref('Users');
+
+  String imageUrl = '';
+
+  File? _imageFile;
+
+  Future<void> _pickImage() async {
+    ImagePicker imagePicker = ImagePicker();
+      final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        setState(() {
+          _imageFile = File(pickedFile.path);
+        });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = auth.currentUser;
+    if (currentUser != null) {
+      currentUserID = currentUser.uid;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 201, 237, 220),
         appBar: AppBar(
             backgroundColor: Colors.green,
-            /*centerTitle: true,
-          title: Text(
-            "Settings",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),*/
             iconTheme: IconThemeData(
               color: Colors.white, //change your color here
               size: 40.00,
@@ -38,255 +68,98 @@ class settingsPage extends StatelessWidget {
                 ),
               ),
             ]),
-        body: Center(
-          child: ListView(
-            //padding: EdgeInsets.all(10),
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.fromLTRB(50, 10, 50, 40),
-                child: Image.asset(
-                  'images/Logo.png',
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                alignment: Alignment.topLeft,
-                child: Column(children: <Widget>[
-                  Container(
-                    child: Row(children: <Widget>[
+        body: Form(
+          child: Center(
+              child: FirebaseAnimatedList(
+                query: ref.orderByChild('userId').equalTo(currentUserID),
+                itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
+                  return Wrap(
+                    children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 20, 10),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.person,
-                            size: 50,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        profile_1())); // do something
-                          },
-                        ),
-                      ),
-                      TextButton(
-                        child: Text('Account'),
-                        style: TextButton.styleFrom(
-                          textStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => profile_IncP()));
-                        },
-                      ),
-                      /*FlatButton(
-                                textColor: Colors.grey, //
-                                child: Text(
-                                  "Account", //
-                                  style: TextStyle(
-                                    fontSize: 18, //
-                                  ),
-                                ),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context)=> profile_1()
-                                  ));
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        height: 125,
+                        color: Colors.grey[500],
+                        child: Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Upload Image"),
+                                    content: Text("Would you like to upload an image?"),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Cancel"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text("Upload"),
+                                        onPressed: () {
+                                          _pickImage();
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
                                 },
-                              ),*/
-                    ]),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    padding: EdgeInsets.fromLTRB(150, 0, 120, 0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: 2.0, color: Colors.grey)),
-                    ),
-                  ),
-                ]),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
-                alignment: Alignment.topLeft,
-                child: Column(children: <Widget>[
-                  Container(
-                    child: Row(children: <Widget>[
+                              );
+                            },
+                            child: Icon(
+                              Icons.person,
+                              size: 120,
+                              color: Colors.grey[100],
+                            ),
+                          ),
+                        ),
+                      ),
+                      
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 20, 20),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.lock,
-                            size: 50,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        Switching())); // do something
-                          },
-                        ),
-                      ),
-                      TextButton(
-                        child: Text('Privacy'),
-                        style: TextButton.styleFrom(
-                          textStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Switching()));
-                        },
-                      ),
-                      /*FlatButton(
-                                textColor: Colors.grey, //
-                                child: Text(
-                                  "Privacy", //
-                                  style: TextStyle(
-                                    fontSize: 18, //
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(snapshot.child('firstName').value.toString(),
+                                    style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    )
                                   ),
-                                ),
-                                onPressed: (){ //
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context)=> Switching()
-                                  ));
-                                },
-                              ),*/
-                    ]),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    padding: EdgeInsets.fromLTRB(150, 0, 120, 0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: 2.0, color: Colors.grey)),
-                    ),
-                  ),
-                ]),
-              ),
-              /*
-              Container(
-                margin:  EdgeInsets.fromLTRB(0, 25, 0, 0),
-                alignment: Alignment.topLeft,
-                child: Column(
-                    children: <Widget> [
-                      Container(
-                        child: Row(
-                            children: <Widget> [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0, 0, 20, 20),
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.not_interested,
-                                    size: 50,
+
+                                  SizedBox(height: 10),
+
+                                  Text(snapshot.child('lastName').value.toString(),
+                                    style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    )
                                   ),
-                                  onPressed: () {
-                                    // do something
-                                  },
-                                ),
-                              ),
-                              FlatButton(
-                                textColor: Colors.grey,
-                                child: Text(
-                                  "Block",
-                                  style: TextStyle(
-                                    fontSize: 18,
+
+                                  SizedBox(height: 10),
+
+                                  Text(snapshot.child('email').value.toString(),
+                                    style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    )
                                   ),
-                                ),
-                                onPressed: (){
-                                  //button
-                                },
-                              ),
-                            ]
+                                ],
+                              ),   
+                          ],
                         ),
                       ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      padding: EdgeInsets.fromLTRB(150, 0, 120, 0),
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(width: 2.0, color: Colors.grey)
-                        ),
-                      ),
-                    ),
-                  ]
-                ),
-              ),
-              */
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
-                alignment: Alignment.topLeft,
-                child: Column(children: <Widget>[
-                  Container(
-                    child: Row(children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 20, 20),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.help,
-                            size: 50,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => helpPage()));
-                          },
-                        ),
-                      ),
-                      TextButton(
-                        child: Text('Help'),
-                        style: TextButton.styleFrom(
-                          textStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => helpPage()));
-                        },
-                      ),
-                      /*FlatButton(
-                        textColor: Colors.grey,
-                        child: Text(
-                          "Help",
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => helpPage()));
-                        },
-                      ),*/
-                    ]),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    padding: EdgeInsets.fromLTRB(150, 0, 120, 0),
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: 2.0, color: Colors.grey)),
-                    ),
-                  ),
-                ]),
-              ),
-            ],
+                    ],
+                  );
+                }
+            )
           ),
         ),
         drawer: drawerPage());
