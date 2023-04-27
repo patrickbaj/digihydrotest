@@ -8,9 +8,7 @@ import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class plantDetails extends StatelessWidget {
-
   final DataSnapshot snapshot;
   final auth = FirebaseAuth.instance;
   final ref = FirebaseDatabase.instance.ref('Plants');
@@ -54,93 +52,101 @@ class plantDetails extends StatelessWidget {
       body: Column(
         children: [
           Container(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                    child: Icon(
-                      Icons.energy_savings_leaf,
-                      size: 50,
-                      color: Colors.green,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Icon(
+                    Icons.energy_savings_leaf,
+                    size: 50,
+                    color: Colors.green,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                  child: Text(
+                    'Plant Details',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
-                    child: Text(
-                      'Plant Details',
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           Expanded(
-            child: 
-            FirebaseAnimatedList(
-                  query: ref.orderByChild('userId').equalTo(currentUserID),
-                  itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
+            child: FirebaseAnimatedList(
+              query: ref.orderByChild('userId').equalTo(currentUserID),
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
                 return Container(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              snapshot.child('batchName').value.toString(),
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Plant Type: ' + snapshot.child('plantType').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Plant Variety: ' + snapshot.child('plantVar').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Grow Method: ' + snapshot.child('growMethod').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Nutrient Solution: ' + snapshot.child('nutrientSol').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Sow Type: ' + snapshot.child('sowType').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Sow Date: ' + snapshot.child('sowDate').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Reservoir: ' + snapshot.child('reserv').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'Greenhouse: ' + snapshot.child('greenhouse').value.toString(),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        snapshot.child('batchName').value.toString(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Plant Type: ' +
+                            snapshot.child('plantType').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Plant Variety: ' +
+                            snapshot.child('plantVar').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Grow Method: ' +
+                            snapshot.child('growMethod').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Nutrient Solution: ' +
+                            snapshot.child('nutrientSol').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Sow Type: ' +
+                            snapshot.child('sowType').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Sow Date: ' +
+                            snapshot.child('sowDate').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Reservoir: ' +
+                            snapshot.child('reserv').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Greenhouse: ' +
+                            snapshot.child('greenhouse').value.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
               },
-            ), 
+            ),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import "package:firebase_messaging/firebase_messaging.dart";
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'load_screen.dart';
@@ -12,7 +13,7 @@ void main() async {
   runApp(digihydro());
 }
 
-class digihydro extends StatefulWidget{
+class digihydro extends StatefulWidget {
   @override
   loginScreen createState() => loginScreen();
 }

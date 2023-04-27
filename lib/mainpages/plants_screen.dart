@@ -1,16 +1,19 @@
+import 'package:digihydro/mainpages/device_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/create/add_plant.dart';
 import 'package:digihydro/drawer_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 
 import 'package:digihydro/details/plant_details.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class homePage extends StatefulWidget{
+class homePage extends StatefulWidget {
   @override
   home createState() => home();
 }
@@ -22,6 +25,7 @@ class home extends State<homePage> {
 
   @override
   void initState() {
+    init();
     super.initState();
     final currentUser = auth.currentUser;
     if (currentUser != null) {
@@ -29,9 +33,39 @@ class home extends State<homePage> {
     }
   }
 
+  init() async {
+    String deviceToken = await getDeviceToken();
+    print("%%%%%%%%%%%%%% DEVICE TOKEN %%%%%%%%%%%%%%%%");
+    print(deviceToken);
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+    //notif on click
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
+      String? title = remoteMessage.notification!.title;
+      String? desc = remoteMessage.notification!.body;
+
+      //for in app
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: title,
+        desc: desc,
+        buttons: [
+          DialogButton(
+            child: Text(
+              "COOL",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+            width: 120,
+          )
+        ],
+      ).show();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       //endFloat, for padding and location
@@ -64,86 +98,94 @@ class home extends State<homePage> {
           ),
         ],
       ),
-      body: 
-      Column(
+      body: Column(
         children: [
           Container(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                    child: Icon(
-                      Icons.energy_savings_leaf,
-                      size: 50,
-                      color: Colors.green,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Icon(
+                    Icons.energy_savings_leaf,
+                    size: 50,
+                    color: Colors.green,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                  child: Text(
+                    'My Plants',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
-                    child: Text(
-                      'My Plants',
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           Expanded(
-            child: 
-            
-            FirebaseAnimatedList(
-                  query: ref.orderByChild('userId').equalTo(currentUserID),
-                  itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-                   
-                    Color myColor = Color(0xFF030303);
-                    return Wrap(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => plantDetails(snapshot: snapshot,)));
-                          },
-                          child: 
-                            Container(
-                              margin:  EdgeInsets.symmetric(vertical: 10),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(snapshot.child('batchName').value.toString(),
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        )
-                                      ),
-                                    ],
-                                  ),
-                                  
-                                ],
-                              ),
+            child: FirebaseAnimatedList(
+              query: ref.orderByChild('userId').equalTo(currentUserID),
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
+                Color myColor = Color(0xFF030303);
+                return Wrap(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => plantDetails(
+                                      snapshot: snapshot,
+                                    )));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                    snapshot
+                                        .child('batchName')
+                                        .value
+                                        .toString(),
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
                             ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 );
-                    
               },
-            ), 
+            ),
           ),
         ],
       ),
     );
+  }
+
+  //for notifs
+  Future getDeviceToken() async {
+    FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
+    String? deviceToken = await _firebaseMessage.getToken();
+    return (deviceToken == null) ? "" : deviceToken;
   }
 }
