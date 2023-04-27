@@ -9,8 +9,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-
-import 'package:digihydro/details/plant_details.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class homePage extends StatefulWidget {
@@ -134,7 +132,157 @@ class home extends State<homePage> {
                 Color myColor = Color(0xFF030303);
                 return Wrap(
                   children: [
-                    GestureDetector(
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(snapshot.child('batchName').value.toString(),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            children: [Text(' ')],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Plant Type: ' +
+                                      snapshot
+                                          .child('plantType')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Plant Variety: ' +
+                                      snapshot
+                                          .child('plantVar')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Grow Method: ' +
+                                      snapshot
+                                          .child('growMethod')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Nutrient Solution: ' +
+                                      snapshot
+                                          .child('nutrientSol')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  ))
+                            ],
+                          ),
+                          Row(
+                            children: [Text(' ')],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Sow Type: ' +
+                                      snapshot
+                                          .child('sowType')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Sow Date: ' +
+                                      snapshot
+                                          .child('sowDate')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            children: [Text(' ')],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Reservoir: ' +
+                                      snapshot.child('reserv').value.toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                  'Greenhouse: ' +
+                                      snapshot
+                                          .child('greenhouse')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      /*GestureDetector(
                       onTap: () {
                         Navigator.push(
                             context,
@@ -171,7 +319,8 @@ class home extends State<homePage> {
                           ],
                         ),
                       ),
-                    ),
+                    ),*/
+                    )
                   ],
                 );
               },
