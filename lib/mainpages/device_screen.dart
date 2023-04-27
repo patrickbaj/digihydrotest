@@ -14,6 +14,61 @@ class devicePage extends StatefulWidget{
   device createState() => device();
 }
 
+String airTempChecker(DataSnapshot snapshot){
+  var airTemp = double.parse(snapshot.child('Temperature').value.toString());
+  if(airTemp < 17){
+    return 'WARNING!! Air Temperature too low!';
+  } else if(airTemp > 22){
+    return 'WARNING!! Air Temperature too high!';
+  } else{
+    return '';
+  }
+}
+
+String humidityChecker(DataSnapshot snapshot){
+  var humidity = double.parse(snapshot.child('Humidity').value.toString());
+  if(humidity < 40){
+    return 'WARNING!! Humidity too low!';
+  } else if(humidity > 70){
+    return 'WARNING!! Humidity too high!';
+  } else {
+    return '';
+  }
+}
+
+String waterTempChecker(DataSnapshot snapshot){
+  var waterTemp = double.parse(snapshot.child('WaterTemperature').value.toString());
+  if(waterTemp < 59){
+    return 'WARNING!! Water Temperature too low!';
+  } else if(waterTemp > 86){
+    return 'WARNING!! Water Temperature too high!';
+  } else {
+    return '';
+  }
+}
+
+String tdsChecker(DataSnapshot snapshot){
+  var tds = double.parse(snapshot.child('TotalDissolvedSolids').value.toString());
+  if(tds < 59){
+    return 'WARNING!! TDS level too low!';
+  } else if(tds > 86){
+    return 'WARNING!! TDS level too high!';
+  } else {
+    return '';
+  }
+}
+
+String acidityChecker(DataSnapshot snapshot){
+  var acidity = double.parse(snapshot.child('pH').value.toString());
+  if(acidity < 5){
+    return 'WARNING!! pH level too low!';
+  } else if(acidity > 6.5){
+    return 'WARNING!! pH level too high!';
+  } else {
+    return '';
+  }
+}
+
 class device extends State<devicePage> {
   @override
   final auth = FirebaseAuth.instance;
@@ -314,18 +369,20 @@ class device extends State<devicePage> {
                                 ],
                               ),
                               Container(
-                                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                                child: TextField(
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: 10,
-                                  style: TextStyle(
-                                    decoration: TextDecoration.none,
-                                    fontSize: 15,
-                                  ),
-                                  decoration: new InputDecoration(
-                                    hintText: "Write your note...",
-                                    border: OutlineInputBorder(),
-                                  ),
+                                height: 300,
+                                width: 300,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1.0,
+                                  )
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(airTempChecker(snapshot) +'\n' + humidityChecker(snapshot) + '\n' + waterTempChecker(snapshot)
+                                    + '\n' + tdsChecker(snapshot) + '\n' + acidityChecker(snapshot)),
+                                  ],
                                 ),
                               ),
                             ],

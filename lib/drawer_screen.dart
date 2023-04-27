@@ -119,7 +119,7 @@ class drawerPage extends StatelessWidget {
                 },
               ),*/
             ),
-            Container(
+            /*Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
                 child: Text('Greenhouse'),
@@ -151,7 +151,7 @@ class drawerPage extends StatelessWidget {
                           builder: (context) => profile_IncPage()));
                 },
               ),*/
-            ),
+            ),*/
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
