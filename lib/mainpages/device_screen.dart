@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:digihydro/create/add_gh.dart';
 import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,62 +12,276 @@ class devicePage extends StatefulWidget{
   @override
   device createState() => device();
 }
-
-String airTempChecker(DataSnapshot snapshot){
+final emptyWidget = Container();
+Widget airTempChecker(DataSnapshot snapshot){
   var airTemp = double.parse(snapshot.child('Temperature').value.toString());
-  if(airTemp < 17){
-    return 'WARNING!! Air Temperature too low!';
-  } else if(airTemp > 22){
-    return 'WARNING!! Air Temperature too high!';
-  } else{
-    return '';
+  if(airTemp >= 35 || airTemp < 18){
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'Air Temperature is below 65°F (18°C) or above 95°F (35°C).\n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Greenhouse air temperature is out of range. Current temperature: ' + snapshot.child('Temperature').value.toString()+ ' °C'+'\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+             text: 'Adjust the cooling system, shading or increase ventilation. Inspect drafts, malfunctioning equipment, or improperly sealed windows/doors.'+
+                   'Use Reflective materials or shade cloth to reduce heat during the day. Misting is encouraged of conditions humidity levels are not in danger levels and time is before 5pm.',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ); 
+  } 
+  else{
+    return emptyWidget;
   }
 }
 
-String humidityChecker(DataSnapshot snapshot){
+Widget humidityChecker(DataSnapshot snapshot){
   var humidity = double.parse(snapshot.child('Humidity').value.toString());
-  if(humidity < 40){
-    return 'WARNING!! Humidity too low!';
-  } else if(humidity > 70){
-    return 'WARNING!! Humidity too high!';
-  } else {
-    return '';
+  if(humidity >= 85 || humidity < 50){
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'Humidity is below 50% or above 85% \n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Greenhouse humidity level is out of range.Current humidity: ' + snapshot.child('Humidity').value.toString()+ '%'+'\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+             text: 'Adjust the humidifier/dehumidifier settings or increase/decrease ventilation.' +
+                   'Check for water leaks or excess moisture sources. Install a moisture-absorbing material like silica gel if necessary. Misting is not recommended as it may encourage fungal growth.',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ); 
+  } 
+  else{
+    return emptyWidget;
   }
 }
 
-String waterTempChecker(DataSnapshot snapshot){
+Widget waterTempChecker(DataSnapshot snapshot){
   var waterTemp = double.parse(snapshot.child('WaterTemperature').value.toString());
-  if(waterTemp < 59){
-    return 'WARNING!! Water Temperature too low!';
-  } else if(waterTemp > 86){
-    return 'WARNING!! Water Temperature too high!';
-  } else {
-    return '';
+  if(waterTemp >= 28 || waterTemp < 20){
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'Water temperature is below 68°F (20°C) or above 82°F (28°C). \n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Reservoir water temperature is out of range. Current water temperature: ' + snapshot.child('WaterTemperature').value.toString()+ ' °C'+'\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+             text: 'Adjust the water chiller settings, add insulation to the reservoir, or relocate it to a cooler/shaded area. Check equipment for malfunctions.' +
+                   'Use a light-colored container to reduce heat absorption.',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ); 
+  } 
+  else{
+    return emptyWidget;
   }
 }
 
-String tdsChecker(DataSnapshot snapshot){
+
+Widget tdsChecker(DataSnapshot snapshot){
   var tds = double.parse(snapshot.child('TotalDissolvedSolids').value.toString());
-  if(tds < 59){
-    return 'WARNING!! TDS level too low!';
-  } else if(tds > 86){
-    return 'WARNING!! TDS level too high!';
-  } else {
-    return '';
+  if(tds >= 1500 || tds < 400){
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'TDS is below 400 ppm or above 1500 ppm. \n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Reservoir TDS level is out of range. Current TDS: ' + snapshot.child('TotalDissolvedSolids').value.toString()+ ' PPM'+'\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+             text: 'For high TDS, dilute nutrient solution with water or replace it. For low TDS, add more nutrients.' +
+                   'Check dosing equipment for proper function. Use a TDS meter for accurate measurements.',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ); 
+  } 
+  else{
+    return emptyWidget;
   }
 }
 
-String acidityChecker(DataSnapshot snapshot){
+Widget acidityChecker(DataSnapshot snapshot){
   var acidity = double.parse(snapshot.child('pH').value.toString());
-  if(acidity < 5){
-    return 'WARNING!! pH level too low!';
-  } else if(acidity > 6.5){
-    return 'WARNING!! pH level too high!';
-  } else {
-    return '';
+  if(acidity >= 6.5 || acidity < 5.0){
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'pH is below 5.0 pH or above 6.5 pH. \n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Reservoir pH level is out of range. Current pH: ' + snapshot.child('pH').value.toString()+ ' pH'+'\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+             text: 'For high pH, add pH down solution (phosphoric/nitric acid). For low pH, add pH up solution (potassium hydroxide).' +
+                   'Test and adjust pH gradually. Use a digital pH meter for precise readings.',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ); 
+  } 
+  else{
+    return emptyWidget;
   }
 }
 
+Color iconColor(DataSnapshot snapshot) {
+  if (airTempChecker(snapshot) != emptyWidget || humidityChecker(snapshot) != emptyWidget || waterTempChecker(snapshot) != emptyWidget 
+      || tdsChecker(snapshot) != emptyWidget || acidityChecker(snapshot) != emptyWidget) {
+    return Colors.red;
+  } else {
+    return Colors.grey;
+  }  
+}
 class device extends State<devicePage> {
   @override
   final auth = FirebaseAuth.instance;
@@ -76,17 +289,7 @@ class device extends State<devicePage> {
   
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      //endFloat, for padding and location
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        elevation: 5.0,
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => DropDownGH()));
-        },
-      ),
-
+      
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
       drawer: drawerPage(),
       appBar: AppBar(
@@ -368,21 +571,43 @@ class device extends State<devicePage> {
                                   ),
                                 ],
                               ),
+
                               Container(
-                                height: 300,
-                                width: 300,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
-                                  )
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(airTempChecker(snapshot) +'\n' + humidityChecker(snapshot) + '\n' + waterTempChecker(snapshot)
-                                    + '\n' + tdsChecker(snapshot) + '\n' + acidityChecker(snapshot)),
-                                  ],
+                                child: GestureDetector(
+                                  onTap: (){
+                                    showDialog(
+                                      context: context, 
+                                      builder:  (BuildContext context){
+                                        return AlertDialog(
+                                          content: SingleChildScrollView(
+                                            child: 
+                                              Column(
+                                                children: [
+                                                  airTempChecker(snapshot),
+                                                  humidityChecker(snapshot),
+                                                  waterTempChecker(snapshot),
+                                                  tdsChecker(snapshot),
+                                                  acidityChecker(snapshot),
+                                                ],
+                                              ),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("Ok"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.warning_sharp,
+                                    color: iconColor(snapshot),
+                                    size: 40,
+                                  ),
                                 ),
                               ),
                             ],
