@@ -7,14 +7,12 @@ import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class reservoirPage extends StatefulWidget{
+class reservoirPage extends StatefulWidget {
   @override
   reserv createState() => reserv();
 }
 
-
 class reserv extends State<reservoirPage> {
-
   final auth = FirebaseAuth.instance;
   late String currentUserID;
   final ref = FirebaseDatabase.instance.ref('Reservoir');
@@ -65,45 +63,45 @@ class reserv extends State<reservoirPage> {
       body: Column(
         children: [
           Container(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                    child: Icon(
-                      Icons.water,
-                      size: 50,
-                      color: Colors.green,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Icon(
+                    Icons.water,
+                    size: 50,
+                    color: Colors.green,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                  child: Text(
+                    'Reserviors',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
-                    child: Text(
-                      'Reserviors',
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           Expanded(
             child: FirebaseAnimatedList(
               query: ref.orderByChild('userId').equalTo(currentUserID),
-                  itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-
-                    return Wrap(
-                      children: [
-                        Container(
-                          margin:  EdgeInsets.symmetric(vertical: 10),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
+                return Wrap(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 5,
@@ -112,72 +110,71 @@ class reserv extends State<reservoirPage> {
                           ),
                         ],
                       ),
-
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              Text(snapshot.child('reservName').value.toString(),
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                )
-                              ),
+                              Text(
+                                  snapshot.child('reservName').value.toString(),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  )),
                             ],
                           ),
-
+                          Row(
+                            children: [Text(' ')],
+                          ),
                           Row(
                             children: [
-                              Text(' ')
+                              Text(
+                                  'Grow Method: ' +
+                                      snapshot
+                                          .child('growMethod')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
                             ],
                           ),
-
                           Row(
                             children: [
-                              Text('Grow Method: ' + snapshot.child('growMethod').value.toString(),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
+                              Text(
+                                  'Nutrient Solution: ' +
+                                      snapshot
+                                          .child('nutrientSol')
+                                          .value
+                                          .toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
                             ],
                           ),
-
                           Row(
-                            children: [
-                              Text('Nutrient Solution: ' + snapshot.child('nutrientSol').value.toString(),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
+                            children: [Text(' ')],
                           ),
-
                           Row(
                             children: [
-                              Text(' ')
-                            ],
-                          ),
-                          
-                          Row(
-                            children: [
-                              Text('Greenhouse: ' + snapshot.child('greenH').value.toString(),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
+                              Text(
+                                  'Greenhouse: ' +
+                                      snapshot.child('greenH').value.toString(),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
                             ],
                           ),
                         ],
                       ),
                     ),
                   ],
-                );  
+                );
               },
             ),
           ),

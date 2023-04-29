@@ -333,32 +333,6 @@ class device extends State<devicePage> {
       ),
       body: Column(
         children: [
-          Container(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                  child: Icon(
-                    Icons.devices_outlined,
-                    size: 50,
-                    color: Colors.green,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
-                  child: Text(
-                    'Devices',
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: FirebaseAnimatedList(
               query: ref,
@@ -366,6 +340,70 @@ class device extends State<devicePage> {
                   Animation<double> animation, int index) {
                 return Wrap(
                   children: [
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                            child: Icon(
+                              Icons.devices_outlined,
+                              size: 50,
+                              color: Colors.green,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                            child: Text(
+                              'Devices',
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(90, 15, 5, 10),
+                            child: GestureDetector(
+                              child: Icon(
+                                Icons.warning_sharp,
+                                color: iconColor(snapshot),
+                                size: 40,
+                              ),
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            airTempChecker(snapshot),
+                                            humidityChecker(snapshot),
+                                            waterTempChecker(snapshot),
+                                            tdsChecker(snapshot),
+                                            acidityChecker(snapshot),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          child: Text("OK"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Container(
                       child: Column(
                         children: [
@@ -611,7 +649,7 @@ class device extends State<devicePage> {
                               ),
                             ],
                           ),
-                          Container(
+                          /*Container(
                             child: GestureDetector(
                               child: Icon(
                                 Icons.warning_sharp,
@@ -647,7 +685,7 @@ class device extends State<devicePage> {
                                 );
                               },
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),

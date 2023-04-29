@@ -46,12 +46,12 @@ class home extends State<homePage> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "RFLUTTER ALERT",
-        desc: "Flutter is more awesome with RFlutter Alert.",
+        title: title,
+        desc: desc,
         buttons: [
           DialogButton(
             child: Text(
-              "COOL",
+              "OK",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             onPressed: () => Navigator.pop(context),
