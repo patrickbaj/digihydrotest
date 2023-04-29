@@ -7,12 +7,12 @@ import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class notesPage extends StatefulWidget{
+class notesPage extends StatefulWidget {
   @override
   displayNote createState() => displayNote();
 }
-class displayNote extends State<notesPage> {
 
+class displayNote extends State<notesPage> {
   final auth = FirebaseAuth.instance;
   late String currentUserID;
   late String imageUrl;
@@ -26,7 +26,6 @@ class displayNote extends State<notesPage> {
       currentUserID = currentUser.uid;
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +64,10 @@ class displayNote extends State<notesPage> {
         ],
       ),
       body: Column(
-        children:[
+        children: [
           Container(
             child: Row(
-                children: <Widget>[
+              children: <Widget>[
                 Container(
                   child: Row(
                     children: <Widget>[
@@ -98,7 +97,6 @@ class displayNote extends State<notesPage> {
               ],
             ),
           ),
-
           Container(
             padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
             child: Row(
@@ -111,12 +109,13 @@ class displayNote extends State<notesPage> {
                   ),
                 ),
                 Container(
+                  padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                      padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
                       shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                          borderRadius: BorderRadius.circular(20)),
                     ),
                     child: Text(
                       "What's on your mind?",
@@ -125,11 +124,11 @@ class displayNote extends State<notesPage> {
                         color: Colors.grey,
                       ),
                     ),
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => createNote()));
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => createNote()));
                     },
                   ),
                 )
@@ -137,96 +136,91 @@ class displayNote extends State<notesPage> {
             ),
           ),
           Expanded(
-            child: 
-            FirebaseAnimatedList(
-              query: ref.orderByChild('userId').equalTo(currentUserID),
-              itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-                String imageUrl = snapshot.child('imageUrl').value.toString();
-                return Wrap(
-                  children: [
-                    Container(
-                      margin:  EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3),
+              child: FirebaseAnimatedList(
+                  query: ref.orderByChild('userId').equalTo(currentUserID),
+                  itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                      Animation<double> animation, int index) {
+                    String imageUrl =
+                        snapshot.child('imageUrl').value.toString();
+                    return Wrap(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: Text(
-                                  snapshot.child('title').value.toString(),
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Theme.of(context).primaryColor,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      snapshot.child('title').value.toString(),
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  snapshot.child('date').value.toString(),
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Theme.of(context).primaryColor,
+                                  Expanded(
+                                    child: Text(
+                                      snapshot.child('date').value.toString(),
+                                      textAlign: TextAlign.right,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
+                              ),
+                              Row(
+                                children: [Text(' ')],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                      snapshot
+                                          .child('userNote')
+                                          .value
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Theme.of(context).primaryColor,
+                                      )),
+                                ],
+                              ),
+                              Row(
+                                children: [Text(' ')],
+                              ),
+                              Row(
+                                children: [
+                                  Image.network(
+                                    imageUrl,
+                                    height: 300,
+                                    width: 300,
+                                  )
+                                ],
                               ),
                             ],
                           ),
-
-                          Row(
-                            children: [
-                              Text(' ')
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text(snapshot.child('userNote').value.toString(),
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              ),
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Text(' ')
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              Image.network(imageUrl,
-                                height: 300,
-                                width: 300,
-                              )
-                            ],
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }
-            )
-          ),
+                        ),
+                      ],
+                    );
+                  })),
         ],
       ),
     );

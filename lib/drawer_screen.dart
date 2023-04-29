@@ -33,8 +33,17 @@ class drawerPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      //margin: EdgeInsets.fromLTRB(0, 70, 0, 0),
-                      child: TextButton(
+                      margin: EdgeInsets.fromLTRB(0, 18, 0, 0),
+                      child: Text(
+                        'User Name',
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green[600],
+                        ),
+                      ),
+                      /*child: TextButton(
                         child: Text('User Name'),
                         style: TextButton.styleFrom(
                           textStyle: TextStyle(
@@ -43,12 +52,12 @@ class drawerPage extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
+                          /*Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => profile_1()));
+                                  builder: (context) => profile_1()));*/
                         },
-                      ),
+                      ),*/
                     ),
                     /*Container(
                       child: Text(
@@ -213,8 +222,10 @@ class drawerPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => userProfile()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => profile_1())); //userProfile()
                 },
               ),
               /*child: FlatButton(
