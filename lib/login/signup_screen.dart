@@ -13,16 +13,19 @@ class signupPage extends StatefulWidget{
 class signUp extends State<signupPage> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
+  TextEditingController growerType = TextEditingController();
   TextEditingController userEmail= TextEditingController();
   TextEditingController userPass= TextEditingController();
   TextEditingController confirmPass= TextEditingController();
 
+  var _selecType = "-1";
   @override
   void dispose() {
     firstName.dispose();
     lastName.dispose();
     userEmail.dispose();
     userPass.dispose();
+    growerType.dispose();
     confirmPass.dispose();
     super.dispose();
   }
@@ -49,6 +52,7 @@ class signUp extends State<signupPage> {
           'lastName': lastName.text.trim(),
           'email': userEmail.text.trim(),
           'password':userPass.text.trim(),
+          'growerType': _selecType,
           'userId':user.uid,
         });
       }
@@ -159,6 +163,45 @@ class signUp extends State<signupPage> {
                     ],
                   ),
                 ),
+
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 230, 0),
+                        child: Text(
+                          "Grower Type:",
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(40, 10, 40, 10),
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            isDense: true,
+                            contentPadding: const EdgeInsets.all(10.0),
+                          ),
+                          value: _selecType,
+                          items: [
+                            DropdownMenuItem(child: Text("-Select Grower Type-"), value: "-1",),
+                            DropdownMenuItem(child: Text("Dft"), value: "Dft",),
+                            DropdownMenuItem(child: Text("Nft"), value: "Nft",),
+                          ],
+                          onChanged:(newMethod){
+                            setState(() {
+                              _selecType = newMethod!;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Column(

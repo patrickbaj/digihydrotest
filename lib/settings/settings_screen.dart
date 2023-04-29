@@ -144,6 +144,16 @@ class _userSettings extends State<userProfile> {
 
                                   SizedBox(height: 10),
 
+                                  Text(snapshot.child('growerType').value.toString(),
+                                    style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    )
+                                  ),
+
+                                  SizedBox(height: 10),
+
                                   Text(snapshot.child('email').value.toString(),
                                     style: TextStyle(
                                     fontSize: 20,
