@@ -9,25 +9,24 @@ import 'dart:math';
 import 'package:intl/intl.dart';
 
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart';
 
 class DropDown1 extends StatefulWidget {
   @override
   addPlant createState() => addPlant();
 }
 
-
-
 class addPlant extends State<DropDown1> {
-
-
   TextEditingController batch = TextEditingController();
   TextEditingController varty = TextEditingController();
   TextEditingController typ = TextEditingController();
   TextEditingController res = TextEditingController();
   TextEditingController greenh = TextEditingController();
   TextEditingController date = TextEditingController();
+  TextEditingController userDate = TextEditingController();
 
-  var _value="-1";
+  var _value = "-1";
   var _selectedMethod = "-1";
   var _selectedNutrient = "-1";
 
@@ -41,7 +40,7 @@ class addPlant extends State<DropDown1> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final ref = fb.ref().child('Plants/$num');
     final currentUser = _auth.currentUser;
-    
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
       appBar: AppBar(
@@ -195,7 +194,7 @@ class addPlant extends State<DropDown1> {
                 ),
               ),
 
-              Container(
+              /*Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
                   "Greenhouse:",
@@ -218,7 +217,7 @@ class addPlant extends State<DropDown1> {
                     contentPadding: const EdgeInsets.all(10.0),
                   ),
                 ),
-              ),
+              ),*/
 
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
@@ -232,6 +231,35 @@ class addPlant extends State<DropDown1> {
                 ),
               ),
               Container(
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: TextField(
+                  controller: userDate,
+                  decoration: InputDecoration(
+                    //icon: Icon(Icons.calendar_today_rounded),
+                    labelText: 'Enter Date:',
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(3000),
+                    );
+
+                    if (pickedDate != null) {
+                      setState(() {
+                        userDate.text =
+                            DateFormat('MM-dd-yyyy').format(pickedDate);
+                      });
+                    }
+                  },
+                ),
+              ),
+              /*(Container(
                 padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                 margin: EdgeInsets.all(10),
                 child: TextField(
@@ -257,7 +285,7 @@ class addPlant extends State<DropDown1> {
                     }
                   },
                 ),
-              ),
+              ),*/
 
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
@@ -281,11 +309,20 @@ class addPlant extends State<DropDown1> {
                   ),
                   value: _value,
                   items: [
-                    DropdownMenuItem(child: Text("-Select Sow type-"), value: "-1",),
-                    DropdownMenuItem(child: Text("Direct"), value: "Direct",),
-                    DropdownMenuItem(child: Text("Indirect"), value: "Indirect",),
+                    DropdownMenuItem(
+                      child: Text("— Select Sow type —"),
+                      value: "-1",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Direct"),
+                      value: "Direct",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Indirect"),
+                      value: "Indirect",
+                    ),
                   ],
-                  onChanged:(selectedType){
+                  onChanged: (selectedType) {
                     setState(() {
                       _value = selectedType!;
                     });
@@ -315,11 +352,20 @@ class addPlant extends State<DropDown1> {
                   ),
                   value: _selectedMethod,
                   items: [
-                    DropdownMenuItem(child: Text("-Select Growing Method-"), value: "-1",),
-                    DropdownMenuItem(child: Text("Dft"), value: "Dft",),
-                    DropdownMenuItem(child: Text("Nft"), value: "Nft",),
+                    DropdownMenuItem(
+                      child: Text("— Select Growing Method —"),
+                      value: "-1",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Dft"),
+                      value: "Dft",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Nft"),
+                      value: "Nft",
+                    ),
                   ],
-                  onChanged:(newMethod){
+                  onChanged: (newMethod) {
                     setState(() {
                       _selectedMethod = newMethod!;
                     });
@@ -327,7 +373,7 @@ class addPlant extends State<DropDown1> {
                 ),
               ),
 
-               Container(
+              Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
                   "Choose Nutrient Solution:",
@@ -349,21 +395,27 @@ class addPlant extends State<DropDown1> {
                   ),
                   value: _selectedNutrient,
                   items: [
-                    DropdownMenuItem(child: Text("-Select Nutrient Solution-"), value: "-1",),
-                    DropdownMenuItem(child: Text("SNAP"), value: "SNAP",),
-                    DropdownMenuItem(child: Text("NutriHydro"), value: "NutriHydro",),
+                    DropdownMenuItem(
+                      child: Text("— Select Nutrient Solution —"),
+                      value: "-1",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("SNAP"),
+                      value: "SNAP",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("NutriHydro"),
+                      value: "NutriHydro",
+                    ),
                   ],
-                  onChanged:(newNutrient){
+                  onChanged: (newNutrient) {
                     setState(() {
                       _selectedNutrient = newNutrient!;
                     });
                   },
                 ),
               ),
-              
-              
-              
-              
+
               Container(
                 margin: EdgeInsets.fromLTRB(240, 25, 40, 0),
                 child: ElevatedButton(
@@ -387,7 +439,7 @@ class addPlant extends State<DropDown1> {
                       "reserv": res.text,
                       "greenhouse": greenh.text,
                       "sowDate": date.text,
-                      "sowType":_value,
+                      "sowType": _value,
                       "growMethod": _selectedMethod,
                       "nutrientSol": _selectedNutrient,
                       "userId": currentUser?.uid,
