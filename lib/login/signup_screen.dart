@@ -6,17 +6,18 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'dart:math';
 
-class signupPage extends StatefulWidget{
+class signupPage extends StatefulWidget {
   @override
   signUp createState() => signUp();
 }
+
 class signUp extends State<signupPage> {
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController growerType = TextEditingController();
-  TextEditingController userEmail= TextEditingController();
-  TextEditingController userPass= TextEditingController();
-  TextEditingController confirmPass= TextEditingController();
+  TextEditingController userEmail = TextEditingController();
+  TextEditingController userPass = TextEditingController();
+  TextEditingController confirmPass = TextEditingController();
 
   var _selecType = "-1";
   @override
@@ -29,44 +30,46 @@ class signUp extends State<signupPage> {
     confirmPass.dispose();
     super.dispose();
   }
-  
-  bool passwordConfirmed(){
-    if(userPass.text.trim() == confirmPass.text.trim()){
+
+  bool passwordConfirmed() {
+    if (userPass.text.trim() == confirmPass.text.trim()) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
   Future userSignUp() async {
-  if (passwordConfirmed()) {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: userEmail.text.trim(),
-        password: userPass.text.trim(),
-      );
-      User? user = userCredential.user;
-      if (user != null) {
-        await fb.ref().child('Users/${user.uid}').set({
-          'firstName': firstName.text.trim(),
-          'lastName': lastName.text.trim(),
-          'email': userEmail.text.trim(),
-          'password':userPass.text.trim(),
-          'growerType': _selecType,
-          'userId':user.uid,
-        });
+    if (passwordConfirmed()) {
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: userEmail.text.trim(),
+          password: userPass.text.trim(),
+        );
+        User? user = userCredential.user;
+        if (user != null) {
+          await fb.ref().child('Users/${user.uid}').set({
+            'firstName': firstName.text.trim(),
+            'lastName': lastName.text.trim(),
+            'email': userEmail.text.trim(),
+            'password': userPass.text.trim(),
+            'growerType': _selecType,
+            'userId': user.uid,
+          });
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
       }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
     }
   }
-}
+
   final fb = FirebaseDatabase.instance;
 
   @override
@@ -107,7 +110,6 @@ class signUp extends State<signupPage> {
                     ),
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Column(
@@ -135,7 +137,6 @@ class signUp extends State<signupPage> {
                     ],
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Column(
@@ -163,7 +164,6 @@ class signUp extends State<signupPage> {
                     ],
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Column(
@@ -187,11 +187,20 @@ class signUp extends State<signupPage> {
                           ),
                           value: _selecType,
                           items: [
-                            DropdownMenuItem(child: Text("-Select Grower Type-"), value: "-1",),
-                            DropdownMenuItem(child: Text("Dft"), value: "Dft",),
-                            DropdownMenuItem(child: Text("Nft"), value: "Nft",),
+                            DropdownMenuItem(
+                              child: Text("-Select Grower Type-"),
+                              value: "-1",
+                            ),
+                            DropdownMenuItem(
+                              child: Text("DFT"),
+                              value: "Dft",
+                            ),
+                            DropdownMenuItem(
+                              child: Text("NFT"),
+                              value: "Nft",
+                            ),
                           ],
-                          onChanged:(newMethod){
+                          onChanged: (newMethod) {
                             setState(() {
                               _selecType = newMethod!;
                             });
@@ -201,7 +210,6 @@ class signUp extends State<signupPage> {
                     ],
                   ),
                 ),
-                
                 Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Column(
@@ -295,7 +303,7 @@ class signUp extends State<signupPage> {
                             ),
                             onPressed: () {
                               userSignUp();
-                              
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
