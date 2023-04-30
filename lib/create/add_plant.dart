@@ -6,6 +6,7 @@ import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:intl/intl.dart';
 
 
 
@@ -136,13 +137,14 @@ class addPlant extends State<DropDown1> {
                 child: TextField(
                   controller: varty,
                   decoration: InputDecoration(
-                    hintText: 'Enter Plant Variety',
+                    hintText: 'e.g. Lalique Crystal Lettuce, Dabi, Rjik Swan Rex. etc',
                     border: OutlineInputBorder(),
                     isDense: true,
                     contentPadding: const EdgeInsets.all(10.0),
                   ),
                 ),
               ),
+
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
@@ -160,7 +162,7 @@ class addPlant extends State<DropDown1> {
                 child: TextField(
                   controller: typ,
                   decoration: InputDecoration(
-                    hintText: 'Enter Plant type',
+                    hintText: 'e.g. Lettuce, Basil, Cilantro, etc',
                     border: OutlineInputBorder(),
                     isDense: true,
                     contentPadding: const EdgeInsets.all(10.0),
@@ -235,11 +237,25 @@ class addPlant extends State<DropDown1> {
                 child: TextField(
                   controller: date,
                   decoration: InputDecoration(
-                    hintText: 'Enter Sow Date',
+                    labelText: 'Date Today:',
                     border: OutlineInputBorder(),
                     isDense: true,
                     contentPadding: const EdgeInsets.all(10.0),
                   ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context, 
+                      initialDate: DateTime.now(), 
+                      firstDate: DateTime(1900), 
+                      lastDate: DateTime(3000),
+                    );
+
+                    if(pickedDate != null){
+                      setState(() {
+                        date.text = DateFormat('MM/dd/yyyy').format(pickedDate);
+                      });
+                    }
+                  },
                 ),
               ),
 
@@ -314,7 +330,7 @@ class addPlant extends State<DropDown1> {
                Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
-                  "Choose Growing Method:",
+                  "Choose Nutrient Solution:",
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.grey[600],

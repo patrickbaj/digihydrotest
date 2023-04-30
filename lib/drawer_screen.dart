@@ -225,7 +225,7 @@ class drawerPage extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => profile_1())); //userProfile()
+                          builder: (context) => userProfile())); //userProfile()
                 },
               ),
               /*child: FlatButton(

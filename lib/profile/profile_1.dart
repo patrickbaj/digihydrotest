@@ -36,7 +36,6 @@ class profile_1 extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(60),
-              color: Colors.grey[400],
               boxShadow: [
                 BoxShadow(color: Colors.grey /*[400]*/, spreadRadius: 1),
               ],

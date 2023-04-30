@@ -76,9 +76,12 @@ class _userSettings extends State<userProfile> {
                   return Wrap(
                     children: [
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        height: 125,
-                        color: Colors.grey[500],
+                        margin: const EdgeInsets.fromLTRB(40, 40, 40, 10),
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(60),
+                        ),
                         child: Center(
                           child: GestureDetector(
                             onTap: () {
@@ -117,24 +120,15 @@ class _userSettings extends State<userProfile> {
                       ),
                       
                       Container(
+                        alignment: Alignment.center,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(snapshot.child('firstName').value.toString(),
-                                    style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    )
-                                  ),
-
-                                  SizedBox(height: 10),
-
-                                  Text(snapshot.child('lastName').value.toString(),
+                                  Text(snapshot.child('firstName').value.toString() +' '+ snapshot.child('lastName').value.toString(),
                                     style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.black,
