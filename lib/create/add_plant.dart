@@ -194,7 +194,7 @@ class addPlant extends State<DropDown1> {
                 ),
               ),
 
-              /*Container(
+              Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
                   "Greenhouse:",
@@ -217,7 +217,7 @@ class addPlant extends State<DropDown1> {
                     contentPadding: const EdgeInsets.all(10.0),
                   ),
                 ),
-              ),*/
+              ),
 
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
@@ -234,7 +234,7 @@ class addPlant extends State<DropDown1> {
                 padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
                 margin: EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: TextField(
-                  controller: userDate,
+                  controller: date,
                   decoration: InputDecoration(
                     //icon: Icon(Icons.calendar_today_rounded),
                     labelText: 'Enter Date:',
@@ -252,40 +252,13 @@ class addPlant extends State<DropDown1> {
 
                     if (pickedDate != null) {
                       setState(() {
-                        userDate.text =
-                            DateFormat('MM-dd-yyyy').format(pickedDate);
+                        date.text =
+                            DateFormat('MM/dd/yyyy').format(pickedDate);
                       });
                     }
                   },
                 ),
-              ),
-              /*(Container(
-                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                margin: EdgeInsets.all(10),
-                child: TextField(
-                  controller: date,
-                  decoration: InputDecoration(
-                    labelText: 'Date Today:',
-                    border: OutlineInputBorder(),
-                    isDense: true,
-                    contentPadding: const EdgeInsets.all(10.0),
-                  ),
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context, 
-                      initialDate: DateTime.now(), 
-                      firstDate: DateTime(1900), 
-                      lastDate: DateTime(3000),
-                    );
-
-                    if(pickedDate != null){
-                      setState(() {
-                        date.text = DateFormat('MM/dd/yyyy').format(pickedDate);
-                      });
-                    }
-                  },
-                ),
-              ),*/
+              ), 
 
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
