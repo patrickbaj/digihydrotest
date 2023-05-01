@@ -11,11 +11,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 
-class createNote extends StatefulWidget{
+class createNote extends StatefulWidget {
   @override
   note createState() => note();
 }
-
 
 class note extends State<createNote> {
   TextEditingController title = TextEditingController();
@@ -28,13 +27,14 @@ class note extends State<createNote> {
 
   Future<void> _pickImage() async {
     ImagePicker imagePicker = ImagePicker();
-      final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
-      if (pickedFile != null) {
-        setState(() {
-          _imageFile = File(pickedFile.path);
-        });
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
     }
   }
+
   final fb = FirebaseDatabase.instance;
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,6 @@ class note extends State<createNote> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final ref = fb.ref().child('Notes/$num');
     final currentUser = _auth.currentUser;
-
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
@@ -70,25 +69,25 @@ class note extends State<createNote> {
       ),
       body: Form(
         child: Container(
-          margin: EdgeInsets.fromLTRB(10, 0, 10, 90),
+          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: ListView(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 20, top: 10),
-                      child: Text(
-                        "Add Notes",
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[600],
-                        ),
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(left: 20, top: 10),
+                    child: Text(
+                      "Add Notes",
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[600],
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
+              ),
               Container(
                 margin: EdgeInsets.only(top: 50, left: 10, right: 10),
                 child: TextField(
@@ -101,7 +100,6 @@ class note extends State<createNote> {
                   ),
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: TextField(
@@ -115,21 +113,21 @@ class note extends State<createNote> {
                   ),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
-                      context: context, 
-                      initialDate: DateTime.now(), 
-                      firstDate: DateTime(1900), 
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
                       lastDate: DateTime(3000),
                     );
 
-                    if(pickedDate != null){
+                    if (pickedDate != null) {
                       setState(() {
-                        userDate.text = DateFormat('MM-dd-yyyy').format(pickedDate);
+                        userDate.text =
+                            DateFormat('MM-dd-yyyy').format(pickedDate);
                       });
                     }
                   },
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: TextField(
@@ -146,11 +144,10 @@ class note extends State<createNote> {
                   ),
                 ),
               ),
-
               Container(
                 child: Row(
                   children: [
-                     IconButton(
+                    IconButton(
                       onPressed: _pickImage,
                       icon: Icon(Icons.add_a_photo_outlined),
                       iconSize: 40,
@@ -159,7 +156,6 @@ class note extends State<createNote> {
                   ],
                 ),
               ),
-
               Container(
                 child: Column(
                   children: [
@@ -173,7 +169,6 @@ class note extends State<createNote> {
                   ],
                 ),
               ),
-              
               Container(
                   margin: EdgeInsets.fromLTRB(200, 25, 30, 0),
                   child: ElevatedButton(
@@ -189,27 +184,25 @@ class note extends State<createNote> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    onPressed: () async{
-
+                    onPressed: () async {
                       if (_imageFile != null) {
-                      String id = DateTime.now().millisecondsSinceEpoch.toString();
-                      final imageRoot = FirebaseStorage.instance.ref();
-                      final imageRef = imageRoot.child('Images');
-                      final imageUpload = imageRef.child(id);
-                      try {
-                        await imageUpload.putFile(_imageFile!);
-                        imageUrl = await imageUpload.getDownloadURL();
-                      } catch (error) {
-                        
+                        String id =
+                            DateTime.now().millisecondsSinceEpoch.toString();
+                        final imageRoot = FirebaseStorage.instance.ref();
+                        final imageRef = imageRoot.child('Images');
+                        final imageUpload = imageRef.child(id);
+                        try {
+                          await imageUpload.putFile(_imageFile!);
+                          imageUrl = await imageUpload.getDownloadURL();
+                        } catch (error) {}
                       }
-                    }
                       ref.set({
-                      "title": title.text,
-                      "date": userDate.text,
-                      "userId": currentUser?.uid,
-                      "userNote": userNote.text,
-                      "imageUrl": imageUrl,
-                    }).asStream();
+                        "title": title.text,
+                        "date": userDate.text,
+                        "userId": currentUser?.uid,
+                        "userNote": userNote.text,
+                        "imageUrl": imageUrl,
+                      }).asStream();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => notesPage()));
                     },

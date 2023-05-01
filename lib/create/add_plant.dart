@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:intl/intl.dart';
 
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 
@@ -96,7 +95,7 @@ class addPlant extends State<DropDown1> {
               //
               //
               Container(
-                margin: EdgeInsets.fromLTRB(30, 10, 0, 0),
+                margin: EdgeInsets.fromLTRB(30, 30, 0, 0),
                 child: Text(
                   "Batch Name:",
                   style: TextStyle(
@@ -136,7 +135,8 @@ class addPlant extends State<DropDown1> {
                 child: TextField(
                   controller: varty,
                   decoration: InputDecoration(
-                    hintText: 'e.g. Lalique Crystal Lettuce, Dabi, Rjik Swan Rex. etc',
+                    hintText:
+                        'e.g. Lalique Crystal Lettuce, Dabi, Rjik Swan Rex. etc',
                     border: OutlineInputBorder(),
                     isDense: true,
                     contentPadding: const EdgeInsets.all(10.0),
@@ -330,11 +330,11 @@ class addPlant extends State<DropDown1> {
                       value: "-1",
                     ),
                     DropdownMenuItem(
-                      child: Text("Dft"),
+                      child: Text("DFT"),
                       value: "Dft",
                     ),
                     DropdownMenuItem(
-                      child: Text("Nft"),
+                      child: Text("NFT"),
                       value: "Nft",
                     ),
                   ],
@@ -390,7 +390,7 @@ class addPlant extends State<DropDown1> {
               ),
 
               Container(
-                margin: EdgeInsets.fromLTRB(240, 25, 40, 0),
+                margin: EdgeInsets.fromLTRB(240, 25, 40, 40),
                 child: ElevatedButton(
                   child: Text('ADD'),
                   style: ElevatedButton.styleFrom(

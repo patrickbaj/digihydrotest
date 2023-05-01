@@ -7,6 +7,7 @@ import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
 
 class devicePage extends StatefulWidget {
   @override
@@ -38,14 +39,18 @@ Widget airTempChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text:
-                'Greenhouse air temperature is out of range. Current temperature: ' +
-                    snapshot.child('Temperature').value.toString() +
-                    ' °C' +
-                    '\n',
+            text: 'Current temperature: ',
             style: TextStyle(
               color: Colors.black,
               fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapshot.child('Temperature').value.toString() + '°C\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
           ),
           TextSpan(
@@ -93,14 +98,18 @@ Widget humidityChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text:
-                'Greenhouse humidity level is out of range.Current humidity: ' +
-                    snapshot.child('Humidity').value.toString() +
-                    '%' +
-                    '\n',
+            text: 'Current humidity: ',
             style: TextStyle(
               color: Colors.black,
               fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapshot.child('Humidity').value.toString() + '%\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
           ),
           TextSpan(
@@ -150,13 +159,17 @@ Widget waterTempChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text:
-                'Reservoir water temperature is out of range. Current water temperature: ' +
-                    snapshot.child('WaterTemperature').value.toString() +
-                    ' °C' +
-                    '\n',
+            text: 'Current temperature: ',
             style: TextStyle(
               color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapshot.child('WaterTemperature').value.toString() + '°C\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
           ),
@@ -195,7 +208,7 @@ Widget tdsChecker(DataSnapshot snapshot) {
         ),
         children: <TextSpan>[
           TextSpan(
-            text: 'TDS is below 400 ppm or above 1500 ppm. \n',
+            text: 'TDS is below 400ppm or above 1500ppm. \n',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -207,12 +220,18 @@ Widget tdsChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: 'Reservoir TDS level is out of range. Current TDS: ' +
-                snapshot.child('TotalDissolvedSolids').value.toString() +
-                ' PPM' +
-                '\n',
+            text: 'Current TDS: ',
             style: TextStyle(
               color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapshot.child('TotalDissolvedSolids').value.toString() +
+                'ppm\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
           ),
@@ -249,7 +268,7 @@ Widget acidityChecker(DataSnapshot snapshot) {
         ),
         children: <TextSpan>[
           TextSpan(
-            text: 'pH is below 5.0 pH or above 6.5 pH. \n',
+            text: 'pH is below 5.0pH or above 6.5pH. \n',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -261,12 +280,17 @@ Widget acidityChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: 'Reservoir pH level is out of range. Current pH: ' +
-                snapshot.child('pH').value.toString() +
-                ' pH' +
-                '\n',
+            text: 'Current pH: ',
             style: TextStyle(
               color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapshot.child('pH').value.toString() + ' pH\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
           ),

@@ -8,68 +8,107 @@ import 'package:digihydro/mainpages/greenhouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'index_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import 'mainpages/device_screen.dart';
 
-class drawerPage extends StatelessWidget {
+class drawerPage extends StatefulWidget {
+  @override
+  drawer createState() => drawer();
+}
+
+class drawer extends State<drawerPage> {
+  final auth = FirebaseAuth.instance;
+  late String currentUserID;
+  final ref = FirebaseDatabase.instance.ref('Users');
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUser = auth.currentUser;
+    if (currentUser != null) {
+      currentUserID = currentUser.uid;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 300,
       child: Drawer(
         child: ListView(
+          //scrollDirection: Axis.vertical,
+          //shrinkWrap: true,
           padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
-                margin: EdgeInsets.fromLTRB(0, 65, 0, 0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      child: Icon(
-                        Icons.account_circle,
-                        size: 75,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 18, 0, 0),
-                      child: Text(
-                        'User Name',
-                        textAlign: TextAlign.justify,
-                        style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green[600],
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: FirebaseAnimatedList(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                query: ref.orderByChild('userId').equalTo(currentUserID),
+                itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                    Animation<double> animation, int index) {
+                  return Wrap(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.fromLTRB(0, 65, 0, 10),
+                        child: Icon(
+                          Icons.account_circle,
+                          size: 75,
+                          color: Colors.green,
                         ),
                       ),
-                      /*child: TextButton(
-                        child: Text('User Name'),
-                        style: TextButton.styleFrom(
-                          textStyle: TextStyle(
-                            color: Colors.grey,
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 18, 0, 0),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                    snapshot
+                                            .child('firstName')
+                                            .value
+                                            .toString() +
+                                        ' ' +
+                                        snapshot
+                                            .child('lastName')
+                                            .value
+                                            .toString(),
+                                    style: TextStyle(
+                                      fontSize: 26,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      /*Container(
+                        margin: EdgeInsets.fromLTRB(0, 18, 0, 0),
+                        child: Text(
+                          'User Name',
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
                             fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green[600],
                           ),
                         ),
-                        onPressed: () {
-                          /*Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => profile_1()));*/
-                        },
                       ),*/
-                    ),
-                    /*Container(
-                      child: Text(
-                        "User Name",
-                        style: TextStyle(
-                          fontSize: 26,
-                          color: Colors.grey[500],
-                        ),
-                      ),
-                    )*/
-                  ],
-                )),
+                    ],
+                  );
+                },
+              ),
+            ),
             Container(
               margin: EdgeInsets.fromLTRB(0, 55, 0, 0),
               child: TextButton(
@@ -85,19 +124,6 @@ class drawerPage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => homePage()));
                 },
               ),
-              /*child: FlatButton(
-                textColor: Colors.grey, // 
-                child: Text(
-                  "Home", //
-                  style: TextStyle(
-                    fontSize: 18, //
-                  ),
-                ),
-                onPressed: () { //
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => homePage()));
-                },
-              ),*/
             ),
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
@@ -114,19 +140,6 @@ class drawerPage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => reservoirPage()));
                 },
               ),
-              /*child: FlatButton(
-                textColor: Colors.grey, //
-                child: Text(
-                  "Doctor's Appointment", //
-                  style: TextStyle(
-                    fontSize: 18, //
-                  ),
-                ),
-                onPressed: () { //
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => DropDown()));
-                },
-              ),*/
             ),
             /*Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
@@ -139,27 +152,10 @@ class drawerPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Home
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => greenhPage()));
                 },
               ),
-              /*child: FlatButton(
-                textColor: Colors.grey, //
-                child: Text(
-                  "Profile", //
-                  style: TextStyle(
-                    fontSize: 18, //
-                  ),
-                ),
-                onPressed: () { //
-                  // Home
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => profile_IncPage()));
-                },
-              ),*/
             ),*/
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
@@ -172,27 +168,10 @@ class drawerPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Home
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => devicePage()));
                 },
               ),
-              /*child: FlatButton(
-                textColor: Colors.grey, //
-                child: Text(
-                  "Profile", //
-                  style: TextStyle(
-                    fontSize: 18, //
-                  ),
-                ),
-                onPressed: () { //
-                  // Home
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => profile_IncPage()));
-                },
-              ),*/
             ),
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
@@ -205,7 +184,6 @@ class drawerPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Home
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => notesPage()));
                 },
@@ -228,22 +206,6 @@ class drawerPage extends StatelessWidget {
                           builder: (context) => userProfile())); //userProfile()
                 },
               ),
-              /*child: FlatButton(
-                textColor: Colors.grey, //
-                child: Text(
-                  "Settings", //
-                  style: TextStyle(
-                    fontSize: 18, //
-                  ),
-                ),
-                onPressed: () { //
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => settingsPage()
-                          // Home
-                          ));
-                },
-              ),*/
             ),
             Container(
               margin: EdgeInsets.fromLTRB(0, 23, 0, 0),
@@ -264,27 +226,9 @@ class drawerPage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => IndexScreen()));
                 },
               ),
-              /*child: RaisedButton(
-                color: Colors.redAccent,
-                padding: EdgeInsets.all(23),
-                child: Text(
-                  'Sign Out',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context)=>IndexScreen()
-                  ));
-                },
-                //color: Colors.grey,
-              ),*/
             ),
           ],
-        ),
+        ), ////// listview/firebaseanimatedlist
       ),
     );
   }
