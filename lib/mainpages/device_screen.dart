@@ -16,7 +16,13 @@ class devicePage extends StatefulWidget {
 
 final emptyWidget = Container();
 Widget airTempChecker(DataSnapshot snapshot) {
-  var airTemp = double.parse(snapshot.child('Temperature').value.toString());
+  print("New Changes 1");
+
+  //var airTemp = double.parse(snapshot.child('Temperature').value.toString());
+  var snapValue = snapshot.child('Temperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  print("Temperature: " + snapValue);
+  var airTemp = double.parse(snapValue);
+
   if (airTemp >= 35 || airTemp < 18) {
     return RichText(
       text: TextSpan(
@@ -46,7 +52,7 @@ Widget airTempChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: snapshot.child('Temperature').value.toString() + '°C\n',
+            text: snapValue + '°C\n',
             style: TextStyle(
               color: Colors.black,
               fontSize: 14,
@@ -76,7 +82,10 @@ Widget airTempChecker(DataSnapshot snapshot) {
 }
 
 Widget humidityChecker(DataSnapshot snapshot) {
-  var humidity = double.parse(snapshot.child('Humidity').value.toString());
+  var snapValue = snapshot.child('Humidity').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  print("Humidity: " + snapValue);
+  var humidity = double.parse(snapValue);
+  //var humidity = double.parse(snapshot.child('Humidity').value.toString());
   if (humidity >= 85 || humidity < 50) {
     return RichText(
       text: TextSpan(
@@ -105,7 +114,7 @@ Widget humidityChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: snapshot.child('Humidity').value.toString() + '%\n',
+            text: snapValue + '%\n',
             style: TextStyle(
               color: Colors.black,
               fontSize: 14,
@@ -135,8 +144,11 @@ Widget humidityChecker(DataSnapshot snapshot) {
 }
 
 Widget waterTempChecker(DataSnapshot snapshot) {
-  var waterTemp =
-      double.parse(snapshot.child('WaterTemperature').value.toString());
+  //var waterTemp =
+  //    double.parse(snapshot.child('WaterTemperature').value.toString());
+  var snapValue = snapshot.child('WaterTemperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  print("WaterTemperature: " + snapValue);
+  var waterTemp = double.parse(snapValue);
   if (waterTemp >= 28 || waterTemp < 20) {
     return RichText(
       text: TextSpan(
@@ -166,7 +178,7 @@ Widget waterTempChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: snapshot.child('WaterTemperature').value.toString() + '°C\n',
+            text: snapValue + '°C\n',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -197,8 +209,11 @@ Widget waterTempChecker(DataSnapshot snapshot) {
 }
 
 Widget tdsChecker(DataSnapshot snapshot) {
-  var tds =
-      double.parse(snapshot.child('TotalDissolvedSolids').value.toString());
+  //var tds =
+  //    double.parse(snapshot.child('TotalDissolvedSolids').value.toString());
+  var snapValue = snapshot.child('TotalDissolvedSolids').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  print("TotalDissolvedSolids: " + snapValue);
+  var tds = double.parse(snapValue);
   if (tds >= 1500 || tds < 400) {
     return RichText(
       text: TextSpan(
@@ -227,7 +242,7 @@ Widget tdsChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: snapshot.child('TotalDissolvedSolids').value.toString() +
+            text: snapValue +
                 'ppm\n',
             style: TextStyle(
               color: Colors.black,
@@ -258,7 +273,10 @@ Widget tdsChecker(DataSnapshot snapshot) {
 }
 
 Widget acidityChecker(DataSnapshot snapshot) {
-  var acidity = double.parse(snapshot.child('pH').value.toString());
+  //var acidity = double.parse(snapshot.child('pH').value.toString());
+  var snapValue = snapshot.child('pH').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  print("pH: " + snapValue);
+  var acidity = double.parse(snapValue);
   if (acidity >= 6.5 || acidity < 5.0) {
     return RichText(
       text: TextSpan(
@@ -287,7 +305,7 @@ Widget acidityChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: snapshot.child('pH').value.toString() + ' pH\n',
+            text: snapValue + ' pH\n',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -468,7 +486,8 @@ class device extends State<devicePage> {
                                           snapshot
                                                   .child('Temperature')
                                                   .value
-                                                  .toString() +
+                                                  .toString()
+                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
                                               ' °c',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -514,7 +533,8 @@ class device extends State<devicePage> {
                                           snapshot
                                                   .child('Humidity')
                                                   .value
-                                                  .toString() +
+                                                  .toString()
+                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
                                               ' %',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -564,7 +584,8 @@ class device extends State<devicePage> {
                                           snapshot
                                                   .child('WaterTemperature')
                                                   .value
-                                                  .toString() +
+                                                  .toString()
+                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
                                               ' °c',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -610,7 +631,8 @@ class device extends State<devicePage> {
                                           snapshot
                                                   .child('TotalDissolvedSolids')
                                                   .value
-                                                  .toString() +
+                                                  .toString()
+                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
                                               ' PPM',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -660,7 +682,8 @@ class device extends State<devicePage> {
                                           snapshot
                                                   .child('pH')
                                                   .value
-                                                  .toString() +
+                                                  .toString()
+                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
                                               ' pH',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -673,43 +696,6 @@ class device extends State<devicePage> {
                               ),
                             ],
                           ),
-                          /*Container(
-                            child: GestureDetector(
-                              child: Icon(
-                                Icons.warning_sharp,
-                                color: iconColor(snapshot),
-                                size: 40,
-                              ),
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            airTempChecker(snapshot),
-                                            humidityChecker(snapshot),
-                                            waterTempChecker(snapshot),
-                                            tdsChecker(snapshot),
-                                            acidityChecker(snapshot),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          child: Text("OK"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          ),*/
                         ],
                       ),
                     ),
