@@ -6,6 +6,7 @@ import 'package:digihydro/create/create_note.dart';
 import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:digihydro/create/update_note.dart';
 
 class notesPage extends StatefulWidget {
   @override
@@ -190,7 +191,7 @@ class displayNote extends State<notesPage> {
                               Row(
                                 children: [Text(' ')],
                               ),
-                              Row(
+                              Column(
                                 children: [
                                   Text(
                                       snapshot
@@ -215,8 +216,48 @@ class displayNote extends State<notesPage> {
                                   )
                                 ],
                               ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color:Colors.red[700],
+                                        ),
+                                        onPressed: () {
+                                          ref.child(snapshot.key!).remove();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 1,
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: Colors.blueAccent,
+                                        ),
+                                        onPressed: () {
+                                         /*Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => UpdateNote(noteId: noteId, title: title, userDate: userDate, note: note, imageUrl: imageUrl)));*/
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
+
                         ),
                       ],
                     );
