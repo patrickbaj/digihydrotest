@@ -11,59 +11,43 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 
-class UpdateNote extends StatefulWidget {
-  final String noteId;
-  final String title;
-  final String userDate;
-  final String note;
-  final String imageUrl;
+class updateNote extends StatefulWidget {
+  const updateNote({Key? key, required this.noteKey}) :super(key: key);
 
-  UpdateNote({
-    required this.noteId,
-    required this.title,
-    required this.userDate,
-    required this.note,
-    required this.imageUrl,
-  });
+  final String noteKey;
 
   @override
-  _UpdateNoteState createState() => _UpdateNoteState();
+  _updateNote createState() => _updateNote();
 }
 
-class _UpdateNoteState extends State<UpdateNote> {
+class _updateNote extends State<updateNote> {
   TextEditingController title = TextEditingController();
   TextEditingController userDate = TextEditingController();
   TextEditingController userNote = TextEditingController();
 
-  String imageUrl = '';
+ 
 
-  File? _imageFile;
-
-  Future<void> _pickImage() async {
-    ImagePicker imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
-  }
-
-  final fb = FirebaseDatabase.instance;
-
-  @override
-  void initState() {
+  late DatabaseReference fb;
+  void initState(){
     super.initState();
-    title.text = widget.title;
-    userDate.text = widget.userDate;
-    userNote.text = widget.note;
-    imageUrl = widget.imageUrl;
+    fb = FirebaseDatabase.instance.ref().child('Notes');
   }
 
+  void getNotesData() async{
+    DataSnapshot snapshot = await fb.child(widget.noteKey).get();  
+    Map note = snapshot.value as Map;
+
+    title.text = note['title'];
+    userDate.text = note['date'];
+    userNote.text = note['userNote'];
+    }
   @override
   Widget build(BuildContext context) {
+    var rng = Random();
+    var num = rng.nextInt(10000);
+
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    final ref = fb.ref().child('Notes/${widget.noteId}');
+    
     final currentUser = _auth.currentUser;
 
     return Scaffold(
@@ -71,7 +55,7 @@ class _UpdateNoteState extends State<UpdateNote> {
       appBar: AppBar(
         title: Container(
           child: Text(
-            "Update Note",
+            "Create Note",
             style: TextStyle(
               color: Colors.white,
             ),
@@ -99,7 +83,7 @@ class _UpdateNoteState extends State<UpdateNote> {
                   Container(
                     margin: EdgeInsets.only(left: 20, top: 10),
                     child: Text(
-                      "New Notes",
+                      "Add Notes",
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
@@ -129,106 +113,89 @@ class _UpdateNoteState extends State<UpdateNote> {
                     icon: Icon(Icons.calendar_today_rounded),
                     labelText: 'Date Today:',
                     border: OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.all(10.0),
                   ),
-                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(3000),
+                    );
+
+                    if (pickedDate != null) {
+                      setState(() {
+                        userDate.text =
+                            DateFormat('MM-dd-yyyy').format(pickedDate);
+                      });
+                    }
+                  },
+                ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: TextField(
                   controller: userNote,
-                  maxLines: null,
                   keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                    hintText: 'Note:',
+                  maxLines: 10,
+                  style: TextStyle(
+                    decoration: TextDecoration.none,
+                    fontSize: 15,
+                  ),
+                  decoration: new InputDecoration(
+                    hintText: "Write your note...",
                     border: OutlineInputBorder(),
-                    isDense: true,
-                    contentPadding: const EdgeInsets.all(10.0),
                   ),
                 ),
               ),
+              
+          
               Container(
-                margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Attach an image (Optional)',
-                      style: TextStyle(
+                  margin: EdgeInsets.fromLTRB(200, 25, 30, 0),
+                  child: ElevatedButton(
+                    child: Text('UPDATE'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                      textStyle: TextStyle(
                         fontSize: 16,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.camera_alt_outlined,
-                        color: Colors.grey[600],
-                      ),
-                      onPressed: () {
-                        _pickImage();
-                      },
+                    onPressed: () async {
+                      
+                     Map<String, String> note ={
+                      'title': title.text,
+                      'date': userDate.text,
+                      'userNote': userNote.text,
+                     };
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => notesPage()));
+                    },
+                  )
+                  /*child: RaisedButton(
+                  padding: EdgeInsets.fromLTRB(25, 10, 25, 10), //
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)), //
+                  color: Colors.redAccent, //
+                  child: Text(
+                    "POST", //
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: _imageFile != null
-                    ? Image.file(
-                        _imageFile!,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      )
-                    : imageUrl != ''
-                        ? Image.network(
-                            imageUrl,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-                child: ElevatedButton(
-                  child: Text('Update'),
-                  onPressed: () async {
-                    try {
-                      if (title.text != '' && userDate.text != '' && userNote.text != '') {
-                        await ref.update({
-                          'title': title.text,
-                          'date': userDate.text,
-                          'note': userNote.text,
-                        });
-                        if (_imageFile != null) {
-                          final firebaseStorageRef = FirebaseStorage.instance
-                              .ref()
-                              .child('notes_images')
-                              .child(widget.noteId);
-                          await firebaseStorageRef.putFile(_imageFile!);
-                          imageUrl = await firebaseStorageRef.getDownloadURL();
-                          await ref.update({
-                            'imageUrl': imageUrl,
-                          });
-                        }
-                        Navigator.pop(context, false);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Please fill all fields!'),
-                          backgroundColor: Colors.red,
-                        ));
-                      }
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Failed to update note. Please try again later.'),
-                        backgroundColor: Colors.red,
-                      ));
-                      print(e);
-                    }
-                  },
-                ),
-              ),
+                  ),
+                  onPressed: () {},
+                ),*/
+                  )
             ],
           ),
+          //decoration: BoxDecoration(border: Border.all(color: Colors.black)),
         ),
       ),
     );

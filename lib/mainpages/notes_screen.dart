@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -7,6 +8,9 @@ import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:digihydro/create/update_note.dart';
+import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class notesPage extends StatefulWidget {
   @override
@@ -18,6 +22,26 @@ class displayNote extends State<notesPage> {
   late String currentUserID;
   late String imageUrl;
   final ref = FirebaseDatabase.instance.ref('Notes');
+  var k;
+
+  TextEditingController title = TextEditingController();
+  TextEditingController userDate = TextEditingController();
+  TextEditingController userNote = TextEditingController();
+
+  String imageUrl2 = '';
+
+  File? _imageFile;
+
+  Future<void> _pickImage() async {
+    ImagePicker imagePicker = ImagePicker();
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        imageUrl2 = '';
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -28,6 +52,21 @@ class displayNote extends State<notesPage> {
     }
   }
 
+  upd() async {
+    DatabaseReference ref1 = FirebaseDatabase.instance.ref("Notes/$k");
+
+// Only update the name, leave the age and address!
+    await ref1.update({
+      "title": title.text,
+      "date": userDate.text,
+      "userNote": userNote.text,
+      "imageUrl": imageUrl2,
+    });
+    title.clear();
+    userDate.clear();
+    userNote.clear();
+    imageUrl2 = '';
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,6 +182,8 @@ class displayNote extends State<notesPage> {
                       Animation<double> animation, int index) {
                     String imageUrl =
                         snapshot.child('imageUrl').value.toString();
+                    Map note = snapshot.value as Map;
+                    note['key'] = snapshot.key;
                     return Wrap(
                       children: [
                         Container(
@@ -226,7 +267,7 @@ class displayNote extends State<notesPage> {
                                       IconButton(
                                         icon: Icon(
                                           Icons.delete,
-                                          color:Colors.red[700],
+                                          color: Theme.of(context).primaryColor,
                                         ),
                                         onPressed: () {
                                           ref.child(snapshot.key!).remove();
@@ -239,17 +280,123 @@ class displayNote extends State<notesPage> {
                                   ),
                                   Row(
                                     children: [
-                                      IconButton(
-                                        icon: Icon(
+                                      GestureDetector(
+                                        child: 
+                                        Icon(
                                           Icons.edit,
-                                          color: Colors.blueAccent,
+                                          color: Theme.of(context).primaryColor,
                                         ),
-                                        onPressed: () {
-                                         /*Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => UpdateNote(noteId: noteId, title: title, userDate: userDate, note: note, imageUrl: imageUrl)));*/
+                                        onTap: (){
+                                          setState(() {
+                                             k = snapshot.key;
+                                          });
+                                          showDialog(
+                                            context: context, 
+                                            builder: (BuildContext context){
+                                              return AlertDialog(
+                                                content: SingleChildScrollView(
+                                                  child: Column(
+                                                    children: [
+                                                      TextField(
+                                                        controller: title,
+                                                        decoration: InputDecoration(
+                                                          hintText: 'Title:',
+                                                          border: OutlineInputBorder(),
+                                                          isDense: true,
+                                                          contentPadding: const EdgeInsets.all(10.0),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 5,),
+                                                      TextField(
+                                                        controller: userDate,
+                                                        decoration: InputDecoration(
+                                                          icon: Icon(Icons.calendar_today_rounded),
+                                                          labelText: 'Date Today:',
+                                                          border: OutlineInputBorder(),
+                                                          isDense: true,
+                                                          contentPadding: const EdgeInsets.all(10.0),
+                                                        ),
+                                                        onTap: () async {
+                                                          DateTime? pickedDate = await showDatePicker(
+                                                            context: context,
+                                                            initialDate: DateTime.now(),
+                                                            firstDate: DateTime(1900),
+                                                            lastDate: DateTime(3000),
+                                                          );
+
+                                                          if (pickedDate != null) {
+                                                            setState(() {
+                                                              userDate.text =
+                                                                  DateFormat('MM-dd-yyyy').format(pickedDate);
+                                                            });
+                                                          }
+                                                        },
+                                                      ),
+                                                      SizedBox(height: 5,),
+                                                      TextField(
+                                                        controller: userNote,
+                                                        keyboardType: TextInputType.multiline,
+                                                        maxLines: 10,
+                                                        style: TextStyle(
+                                                          decoration: TextDecoration.none,
+                                                          fontSize: 15,
+                                                        ),
+                                                        decoration: new InputDecoration(
+                                                          hintText: "Write your note...",
+                                                          border: OutlineInputBorder(),
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 5,),
+                                                      Column(
+                                                        children: [
+                                                          Container(
+                                                            child: Row(
+                                                              children: [
+                                                                IconButton(
+                                                                  onPressed: _pickImage,
+                                                                  icon: Icon(Icons.add_a_photo_outlined),
+                                                                  iconSize: 40,
+                                                                  color: Colors.black.withOpacity(0.15),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    child: Text("Cancel"),
+                                                    onPressed: (){
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: Text("Update"),
+                                                    onPressed: () async{
+                                                      if (_imageFile != null) {
+                                                        String id =
+                                                            DateTime.now().millisecondsSinceEpoch.toString();
+                                                          final imageRoot = FirebaseStorage.instance.ref();
+                                                          final imageRef = imageRoot.child('Images');
+                                                          final imageUpload = imageRef.child(id);
+                                                          try {
+                                                            await imageUpload.putFile(_imageFile!);
+                                                            imageUrl2 = await imageUpload.getDownloadURL();
+                                                          } catch (error) {}
+                                                        }
+                                                      await upd();
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
                                         },
+                                      
                                       ),
                                     ],
                                   ),
