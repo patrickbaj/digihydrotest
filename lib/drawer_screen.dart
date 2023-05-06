@@ -4,6 +4,7 @@ import 'package:digihydro/settings/settings_screen.dart';
 import 'package:digihydro/mainpages/reservoir_screen.dart';
 import 'package:digihydro/mainpages/notes_screen.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
+import 'package:digihydro/mainpages/device_screen.dart';
 import 'package:digihydro/mainpages/greenhouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'index_screen.dart';
@@ -112,7 +113,7 @@ class drawer extends State<drawerPage> {
             Container(
               margin: EdgeInsets.fromLTRB(0, 55, 0, 0),
               child: TextButton(
-                child: Text('Plants'),
+                child: Text('Home'),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,
@@ -128,7 +129,7 @@ class drawer extends State<drawerPage> {
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
-                child: Text("Reservoir"),
+                child: Text('Plants'),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,
@@ -137,7 +138,7 @@ class drawer extends State<drawerPage> {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => reservoirPage()));
+                      MaterialPageRoute(builder: (context) => plantPage()));
                 },
               ),
             ),
@@ -160,7 +161,7 @@ class drawer extends State<drawerPage> {
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
-                child: Text('Devices'),
+                child: Text("Reservoir"),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,
@@ -169,7 +170,7 @@ class drawer extends State<drawerPage> {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => devicePage()));
+                      MaterialPageRoute(builder: (context) => reservoirPage()));
                 },
               ),
             ),

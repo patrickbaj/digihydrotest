@@ -1,7 +1,6 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:digihydro/mainpages/plants_screen.dart';
+import 'package:digihydro/mainpages/device_screen.dart';
 import 'package:digihydro/index_screen.dart';
 
 class AuthPage extends StatelessWidget {

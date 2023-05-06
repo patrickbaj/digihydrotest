@@ -11,19 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class homePage extends StatefulWidget {
+class plantPage extends StatefulWidget {
   @override
-  home createState() => home();
+  plant createState() => plant();
 }
 
-class home extends State<homePage> {
+class plant extends State<plantPage> {
   final auth = FirebaseAuth.instance;
   late String currentUserID;
   final ref = FirebaseDatabase.instance.ref('Plants');
 
   @override
   void initState() {
-    init();
+    //init();
     super.initState();
     final currentUser = auth.currentUser;
     if (currentUser != null) {
@@ -31,6 +31,7 @@ class home extends State<homePage> {
     }
   }
 
+  /*
   init() async {
     String deviceToken = await getDeviceToken();
     print("%%%%%%%%%%%%%% DEVICE TOKEN %%%%%%%%%%%%%%%%");
@@ -61,6 +62,13 @@ class home extends State<homePage> {
       ).show();
     });
   }
+
+  //for notifs
+  Future getDeviceToken() async {
+    FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
+    String? deviceToken = await _firebaseMessage.getToken();
+    return (deviceToken == null) ? "" : deviceToken;
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -329,12 +337,5 @@ class home extends State<homePage> {
         ],
       ),
     );
-  }
-
-  //for notifs
-  Future getDeviceToken() async {
-    FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
-    String? deviceToken = await _firebaseMessage.getToken();
-    return (deviceToken == null) ? "" : deviceToken;
   }
 }

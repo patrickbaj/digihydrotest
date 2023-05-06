@@ -252,13 +252,12 @@ class addPlant extends State<DropDown1> {
 
                     if (pickedDate != null) {
                       setState(() {
-                        date.text =
-                            DateFormat('MM/dd/yyyy').format(pickedDate);
+                        date.text = DateFormat('MM/dd/yyyy').format(pickedDate);
                       });
                     }
                   },
                 ),
-              ), 
+              ),
 
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
@@ -418,7 +417,7 @@ class addPlant extends State<DropDown1> {
                       "userId": currentUser?.uid,
                     }).asStream();
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => homePage()));
+                        MaterialPageRoute(builder: (context) => plantPage()));
                   },
                 ),
               )

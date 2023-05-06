@@ -7,9 +7,11 @@ import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class devicePage extends StatefulWidget {
+class homePage extends StatefulWidget {
   @override
   device createState() => device();
 }
@@ -19,7 +21,11 @@ Widget airTempChecker(DataSnapshot snapshot) {
   print("New Changes 1");
 
   //var airTemp = double.parse(snapshot.child('Temperature').value.toString());
-  var snapValue = snapshot.child('Temperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  var snapValue = snapshot
+      .child('Temperature')
+      .value
+      .toString()
+      .replaceAll(RegExp(r'[^\d\.]'), '');
   print("Temperature: " + snapValue);
   var airTemp = double.parse(snapValue);
 
@@ -82,7 +88,11 @@ Widget airTempChecker(DataSnapshot snapshot) {
 }
 
 Widget humidityChecker(DataSnapshot snapshot) {
-  var snapValue = snapshot.child('Humidity').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  var snapValue = snapshot
+      .child('Humidity')
+      .value
+      .toString()
+      .replaceAll(RegExp(r'[^\d\.]'), '');
   print("Humidity: " + snapValue);
   var humidity = double.parse(snapValue);
   //var humidity = double.parse(snapshot.child('Humidity').value.toString());
@@ -146,7 +156,11 @@ Widget humidityChecker(DataSnapshot snapshot) {
 Widget waterTempChecker(DataSnapshot snapshot) {
   //var waterTemp =
   //    double.parse(snapshot.child('WaterTemperature').value.toString());
-  var snapValue = snapshot.child('WaterTemperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  var snapValue = snapshot
+      .child('WaterTemperature')
+      .value
+      .toString()
+      .replaceAll(RegExp(r'[^\d\.]'), '');
   print("WaterTemperature: " + snapValue);
   var waterTemp = double.parse(snapValue);
   if (waterTemp >= 28 || waterTemp < 20) {
@@ -211,7 +225,11 @@ Widget waterTempChecker(DataSnapshot snapshot) {
 Widget tdsChecker(DataSnapshot snapshot) {
   //var tds =
   //    double.parse(snapshot.child('TotalDissolvedSolids').value.toString());
-  var snapValue = snapshot.child('TotalDissolvedSolids').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  var snapValue = snapshot
+      .child('TotalDissolvedSolids')
+      .value
+      .toString()
+      .replaceAll(RegExp(r'[^\d\.]'), '');
   print("TotalDissolvedSolids: " + snapValue);
   var tds = double.parse(snapValue);
   if (tds >= 1500 || tds < 400) {
@@ -242,8 +260,7 @@ Widget tdsChecker(DataSnapshot snapshot) {
             ),
           ),
           TextSpan(
-            text: snapValue +
-                'ppm\n',
+            text: snapValue + 'ppm\n',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -274,7 +291,8 @@ Widget tdsChecker(DataSnapshot snapshot) {
 
 Widget acidityChecker(DataSnapshot snapshot) {
   //var acidity = double.parse(snapshot.child('pH').value.toString());
-  var snapValue = snapshot.child('pH').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
+  var snapValue =
+      snapshot.child('pH').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
   print("pH: " + snapValue);
   var acidity = double.parse(snapValue);
   if (acidity >= 6.5 || acidity < 5.0) {
@@ -346,10 +364,59 @@ Color iconColor(DataSnapshot snapshot) {
   }
 }
 
-class device extends State<devicePage> {
+class device extends State<homePage> {
   @override
   final auth = FirebaseAuth.instance;
+  late String currentUserID;
   final ref = FirebaseDatabase.instance.ref('Devices');
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+    final currentUser = auth.currentUser;
+    if (currentUser != null) {
+      currentUserID = currentUser.uid;
+    }
+  }
+
+  init() async {
+    String deviceToken = await getDeviceToken();
+    print("%%%%%%%%%%%%%% DEVICE TOKEN %%%%%%%%%%%%%%%%");
+    print(deviceToken);
+    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+    //notif on click
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage remoteMessage) {
+      String? title = remoteMessage.notification!.title;
+      String? desc = remoteMessage.notification!.body;
+
+      //for in app
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: title,
+        desc: desc,
+        buttons: [
+          DialogButton(
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+            width: 120,
+          )
+        ],
+      ).show();
+    });
+  }
+
+  //for notifs
+  Future getDeviceToken() async {
+    FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
+    String? deviceToken = await _firebaseMessage.getToken();
+    return (deviceToken == null) ? "" : deviceToken;
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -487,7 +554,8 @@ class device extends State<devicePage> {
                                                   .child('Temperature')
                                                   .value
                                                   .toString()
-                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
+                                                  .replaceAll(
+                                                      RegExp(r'[^\d\.]'), '') +
                                               ' °c',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -534,7 +602,8 @@ class device extends State<devicePage> {
                                                   .child('Humidity')
                                                   .value
                                                   .toString()
-                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
+                                                  .replaceAll(
+                                                      RegExp(r'[^\d\.]'), '') +
                                               ' %',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -585,7 +654,8 @@ class device extends State<devicePage> {
                                                   .child('WaterTemperature')
                                                   .value
                                                   .toString()
-                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
+                                                  .replaceAll(
+                                                      RegExp(r'[^\d\.]'), '') +
                                               ' °c',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -632,7 +702,8 @@ class device extends State<devicePage> {
                                                   .child('TotalDissolvedSolids')
                                                   .value
                                                   .toString()
-                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
+                                                  .replaceAll(
+                                                      RegExp(r'[^\d\.]'), '') +
                                               ' PPM',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -683,7 +754,8 @@ class device extends State<devicePage> {
                                                   .child('pH')
                                                   .value
                                                   .toString()
-                                                  .replaceAll(RegExp(r'[^\d\.]'), '')+
+                                                  .replaceAll(
+                                                      RegExp(r'[^\d\.]'), '') +
                                               ' pH',
                                           style: TextStyle(
                                             fontSize: 16,
@@ -707,5 +779,5 @@ class device extends State<devicePage> {
         ],
       ),
     );
-  }
+  } //
 }

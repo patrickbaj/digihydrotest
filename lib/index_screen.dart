@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:digihydro/login/signup_screen.dart';
 import 'package:digihydro/login/forgot_pass1.dart';
-import 'package:digihydro/mainpages/plants_screen.dart';
+import 'package:digihydro/mainpages/device_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class IndexScreen extends StatefulWidget{
+class IndexScreen extends StatefulWidget {
   @override
   index createState() => index();
 }
@@ -32,7 +32,7 @@ class index extends State<IndexScreen> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     userEmail.dispose();
     userPass.dispose();
     super.dispose();
@@ -93,25 +93,16 @@ class index extends State<IndexScreen> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => forgotPass()));
                   }, // forgot password
-                  //child: Text('Forgot Password?',
-                  //style: TextStyle(color: Colors.grey))
                 ),
-                /* TextButton(
-                  padding: EdgeInsets.fromLTRB(160, 0, 0, 30),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => forgotPass()));
-                  }, // forgot password
-                  textColor: Colors.grey,
-                  child: Text('Forgot Password?'),
-                ),*/
-
                 Container(
-                  height: 50,
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  height: 40,
+                  margin: EdgeInsets.fromLTRB(60, 0, 200, 0),
                   child: ElevatedButton(
                     // ignore: sort_child_properties_last
-                    child: const Text('Login', textAlign: TextAlign.center,),
+                    child: const Text(
+                      'Login',
+                      textAlign: TextAlign.center,
+                    ),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
@@ -122,10 +113,9 @@ class index extends State<IndexScreen> {
                     onPressed: () {
                       /*Navigator.push(context,
                           MaterialPageRoute(builder: (context) => homePage()));*/
-                          signIn();
+                      signIn();
                     },
                   ),
-                  
                 ),
                 Container(
                   height: 140,
