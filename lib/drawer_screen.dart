@@ -14,6 +14,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'mainpages/device_screen.dart';
+import 'mainpages/dashboard.dart';
 
 class drawerPage extends StatefulWidget {
   @override
@@ -130,7 +131,7 @@ class drawer extends State<drawerPage> {
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
-                child: Text('OLD Device Screen'),
+                child: Text("Dashboard Test"),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,
@@ -139,7 +140,7 @@ class drawer extends State<drawerPage> {
                 ),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => oldPage()));
+                      MaterialPageRoute(builder: (context) => dashBoard()));
                 },
               ),
             ),
