@@ -141,7 +141,7 @@ class plant extends State<plantPage> {
                 return Wrap(
                   children: [
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.white,
