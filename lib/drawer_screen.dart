@@ -5,6 +5,7 @@ import 'package:digihydro/mainpages/reservoir_screen.dart';
 import 'package:digihydro/mainpages/notes_screen.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:digihydro/mainpages/device_screen.dart';
+import 'package:digihydro/mainpages/old_device_screen.dart';
 import 'package:digihydro/mainpages/greenhouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'index_screen.dart';
@@ -123,6 +124,22 @@ class drawer extends State<drawerPage> {
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => homePage()));
+                },
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
+              child: TextButton(
+                child: Text('OLD Device Screen'),
+                style: TextButton.styleFrom(
+                  textStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 18,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => oldPage()));
                 },
               ),
             ),
