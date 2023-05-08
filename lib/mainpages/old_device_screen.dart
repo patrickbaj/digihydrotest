@@ -11,9 +11,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class homePage extends StatefulWidget {
+class oldPage extends StatefulWidget {
   @override
-  device createState() => device();
+  olddevice createState() => olddevice();
 }
 
 final emptyWidget = Container();
@@ -364,7 +364,7 @@ Color iconColor(DataSnapshot snapshot) {
   }
 }
 
-class device extends State<homePage> {
+class olddevice extends State<oldPage> {
   @override
   final auth = FirebaseAuth.instance;
   late String currentUserID;
@@ -463,7 +463,7 @@ class device extends State<homePage> {
                           Container(
                             margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
                             child: Text(
-                              'Devices',
+                              'OLD Device Screen',
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontSize: 26,
@@ -473,7 +473,7 @@ class device extends State<homePage> {
                             ),
                           ),
                           Container(
-                            margin: const EdgeInsets.fromLTRB(100, 15, 5, 10),
+                            margin: const EdgeInsets.fromLTRB(30, 15, 5, 10),
                             child: GestureDetector(
                               child: Icon(
                                 Icons.warning_sharp,
@@ -512,61 +512,6 @@ class device extends State<homePage> {
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      child: Column(children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            //mainAxisAlignment: MainAxisAlignment.center,
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text('Realtime Stats',
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Text('Air Temp\n',
-                                          textAlign: TextAlign.start),
-                                      Text('Humidity\n',
-                                          textAlign: TextAlign.left),
-                                      Text('Water Temp\n',
-                                          textAlign: TextAlign.end),
-                                      Text('TDS\n', textAlign: TextAlign.start),
-                                      Text('pH Level\n',
-                                          textAlign: TextAlign.left),
-                                    ],
-                                  ), //for captions
-                                  Column(), //for data
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ]),
                     ),
                     Container(
                       child: Column(

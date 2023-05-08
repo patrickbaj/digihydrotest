@@ -5,6 +5,7 @@ import 'package:digihydro/mainpages/reservoir_screen.dart';
 import 'package:digihydro/mainpages/notes_screen.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:digihydro/mainpages/device_screen.dart';
+import 'package:digihydro/mainpages/old_device_screen.dart';
 import 'package:digihydro/mainpages/greenhouse_screen.dart';
 import 'package:flutter/material.dart';
 import 'index_screen.dart';
