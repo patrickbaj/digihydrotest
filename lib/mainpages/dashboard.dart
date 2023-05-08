@@ -75,7 +75,7 @@ class welcomeScreen extends State<dashBoard> {
             ),
             child: 
               Container(
-                height: 200,
+                height: 210,
                 child: 
                   FirebaseAnimatedList(
                     query: refDevice,
