@@ -229,6 +229,7 @@ class displayNote extends State<notesPage> {
                                   ),
                                 ],
                               ),
+                              Divider(),
                               Row(
                                 children: [Text(' ')],
                               ),

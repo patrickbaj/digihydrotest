@@ -75,98 +75,157 @@ class welcomeScreen extends State<dashBoard> {
             ),
             child: 
               Container(
-                height: 139,
+                height: 200,
                 child: 
                   FirebaseAnimatedList(
                     query: refDevice,
                     itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index) {
-                      return Wrap(
+                      return 
+                      Wrap(
                         children: [
-                          IntrinsicHeight(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(8.0, 10, 8.0, 8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Air Temp',
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.thermostat),
+                                          Text('Air Temp',
+                                            style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(snapshot.child('Temperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' °c',
+                                        textAlign: TextAlign.right,
                                         style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
-                                        ),
+                                        )
                                       ),
-                                      Text('Humidity',
-                                        style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        ),
-                                      ),
-                                      Text('Water Temp',
-                                        style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        ),
-                                      ),
-                                      Text('TDS',
-                                        style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        ),
-                                      ),
-                                      Text('Water Acidity',
-                                        style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(8.0, 10, 8.0, 8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(snapshot.child('Temperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' °c',
+                                Divider(color: Colors.grey, thickness: 1, indent: 25),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Image.asset('images/humidity_percentage_FILL0_wght400_GRAD0_opsz48.png', height: 24, width: 24,),
+                                          Text('Humidity',
+                                            style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(snapshot.child('Humidity').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' %',
+                                        textAlign: TextAlign.right,
                                         style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                         )
                                       ),
-                                      Text(snapshot.child('Humidity').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' %',
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: Colors.grey, thickness: 1, indent: 25,),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: 
+                                      Row(
+                                        children: [
+                                          Image.asset('images/dew_point_FILL0_wght400_GRAD0_opsz48.png', height: 24, width: 24,),
+                                          Text('Water Temp',
+                                            style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(snapshot.child('WaterTemperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' °c',
+                                        textAlign: TextAlign.right,
                                         style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                         )
                                       ),
-                                      Text(snapshot.child('WaterTemperature').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' °c',
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: Colors.grey, thickness: 1, indent: 25),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Image.asset('images/total_dissolved_solids_FILL0_wght400_GRAD0_opsz48.png', height: 24, width: 24,),
+                                          Text('TDS',
+                                            style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(snapshot.child('TotalDissolvedSolids').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' PPM',
+                                        textAlign: TextAlign.right,
                                         style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                         )
                                       ),
-                                      Text(snapshot.child('TotalDissolvedSolids').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' PPM',
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: Colors.grey, thickness: 1, indent: 25),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Image.asset('images/water_ph_FILL0_wght400_GRAD0_opsz48.png', height: 24, width: 24,),
+                                          Text('Water Acidity',
+                                            style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(snapshot.child('pH').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' pH',
+                                        textAlign: TextAlign.right,
                                         style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                         )
                                       ),
-                                      Text(snapshot.child('pH').value.toString().replaceAll(RegExp(r'[^\d\.]'), '') +' pH',
-                                        style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                        )
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
