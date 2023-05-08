@@ -115,23 +115,7 @@ class drawer extends State<drawerPage> {
             Container(
               margin: EdgeInsets.fromLTRB(0, 55, 0, 0),
               child: TextButton(
-                child: Text('Home'),
-                style: TextButton.styleFrom(
-                  textStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 18,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => homePage()));
-                },
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
-              child: TextButton(
-                child: Text("Dashboard Test"),
+                child: Text("Dashboard"),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,
@@ -141,6 +125,22 @@ class drawer extends State<drawerPage> {
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => dashBoard()));
+                },
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
+              child: TextButton(
+                child: Text('OLD Device Screen'),
+                style: TextButton.styleFrom(
+                  textStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 18,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => homePage()));
                 },
               ),
             ),

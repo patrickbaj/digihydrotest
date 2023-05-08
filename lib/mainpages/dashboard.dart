@@ -1,6 +1,7 @@
 import 'package:digihydro/mainpages/notes_screen.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:digihydro/mainpages/reservoir_screen.dart';
+import 'package:digihydro/mainpages/device_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -35,21 +36,37 @@ class welcomeScreen extends State<dashBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
-      drawer: drawerPage(),
+      //drawer: drawerPage(),
       appBar: AppBar(
         backgroundColor: Colors.green,
-        iconTheme: const IconThemeData(
+        automaticallyImplyLeading: false,
+        /*iconTheme: const IconThemeData(
           color: Colors.white,
           size: 40.00,
+        ),*/
+        title: Row(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 5, 15, 0),
+              child: Align(
+                child: Image.asset(
+                  'images/logo_white.png',
+                  scale: 8,
+                ),
+              ),
+            ),
+          ],
         ),
         actions: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(0, 5, 15, 0),
-            child: Align(
-              child: Image.asset(
-                'images/logo_white.png',
-                scale: 8,
+            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+            child: IconButton(
+              icon: const Icon(
+                Icons.warning_sharp,
+                color: Colors.amber, //iconColor(snapshot),
+                size: 40,
               ),
+              onPressed: () {},
             ),
           ),
         ],
@@ -91,10 +108,10 @@ class welcomeScreen extends State<dashBoard> {
                                     children: [
                                       Icon(Icons.thermostat),
                                       Text(
-                                        'Air Temp',
+                                        ' Air Temp',
                                         style: TextStyle(
                                           fontSize: 20,
-                                          color: Colors.grey,
+                                          color: Color(0xFF4f4f4f),
                                         ),
                                       ),
                                     ],
@@ -108,7 +125,7 @@ class welcomeScreen extends State<dashBoard> {
                                               .toString()
                                               .replaceAll(
                                                   RegExp(r'[^\d\.]'), '') +
-                                          ' °c',
+                                          ' °C',
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                         fontSize: 20,
@@ -131,10 +148,10 @@ class welcomeScreen extends State<dashBoard> {
                                         width: 24,
                                       ),
                                       Text(
-                                        'Humidity',
+                                        ' Humidity',
                                         style: TextStyle(
                                           fontSize: 20,
-                                          color: Colors.grey,
+                                          color: Color(0xFF4f4f4f),
                                         ),
                                       ),
                                     ],
@@ -174,10 +191,10 @@ class welcomeScreen extends State<dashBoard> {
                                         width: 24,
                                       ),
                                       Text(
-                                        'Water Temp',
+                                        ' Water Temp',
                                         style: TextStyle(
                                           fontSize: 20,
-                                          color: Colors.grey,
+                                          color: Color(0xFF4f4f4f),
                                         ),
                                       ),
                                     ],
@@ -191,7 +208,7 @@ class welcomeScreen extends State<dashBoard> {
                                               .toString()
                                               .replaceAll(
                                                   RegExp(r'[^\d\.]'), '') +
-                                          ' °c',
+                                          ' °C',
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
                                         fontSize: 20,
@@ -214,10 +231,10 @@ class welcomeScreen extends State<dashBoard> {
                                         width: 24,
                                       ),
                                       Text(
-                                        'TDS',
+                                        ' TDS',
                                         style: TextStyle(
                                           fontSize: 20,
-                                          color: Colors.grey,
+                                          color: Color(0xFF4f4f4f),
                                         ),
                                       ),
                                     ],
@@ -254,10 +271,10 @@ class welcomeScreen extends State<dashBoard> {
                                         width: 24,
                                       ),
                                       Text(
-                                        'Water Acidity',
+                                        ' Water Acidity',
                                         style: TextStyle(
                                           fontSize: 20,
-                                          color: Colors.grey,
+                                          color: Color(0xFF4f4f4f),
                                         ),
                                       ),
                                     ],
