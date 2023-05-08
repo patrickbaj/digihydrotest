@@ -54,7 +54,7 @@ class welcomeScreen extends State<dashBoard> {
           ),
         ],
       ),
-      body: Column(
+      body: ListView(
         children: [
 /*DEVICE CONTAINER */
 
@@ -73,72 +73,35 @@ class welcomeScreen extends State<dashBoard> {
               ],
             ),
             child: Container(
-              height: 139,
+              height: 210,
               child: FirebaseAnimatedList(
                 query: refDevice,
                 itemBuilder: (BuildContext context, DataSnapshot snapshot,
                     Animation<double> animation, int index) {
                   return Wrap(
                     children: [
-                      IntrinsicHeight(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(8.0, 10, 8.0, 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Air Temp',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.thermostat),
+                                      Text(
+                                        'Air Temp',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'Humidity',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Water Temp',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    'TDS',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Water Acidity',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(8.0, 10, 8.0, 8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
+                                ),
+                                Expanded(
+                                  child: Text(
                                       snapshot
                                               .child('Temperature')
                                               .value
@@ -146,11 +109,39 @@ class welcomeScreen extends State<dashBoard> {
                                               .replaceAll(
                                                   RegExp(r'[^\d\.]'), '') +
                                           ' °c',
+                                      textAlign: TextAlign.right,
                                       style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       )),
-                                  Text(
+                                ),
+                              ],
+                            ),
+                            Divider(
+                                color: Colors.grey, thickness: 1, indent: 25),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'images/humidity_percentage_FILL0_wght400_GRAD0_opsz48.png',
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      Text(
+                                        'Humidity',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
                                       snapshot
                                               .child('Humidity')
                                               .value
@@ -158,11 +149,42 @@ class welcomeScreen extends State<dashBoard> {
                                               .replaceAll(
                                                   RegExp(r'[^\d\.]'), '') +
                                           ' %',
+                                      textAlign: TextAlign.right,
                                       style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       )),
-                                  Text(
+                                ),
+                              ],
+                            ),
+                            Divider(
+                              color: Colors.grey,
+                              thickness: 1,
+                              indent: 25,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'images/dew_point_FILL0_wght400_GRAD0_opsz48.png',
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      Text(
+                                        'Water Temp',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
                                       snapshot
                                               .child('WaterTemperature')
                                               .value
@@ -170,11 +192,39 @@ class welcomeScreen extends State<dashBoard> {
                                               .replaceAll(
                                                   RegExp(r'[^\d\.]'), '') +
                                           ' °c',
+                                      textAlign: TextAlign.right,
                                       style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       )),
-                                  Text(
+                                ),
+                              ],
+                            ),
+                            Divider(
+                                color: Colors.grey, thickness: 1, indent: 25),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'images/total_dissolved_solids_FILL0_wght400_GRAD0_opsz48.png',
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      Text(
+                                        'TDS',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
                                       snapshot
                                               .child('TotalDissolvedSolids')
                                               .value
@@ -182,11 +232,39 @@ class welcomeScreen extends State<dashBoard> {
                                               .replaceAll(
                                                   RegExp(r'[^\d\.]'), '') +
                                           ' PPM',
+                                      textAlign: TextAlign.right,
                                       style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       )),
-                                  Text(
+                                ),
+                              ],
+                            ),
+                            Divider(
+                                color: Colors.grey, thickness: 1, indent: 25),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'images/water_ph_FILL0_wght400_GRAD0_opsz48.png',
+                                        height: 24,
+                                        width: 24,
+                                      ),
+                                      Text(
+                                        'Water Acidity',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
                                       snapshot
                                               .child('pH')
                                               .value
@@ -194,12 +272,14 @@ class welcomeScreen extends State<dashBoard> {
                                               .replaceAll(
                                                   RegExp(r'[^\d\.]'), '') +
                                           ' pH',
+                                      textAlign: TextAlign.right,
                                       style: TextStyle(
                                         fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                         color: Colors.black,
                                       )),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -370,76 +450,114 @@ class welcomeScreen extends State<dashBoard> {
               ],
             ),
           ),
-          Container(
-            height: 40,
-            margin: EdgeInsets.fromLTRB(60, 30, 200, 0),
-            child: ElevatedButton(
-              // ignore: sort_child_properties_last
-              child: const Text(
-                'Plants',
-                textAlign: TextAlign.center,
+
+// BUTTONS
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 40,
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: ElevatedButton.icon(
+                      // ignore: sort_child_properties_last
+                      icon: Icon(
+                        Icons.energy_savings_leaf,
+                        color: Colors.green,
+                        size: 30.0,
+                      ),
+                      label: const Text(
+                        'Plants',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        foregroundColor: Color(0xFF343434), //text color
+                        backgroundColor: Color(0xFFb8d4c4), //button color
+                        textStyle: const TextStyle(color: Colors.black),
+                        minimumSize: Size(150, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => plantPage()));
+                        //signIn();
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: 40,
+                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    child: ElevatedButton.icon(
+                      // ignore: sort_child_properties_last
+                      icon: Icon(
+                        Icons.sticky_note_2_outlined,
+                        color: Colors.green,
+                        size: 30.0,
+                      ),
+                      label: const Text(
+                        'Notes',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        foregroundColor: Color(0xFF343434),
+                        backgroundColor: Color(0xFFb8d4c4),
+                        textStyle: const TextStyle(color: Colors.black),
+                        minimumSize: Size(150, 50),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => notesPage()));
+                        //signIn();
+                      },
+                    ),
+                  ),
+                ],
               ),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                backgroundColor: Colors.green,
-                textStyle: const TextStyle(color: Colors.black),
-                minimumSize: Size(200, 50),
+              Container(
+                height: 40,
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: ElevatedButton.icon(
+                  // ignore: sort_child_properties_last
+                  icon: Icon(
+                    Icons.water,
+                    color: Colors.green,
+                    size: 30.0,
+                  ),
+                  label: const Text(
+                    'Reservoirs',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    foregroundColor: Color(0xFF343434),
+                    backgroundColor: Color(0xFFb8d4c4),
+                    textStyle: const TextStyle(color: Colors.black),
+                    minimumSize: Size(200, 50),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => reservoirPage()));
+                    //signIn();
+                  },
+                ),
               ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => plantPage()));
-                //signIn();
-              },
-            ),
-          ),
-          Container(
-            height: 40,
-            margin: EdgeInsets.fromLTRB(60, 30, 200, 0),
-            child: ElevatedButton(
-              // ignore: sort_child_properties_last
-              child: const Text(
-                'Reservoirs',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20),
-              ),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                foregroundColor: Colors.yellow,
-                backgroundColor: Colors.green,
-                textStyle: const TextStyle(color: Colors.black),
-                minimumSize: Size(200, 50),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => reservoirPage()));
-                //signIn();
-              },
-            ),
-          ),
-          Container(
-            height: 40,
-            margin: EdgeInsets.fromLTRB(60, 30, 200, 0),
-            child: ElevatedButton(
-              // ignore: sort_child_properties_last
-              child: const Text(
-                'Notes',
-                textAlign: TextAlign.center,
-              ),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                backgroundColor: Colors.green,
-                textStyle: const TextStyle(color: Colors.black),
-                minimumSize: Size(200, 50),
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => notesPage()));
-                //signIn();
-              },
-            ),
+            ],
           ),
         ],
       ),
