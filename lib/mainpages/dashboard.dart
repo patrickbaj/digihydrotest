@@ -57,19 +57,6 @@ class welcomeScreen extends State<dashBoard> {
             ),
           ],
         ),
-        actions: <Widget>[
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-            child: IconButton(
-              icon: const Icon(
-                Icons.warning_sharp,
-                color: Colors.amber, //iconColor(snapshot),
-                size: 40,
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ],
       ),
       body: ListView(
         children: [
@@ -90,7 +77,7 @@ class welcomeScreen extends State<dashBoard> {
               ],
             ),
             child: Container(
-              height: 210,
+              height: 270,
               child: FirebaseAnimatedList(
                 query: refDevice,
                 itemBuilder: (BuildContext context, DataSnapshot snapshot,
@@ -101,6 +88,63 @@ class welcomeScreen extends State<dashBoard> {
                         padding: EdgeInsets.all(10),
                         child: Column(
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                                  child: Text(
+                                    'Realtime Stats',
+                                    textAlign: TextAlign.justify,
+                                    style: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF1a1a1a),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 10, 10),
+                                  child: GestureDetector(
+                                    child: Icon(
+                                      Icons.warning_sharp,
+                                      color: iconColor(snapshot),
+                                      size: 40,
+                                    ),
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  airTempChecker(snapshot),
+                                                  humidityChecker(snapshot),
+                                                  waterTempChecker(snapshot),
+                                                  tdsChecker(snapshot),
+                                                  acidityChecker(snapshot),
+                                                ],
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                child: Text("OK"),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                             Row(
                               children: [
                                 Expanded(
@@ -329,12 +373,12 @@ class welcomeScreen extends State<dashBoard> {
                 Row(
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.all(8),
                       child: Text(
-                        'My Plants',
+                        'Plants Overview',
                         style: TextStyle(
                           fontSize: 20,
-                          color: Colors.black,
+                          color: Color(0xFF1a1a1a),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -342,36 +386,37 @@ class welcomeScreen extends State<dashBoard> {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: EdgeInsets.fromLTRB(15, 0, 0, 7),
                       child: Text(
                         'Plant Name',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.black,
+                          color: Color(0xFF272727),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
                       child: Text(
                         'Greenhouse',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.black,
+                          color: Color(0xFF272727),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: EdgeInsets.fromLTRB(0, 0, 20, 7),
                       child: Text(
                         'Reservoir',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.black,
+                          color: Color(0xFF272727),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -398,8 +443,9 @@ class welcomeScreen extends State<dashBoard> {
                         children: [
                           IntrinsicHeight(
                             child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //mainAxisSize: MainAxisSize.max,
+                              //crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: Padding(
@@ -413,7 +459,7 @@ class welcomeScreen extends State<dashBoard> {
                                           '${index + 1}. ' + plantName,
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.black,
+                                            color: Color(0xFF4f4f4f),
                                           ),
                                         ),
                                       ],
@@ -430,7 +476,7 @@ class welcomeScreen extends State<dashBoard> {
                                           greenhouse,
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.black,
+                                            color: Color(0xFF4f4f4f),
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -448,7 +494,7 @@ class welcomeScreen extends State<dashBoard> {
                                           reserName,
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.black,
+                                            color: Color(0xFF4f4f4f),
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -471,12 +517,18 @@ class welcomeScreen extends State<dashBoard> {
 // BUTTONS
           Column(
             children: [
+              Divider(
+                color: Colors.grey,
+                thickness: 2,
+                indent: 25,
+                endIndent: 25,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     height: 40,
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: ElevatedButton.icon(
                       // ignore: sort_child_properties_last
                       icon: Icon(
@@ -508,7 +560,7 @@ class welcomeScreen extends State<dashBoard> {
                   ),
                   Container(
                     height: 40,
-                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
                     child: ElevatedButton.icon(
                       // ignore: sort_child_properties_last
                       icon: Icon(
@@ -542,7 +594,7 @@ class welcomeScreen extends State<dashBoard> {
               ),
               Container(
                 height: 40,
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 30),
                 child: ElevatedButton.icon(
                   // ignore: sort_child_properties_last
                   icon: Icon(
@@ -579,5 +631,17 @@ class welcomeScreen extends State<dashBoard> {
         ],
       ),
     );
+  }
+}
+
+Color iconColorDash(DataSnapshot snapshot) {
+  if (airTempChecker(snapshot) != emptyWidget ||
+      humidityChecker(snapshot) != emptyWidget ||
+      waterTempChecker(snapshot) != emptyWidget ||
+      tdsChecker(snapshot) != emptyWidget ||
+      acidityChecker(snapshot) != emptyWidget) {
+    return Colors.red;
+  } else {
+    return Colors.grey;
   }
 }

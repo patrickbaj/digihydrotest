@@ -223,8 +223,7 @@ Widget waterTempChecker(DataSnapshot snapshot) {
 }
 
 Widget tdsChecker(DataSnapshot snapshot) {
-  //var tds =
-  //    double.parse(snapshot.child('TotalDissolvedSolids').value.toString());
+  //var tds = double.parse(snapshot.child('TotalDissolvedSolids').value.toString());
   var snapValue = snapshot
       .child('TotalDissolvedSolids')
       .value
