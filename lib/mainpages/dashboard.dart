@@ -350,6 +350,218 @@ class welcomeScreen extends State<dashBoard> {
             ),
           ),
 
+// HISTORY CONTAINER
+          Container(
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.analytics,
+                            size: 25,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            child: Text(
+                              'Stats History',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFF1a1a1a),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 12, 15, 0),
+                      child: GestureDetector(
+                        child: Text(
+                          "See More",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onTap: () {
+                          /*Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => plantPage()));*/
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(15, 0, 20, 7), //leftmost
+                      child: Text(
+                        'Date',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xFF272727),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                      child: Icon(
+                        Icons.thermostat,
+                        size: 20,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                      child: Image.asset(
+                        'images/humidity_percentage_FILL0_wght400_GRAD0_opsz48.png',
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                      child: Image.asset(
+                        'images/dew_point_FILL0_wght400_GRAD0_opsz48.png',
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
+                      child: Image.asset(
+                        'images/total_dissolved_solids_FILL0_wght400_GRAD0_opsz48.png',
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 20, 7), //rightmost
+                      child: Image.asset(
+                        'images/water_ph_FILL0_wght400_GRAD0_opsz48.png',
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 139,
+                  child: FirebaseAnimatedList(
+                    query: ref.orderByChild('userId').equalTo(currentUserID),
+                    itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                        Animation<double> animation, int index) {
+                      //if (snapshot == null || snapshot.value == null)
+                      if (snapshot.value == null) return SizedBox.shrink();
+                      final plantName =
+                          snapshot.child('batchName').value?.toString() ?? '';
+                      final greenhouse =
+                          snapshot.child('greenhouse').value?.toString() ?? '';
+                      final reserName =
+                          snapshot.child('reserv').value?.toString() ?? '';
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: [
+                          IntrinsicHeight(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${index + 1}. ' + plantName,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xFF4f4f4f),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 14.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          greenhouse,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xFF4f4f4f),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 14.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          reserName,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Color(0xFF4f4f4f),
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+
 /*PLANTS CONTAINER */
 
           Container(
@@ -372,14 +584,25 @@ class welcomeScreen extends State<dashBoard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(15, 8, 0, 0),
-                      child: Text(
-                        'Plants Overview',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Color(0xFF1a1a1a),
-                          fontWeight: FontWeight.bold,
-                        ),
+                      padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.energy_savings_leaf_outlined,
+                            size: 25,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            child: Text(
+                              'Plants Overview',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFF1a1a1a),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     Padding(
