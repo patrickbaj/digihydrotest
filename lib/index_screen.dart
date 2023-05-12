@@ -2,7 +2,6 @@ import 'package:digihydro/mainpages/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:digihydro/login/signup_screen.dart';
 import 'package:digihydro/login/forgot_pass1.dart';
-import 'package:digihydro/mainpages/device_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class IndexScreen extends StatefulWidget {

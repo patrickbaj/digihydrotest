@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:digihydro/index_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'dart:math';
 
 class signupPage extends StatefulWidget {

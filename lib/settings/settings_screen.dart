@@ -1,23 +1,17 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:digihydro/create/add_plant.dart';
 import 'package:digihydro/drawer_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
-
-class userProfile extends StatefulWidget{
+class userProfile extends StatefulWidget {
   @override
   _userSettings createState() => _userSettings();
 }
-
-
 
 class _userSettings extends State<userProfile> {
   final auth = FirebaseAuth.instance;
@@ -30,11 +24,11 @@ class _userSettings extends State<userProfile> {
 
   Future<void> _pickImage() async {
     ImagePicker imagePicker = ImagePicker();
-      final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        setState(() {
-          _imageFile = File(pickedFile.path);
-        });
+    final pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
     }
   }
 
@@ -71,100 +65,105 @@ class _userSettings extends State<userProfile> {
         body: Form(
           child: Center(
               child: FirebaseAnimatedList(
-                query: ref.orderByChild('userId').equalTo(currentUserID),
-                itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
-                  return Wrap(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(40, 40, 40, 10),
-                        height: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[400],
-                          borderRadius: BorderRadius.circular(60),
-                        ),
-                        child: Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Upload Image"),
-                                    content: Text("Would you like to upload an image?"),
-                                    actions: [
-                                      TextButton(
-                                        child: Text("Cancel"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text("Upload"),
-                                        onPressed: () {
-                                          _pickImage();
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Icon(
-                              Icons.person,
-                              size: 120,
-                              color: Colors.grey[100],
+                  query: ref.orderByChild('userId').equalTo(currentUserID),
+                  itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                      Animation<double> animation, int index) {
+                    return Wrap(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(40, 40, 40, 10),
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[400],
+                            borderRadius: BorderRadius.circular(60),
+                          ),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Upload Image"),
+                                      content: Text(
+                                          "Would you like to upload an image?"),
+                                      actions: [
+                                        TextButton(
+                                          child: Text("Cancel"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text("Upload"),
+                                          onPressed: () {
+                                            _pickImage();
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Icon(
+                                Icons.person,
+                                size: 120,
+                                color: Colors.grey[100],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      
-                      Container(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(snapshot.child('firstName').value.toString() +' '+ snapshot.child('lastName').value.toString(),
-                                    style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    )
-                                  ),
-
+                                  Text(
+                                      snapshot
+                                              .child('firstName')
+                                              .value
+                                              .toString() +
+                                          ' ' +
+                                          snapshot
+                                              .child('lastName')
+                                              .value
+                                              .toString(),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      )),
                                   SizedBox(height: 10),
-
-                                  Text(snapshot.child('growerType').value.toString(),
-                                    style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    )
-                                  ),
-
+                                  Text(
+                                      snapshot
+                                          .child('growerType')
+                                          .value
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      )),
                                   SizedBox(height: 10),
-
                                   Text(snapshot.child('email').value.toString(),
-                                    style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    )
-                                  ),
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      )),
                                 ],
-                              ),   
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                }
-            )
-          ),
+                      ],
+                    );
+                  })),
         ),
         drawer: drawerPage());
   }

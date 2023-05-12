@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:digihydro/index_screen.dart';
-import 'package:digihydro/mainpages/plants_screen.dart';
-import 'signup_screen.dart';
-import 'forgot_pass2.dart';
 
 // ignore: camel_case_types
 class forgotPass3 extends StatelessWidget {

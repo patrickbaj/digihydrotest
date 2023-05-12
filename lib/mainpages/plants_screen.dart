@@ -1,15 +1,9 @@
-import 'package:digihydro/mainpages/device_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/create/add_plant.dart';
 import 'package:digihydro/drawer_screen.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class plantPage extends StatefulWidget {
   @override
@@ -137,7 +131,7 @@ class plant extends State<plantPage> {
               query: ref.orderByChild('userId').equalTo(currentUserID),
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
-                Color myColor = Color(0xFF030303);
+                Color(0xFF030303);
                 return Wrap(
                   children: [
                     Container(

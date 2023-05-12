@@ -1,14 +1,11 @@
-import 'package:digihydro/index_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/create/add_gh.dart';
 import 'package:digihydro/drawer_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class greenhPage extends StatefulWidget{
+class greenhPage extends StatefulWidget {
   @override
   green createState() => green();
 }
@@ -54,43 +51,43 @@ class green extends State<greenhPage> {
       body: Column(
         children: [
           Container(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
-                    child: Icon(
-                      Icons.house_siding_rounded,
-                      size: 50,
-                      color: Colors.green,
+            child: Row(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+                  child: Icon(
+                    Icons.house_siding_rounded,
+                    size: 50,
+                    color: Colors.green,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
+                  child: Text(
+                    'Greenhouse',
+                    textAlign: TextAlign.justify,
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 5, 10),
-                    child: Text(
-                      'Greenhouse',
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           Expanded(
-            child: 
-            FirebaseAnimatedList(
-                  query: ref,
-                  itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
+            child: FirebaseAnimatedList(
+              query: ref,
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
                 return Column(
                   children: [
                     SizedBox(height: 20),
                   ],
                 );
               },
-            ), 
+            ),
           ),
           /*Expanded(
             child: StreamBuilder(

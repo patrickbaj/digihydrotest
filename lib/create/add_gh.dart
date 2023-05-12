@@ -1,6 +1,4 @@
 import 'package:digihydro/mainpages/greenhouse_screen.dart';
-import 'package:digihydro/mainpages/plants_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /*
