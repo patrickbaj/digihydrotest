@@ -36,27 +36,25 @@ class welcomeScreen extends State<dashBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 237, 220),
-      //drawer: drawerPage(),
+      drawer: drawerPage(),
       appBar: AppBar(
         backgroundColor: Colors.green,
-        automaticallyImplyLeading: false,
-        /*iconTheme: const IconThemeData(
+        //automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(
           color: Colors.white,
           size: 40.00,
-        ),*/
-        title: Row(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 15, 0),
-              child: Align(
-                child: Image.asset(
-                  'images/logo_white.png',
-                  scale: 8,
-                ),
+        ),
+        actions: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 5, 15, 0),
+            child: Align(
+              child: Image.asset(
+                'images/logo_white.png',
+                scale: 8,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       body: ListView(
         children: [
@@ -352,7 +350,7 @@ class welcomeScreen extends State<dashBoard> {
             ),
           ),
 
-/*MY PLANTS CONTAINER */
+/*PLANTS CONTAINER */
 
           Container(
             margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -371,9 +369,10 @@ class welcomeScreen extends State<dashBoard> {
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.fromLTRB(15, 8, 0, 0),
                       child: Text(
                         'Plants Overview',
                         style: TextStyle(
@@ -383,7 +382,31 @@ class welcomeScreen extends State<dashBoard> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 12, 15, 0),
+                      child: GestureDetector(
+                        child: Text(
+                          "See More",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => plantPage()));
+                        },
+                      ),
+                    )
                   ],
+                ),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  indent: 10,
+                  endIndent: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -429,8 +452,8 @@ class welcomeScreen extends State<dashBoard> {
                     query: ref.orderByChild('userId').equalTo(currentUserID),
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
-                      if (snapshot == null || snapshot.value == null)
-                        return SizedBox.shrink();
+                      //if (snapshot == null || snapshot.value == null)
+                      if (snapshot.value == null) return SizedBox.shrink();
                       final plantName =
                           snapshot.child('batchName').value?.toString() ?? '';
                       final greenhouse =

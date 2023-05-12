@@ -16,7 +16,15 @@ class homePage extends StatefulWidget {
   device createState() => device();
 }
 
-final emptyWidget = Container();
+final emptyWidget = Container(
+    /*child: Text(
+    'Air Temperature is below 65°F (18°C) or above 95°F (35°C).\n',
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+    ),
+  ),*/
+    );
+
 Widget airTempChecker(DataSnapshot snapshot) {
   print("New Changes 1");
 
