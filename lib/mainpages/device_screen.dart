@@ -1,3 +1,4 @@
+import 'package:digihydro/mainpages/notif.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +6,8 @@ import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import 'dashboard.dart';
 
 class homePage extends StatefulWidget {
   @override
@@ -361,6 +364,8 @@ Color iconColor(DataSnapshot snapshot) {
       waterTempChecker(snapshot) != emptyWidget ||
       tdsChecker(snapshot) != emptyWidget ||
       acidityChecker(snapshot) != emptyWidget) {
+    Notif.showNotif(
+        title: "DigiHydro", body: 'Alert Notif texttexttext', fln: localNotif);
     return Colors.red;
   } else {
     return Colors.grey;
@@ -377,6 +382,7 @@ class device extends State<homePage> {
   void initState() {
     init();
     super.initState();
+    //Notif.initialize(localNotif); //FOR NOTIFS
     final currentUser = auth.currentUser;
     if (currentUser != null) {
       currentUserID = currentUser.uid;

@@ -1,4 +1,5 @@
 import 'package:digihydro/mainpages/notes_screen.dart';
+import 'package:digihydro/mainpages/notif.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:digihydro/mainpages/reservoir_screen.dart';
 import 'package:digihydro/mainpages/device_screen.dart';
@@ -8,6 +9,10 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+final FlutterLocalNotificationsPlugin localNotif =
+    FlutterLocalNotificationsPlugin();
 
 class dashBoard extends StatefulWidget {
   @override
@@ -24,6 +29,7 @@ class welcomeScreen extends State<dashBoard> {
   @override
   void initState() {
     super.initState();
+    Notif.initialize(localNotif); //FOR NOTIFS
     final currentUser = auth.currentUser;
     if (currentUser != null) {
       currentUserID = currentUser.uid;
