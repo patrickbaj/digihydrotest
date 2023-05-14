@@ -1,22 +1,28 @@
-import 'package:digihydro/index_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:digihydro/mainpages/notif.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/drawer_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
+import 'dashboard.dart';
 
 class homePage extends StatefulWidget {
   @override
   device createState() => device();
 }
 
-final emptyWidget = Container();
+final emptyWidget = Container(
+    /*child: Text(
+    'Air Temperature is below 65°F (18°C) or above 95°F (35°C).\n',
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+    ),
+  ),*/
+    );
+
 Widget airTempChecker(DataSnapshot snapshot) {
   print("New Changes 1");
 
@@ -358,6 +364,8 @@ Color iconColor(DataSnapshot snapshot) {
       waterTempChecker(snapshot) != emptyWidget ||
       tdsChecker(snapshot) != emptyWidget ||
       acidityChecker(snapshot) != emptyWidget) {
+    Notif.showNotif(
+        title: "DigiHydro", body: 'Alert Notif texttexttext', fln: localNotif);
     return Colors.red;
   } else {
     return Colors.grey;
@@ -374,6 +382,7 @@ class device extends State<homePage> {
   void initState() {
     init();
     super.initState();
+    //Notif.initialize(localNotif); //FOR NOTIFS
     final currentUser = auth.currentUser;
     if (currentUser != null) {
       currentUserID = currentUser.uid;

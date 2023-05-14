@@ -1,13 +1,10 @@
 import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/create/create_note.dart';
 import 'package:digihydro/drawer_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:digihydro/create/update_note.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -67,6 +64,7 @@ class displayNote extends State<notesPage> {
     userNote.clear();
     imageUrl2 = '';
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -258,7 +256,6 @@ class displayNote extends State<notesPage> {
                                   )
                                 ],
                               ),
-
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -282,82 +279,117 @@ class displayNote extends State<notesPage> {
                                   Row(
                                     children: [
                                       GestureDetector(
-                                        child: 
-                                        Icon(
+                                        child: Icon(
                                           Icons.edit,
                                           color: Theme.of(context).primaryColor,
                                         ),
-                                        onTap: (){
+                                        onTap: () {
                                           setState(() {
-                                             k = snapshot.key;
+                                            k = snapshot.key;
                                           });
                                           showDialog(
-                                            context: context, 
-                                            builder: (BuildContext context){
+                                            context: context,
+                                            builder: (BuildContext context) {
                                               return AlertDialog(
                                                 content: SingleChildScrollView(
                                                   child: Column(
                                                     children: [
                                                       TextField(
                                                         controller: title,
-                                                        decoration: InputDecoration(
+                                                        decoration:
+                                                            InputDecoration(
                                                           hintText: 'Title:',
-                                                          border: OutlineInputBorder(),
+                                                          border:
+                                                              OutlineInputBorder(),
                                                           isDense: true,
-                                                          contentPadding: const EdgeInsets.all(10.0),
+                                                          contentPadding:
+                                                              const EdgeInsets
+                                                                  .all(10.0),
                                                         ),
                                                       ),
-                                                      SizedBox(height: 5,),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
                                                       TextField(
                                                         controller: userDate,
-                                                        decoration: InputDecoration(
-                                                          icon: Icon(Icons.calendar_today_rounded),
-                                                          labelText: 'Date Today:',
-                                                          border: OutlineInputBorder(),
+                                                        decoration:
+                                                            InputDecoration(
+                                                          icon: Icon(Icons
+                                                              .calendar_today_rounded),
+                                                          labelText:
+                                                              'Date Today:',
+                                                          border:
+                                                              OutlineInputBorder(),
                                                           isDense: true,
-                                                          contentPadding: const EdgeInsets.all(10.0),
+                                                          contentPadding:
+                                                              const EdgeInsets
+                                                                  .all(10.0),
                                                         ),
                                                         onTap: () async {
-                                                          DateTime? pickedDate = await showDatePicker(
+                                                          DateTime? pickedDate =
+                                                              await showDatePicker(
                                                             context: context,
-                                                            initialDate: DateTime.now(),
-                                                            firstDate: DateTime(1900),
-                                                            lastDate: DateTime(3000),
+                                                            initialDate:
+                                                                DateTime.now(),
+                                                            firstDate:
+                                                                DateTime(1900),
+                                                            lastDate:
+                                                                DateTime(3000),
                                                           );
 
-                                                          if (pickedDate != null) {
+                                                          if (pickedDate !=
+                                                              null) {
                                                             setState(() {
-                                                              userDate.text =
-                                                                  DateFormat('MM-dd-yyyy').format(pickedDate);
+                                                              userDate
+                                                                  .text = DateFormat(
+                                                                      'MM-dd-yyyy')
+                                                                  .format(
+                                                                      pickedDate);
                                                             });
                                                           }
                                                         },
                                                       ),
-                                                      SizedBox(height: 5,),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
                                                       TextField(
                                                         controller: userNote,
-                                                        keyboardType: TextInputType.multiline,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .multiline,
                                                         maxLines: 10,
                                                         style: TextStyle(
-                                                          decoration: TextDecoration.none,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .none,
                                                           fontSize: 15,
                                                         ),
-                                                        decoration: new InputDecoration(
-                                                          hintText: "Write your note...",
-                                                          border: OutlineInputBorder(),
+                                                        decoration:
+                                                            new InputDecoration(
+                                                          hintText:
+                                                              "Write your note...",
+                                                          border:
+                                                              OutlineInputBorder(),
                                                         ),
                                                       ),
-                                                      SizedBox(height: 5,),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
                                                       Column(
                                                         children: [
                                                           Container(
                                                             child: Row(
                                                               children: [
                                                                 IconButton(
-                                                                  onPressed: _pickImage,
-                                                                  icon: Icon(Icons.add_a_photo_outlined),
+                                                                  onPressed:
+                                                                      _pickImage,
+                                                                  icon: Icon(Icons
+                                                                      .add_a_photo_outlined),
                                                                   iconSize: 40,
-                                                                  color: Colors.black.withOpacity(0.15),
+                                                                  color: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          0.15),
                                                                 ),
                                                               ],
                                                             ),
@@ -370,26 +402,40 @@ class displayNote extends State<notesPage> {
                                                 actions: [
                                                   TextButton(
                                                     child: Text("Cancel"),
-                                                    onPressed: (){
-                                                      Navigator.of(context).pop();
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                   TextButton(
                                                     child: Text("Update"),
-                                                    onPressed: () async{
+                                                    onPressed: () async {
                                                       if (_imageFile != null) {
-                                                        String id =
-                                                            DateTime.now().millisecondsSinceEpoch.toString();
-                                                          final imageRoot = FirebaseStorage.instance.ref();
-                                                          final imageRef = imageRoot.child('Images');
-                                                          final imageUpload = imageRef.child(id);
-                                                          try {
-                                                            await imageUpload.putFile(_imageFile!);
-                                                            imageUrl2 = await imageUpload.getDownloadURL();
-                                                          } catch (error) {}
-                                                        }
+                                                        String id = DateTime
+                                                                .now()
+                                                            .millisecondsSinceEpoch
+                                                            .toString();
+                                                        final imageRoot =
+                                                            FirebaseStorage
+                                                                .instance
+                                                                .ref();
+                                                        final imageRef =
+                                                            imageRoot.child(
+                                                                'Images');
+                                                        final imageUpload =
+                                                            imageRef.child(id);
+                                                        try {
+                                                          await imageUpload
+                                                              .putFile(
+                                                                  _imageFile!);
+                                                          imageUrl2 =
+                                                              await imageUpload
+                                                                  .getDownloadURL();
+                                                        } catch (error) {}
+                                                      }
                                                       await upd();
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                 ],
@@ -397,7 +443,6 @@ class displayNote extends State<notesPage> {
                                             },
                                           );
                                         },
-                                      
                                       ),
                                     ],
                                   ),
@@ -405,7 +450,6 @@ class displayNote extends State<notesPage> {
                               ),
                             ],
                           ),
-
                         ),
                       ],
                     );

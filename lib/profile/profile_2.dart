@@ -1,7 +1,5 @@
 import 'package:digihydro/profile/profile_1.dart';
 import 'package:flutter/material.dart';
-import 'package:digihydro/drawer_screen.dart';
-import 'profile_1.dart';
 
 class profile_2 extends StatelessWidget {
   @override

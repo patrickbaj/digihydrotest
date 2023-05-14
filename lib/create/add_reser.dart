@@ -1,14 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:digihydro/mainpages/reservoir_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
 
 class DropDownReserv extends StatefulWidget {
   @override
@@ -16,15 +10,13 @@ class DropDownReserv extends StatefulWidget {
 }
 
 class addReserv extends State<DropDownReserv> {
- 
   TextEditingController reserv = TextEditingController();
   TextEditingController greenh = TextEditingController();
 
   var _selectedMethod = "-1";
   var _selectedNutrient = "-1";
-  
-  final fb = FirebaseDatabase.instance;
 
+  final fb = FirebaseDatabase.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +79,6 @@ class addReserv extends State<DropDownReserv> {
                   ],
                 ),
               ),
-              
               Container(
                 margin: EdgeInsets.fromLTRB(30, 10, 0, 0),
                 child: Text(
@@ -112,7 +103,6 @@ class addReserv extends State<DropDownReserv> {
                   ),
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
@@ -135,18 +125,26 @@ class addReserv extends State<DropDownReserv> {
                   ),
                   value: _selectedMethod,
                   items: [
-                    DropdownMenuItem(child: Text("-Select Growing Method-"), value: "-1",),
-                    DropdownMenuItem(child: Text("Dft"), value: "Dft",),
-                    DropdownMenuItem(child: Text("Nft"), value: "Nft",),
+                    DropdownMenuItem(
+                      child: Text("-Select Growing Method-"),
+                      value: "-1",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Dft"),
+                      value: "Dft",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("Nft"),
+                      value: "Nft",
+                    ),
                   ],
-                  onChanged:(newMethod){
+                  onChanged: (newMethod) {
                     setState(() {
                       _selectedMethod = newMethod!;
                     });
                   },
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
@@ -169,18 +167,26 @@ class addReserv extends State<DropDownReserv> {
                   ),
                   value: _selectedNutrient,
                   items: [
-                    DropdownMenuItem(child: Text("-Select Nutrient Solution-"), value: "-1",),
-                    DropdownMenuItem(child: Text("SNAP"), value: "SNAP",),
-                    DropdownMenuItem(child: Text("NutriHydro"), value: "NutriHydro",),
+                    DropdownMenuItem(
+                      child: Text("-Select Nutrient Solution-"),
+                      value: "-1",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("SNAP"),
+                      value: "SNAP",
+                    ),
+                    DropdownMenuItem(
+                      child: Text("NutriHydro"),
+                      value: "NutriHydro",
+                    ),
                   ],
-                  onChanged:(newNutrient){
+                  onChanged: (newNutrient) {
                     setState(() {
                       _selectedNutrient = newNutrient!;
                     });
                   },
                 ),
               ),
-
               Container(
                 margin: EdgeInsets.fromLTRB(30, 0, 0, 0),
                 child: Text(
@@ -205,8 +211,6 @@ class addReserv extends State<DropDownReserv> {
                   ),
                 ),
               ),
-
-              
               Container(
                 margin: EdgeInsets.fromLTRB(240, 25, 40, 0),
                 child: ElevatedButton(
@@ -230,7 +234,10 @@ class addReserv extends State<DropDownReserv> {
                       "nutrientSol": _selectedNutrient,
                       "userId": currentUser?.uid,
                     }).asStream();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => reservoirPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => reservoirPage()));
                   },
                 ),
               )

@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/mainpages/notes_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:image_picker/image_picker.dart';
@@ -12,7 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:intl/intl.dart';
 
 class updateNote extends StatefulWidget {
-  const updateNote({Key? key, required this.noteKey}) :super(key: key);
+  const updateNote({Key? key, required this.noteKey}) : super(key: key);
 
   final String noteKey;
 
@@ -25,29 +23,28 @@ class _updateNote extends State<updateNote> {
   TextEditingController userDate = TextEditingController();
   TextEditingController userNote = TextEditingController();
 
- 
-
   late DatabaseReference fb;
-  void initState(){
+  void initState() {
     super.initState();
     fb = FirebaseDatabase.instance.ref().child('Notes');
   }
 
-  void getNotesData() async{
-    DataSnapshot snapshot = await fb.child(widget.noteKey).get();  
+  void getNotesData() async {
+    DataSnapshot snapshot = await fb.child(widget.noteKey).get();
     Map note = snapshot.value as Map;
 
     title.text = note['title'];
     userDate.text = note['date'];
     userNote.text = note['userNote'];
-    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var rng = Random();
     var num = rng.nextInt(10000);
 
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    
+
     final currentUser = _auth.currentUser;
 
     return Scaffold(
@@ -149,8 +146,6 @@ class _updateNote extends State<updateNote> {
                   ),
                 ),
               ),
-              
-          
               Container(
                   margin: EdgeInsets.fromLTRB(200, 25, 30, 0),
                   child: ElevatedButton(
@@ -167,12 +162,11 @@ class _updateNote extends State<updateNote> {
                       ),
                     ),
                     onPressed: () async {
-                      
-                     Map<String, String> note ={
-                      'title': title.text,
-                      'date': userDate.text,
-                      'userNote': userNote.text,
-                     };
+                      Map<String, String> note = {
+                        'title': title.text,
+                        'date': userDate.text,
+                        'userNote': userNote.text,
+                      };
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => notesPage()));
                     },
