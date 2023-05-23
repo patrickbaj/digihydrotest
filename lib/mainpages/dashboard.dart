@@ -118,6 +118,8 @@ class welcomeScreen extends State<dashBoard> {
                                     onTap: () {
                                       showDialog(
                                         context: context,
+                                        //barrierColor:
+                                        //    Color(0xFF1a1a1a).withOpacity(0.8),
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             content: SingleChildScrollView(
