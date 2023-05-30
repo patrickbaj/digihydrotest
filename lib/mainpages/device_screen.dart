@@ -35,7 +35,8 @@ Widget airTempChecker(DataSnapshot snapshot) {
   print("Temperature: " + snapValue);
   var airTemp = double.parse(snapValue);
 
-  if (airTemp >= 35 || airTemp < 18) {
+  //if (airTemp >= 35 || airTemp < 18) {
+  if (airTemp >= 35) {
     return RichText(
       text: TextSpan(
         style: TextStyle(
@@ -44,8 +45,59 @@ Widget airTempChecker(DataSnapshot snapshot) {
         ),
         children: <TextSpan>[
           TextSpan(
-            text:
-                'Air Temperature is below 65°F (18°C) or above 95°F (35°C).\n',
+            text: 'Air Temperature is above 95°F (35°C).\n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Current temperature: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapValue + '°C\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Adjust the cooling system, shading or increase ventilation. Inspect drafts, malfunctioning equipment, or improperly sealed windows/doors.' +
+                'Use Reflective materials or shade cloth to reduce heat during the day. Misting is encouraged of conditions humidity levels are not in danger levels and time is before 5pm.\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  } else if (airTemp < 18) {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'Air Temperature is below 65°F (18°C).\n',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -102,7 +154,8 @@ Widget humidityChecker(DataSnapshot snapshot) {
   print("Humidity: " + snapValue);
   var humidity = double.parse(snapValue);
   //var humidity = double.parse(snapshot.child('Humidity').value.toString());
-  if (humidity >= 85 || humidity < 50) {
+  //if (humidity >= 85 || humidity < 50) {
+  if (humidity >= 85) {
     return RichText(
       text: TextSpan(
         style: TextStyle(
@@ -111,7 +164,59 @@ Widget humidityChecker(DataSnapshot snapshot) {
         ),
         children: <TextSpan>[
           TextSpan(
-            text: 'Humidity is below 50% or above 85% \n',
+            text: 'Humidity is above 85% \n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Current humidity: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapValue + '%\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Adjust the humidifier/dehumidifier settings or increase/decrease ventilation.' +
+                'Check for water leaks or excess moisture sources. Install a moisture-absorbing material like silica gel if necessary. Misting is not recommended as it may encourage fungal growth.\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  } else if (humidity < 50) {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'Humidity is below 50% \n',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -169,7 +274,8 @@ Widget waterTempChecker(DataSnapshot snapshot) {
       .replaceAll(RegExp(r'[^\d\.]'), '');
   print("WaterTemperature: " + snapValue);
   var waterTemp = double.parse(snapValue);
-  if (waterTemp >= 28 || waterTemp < 20) {
+  //if (waterTemp >= 28 || waterTemp < 20) {
+  if (waterTemp >= 28) {
     return RichText(
       text: TextSpan(
         style: TextStyle(
@@ -178,8 +284,60 @@ Widget waterTempChecker(DataSnapshot snapshot) {
         ),
         children: <TextSpan>[
           TextSpan(
+            text: 'Water temperature is above 82°F (28°C).\n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Current temperature: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapValue + '°C\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
             text:
-                'Water temperature is below 68°F (20°C) or above 82°F (28°C). \n',
+                'Adjust the water chiller settings, add insulation to the reservoir, or relocate it to a cooler/shaded area. Check equipment for malfunctions.' +
+                    'Use a light-colored container to reduce heat absorption.\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  } else if (waterTemp < 20) {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'Water temperature is below 68°F (20°C). \n',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -238,7 +396,8 @@ Widget tdsChecker(DataSnapshot snapshot) {
       .replaceAll(RegExp(r'[^\d\.]'), '');
   print("TotalDissolvedSolids: " + snapValue);
   var tds = double.parse(snapValue);
-  if (tds >= 1500 || tds < 400) {
+  //if (tds >= 1500 || tds < 400) {
+  if (tds >= 1500) {
     return RichText(
       text: TextSpan(
         style: TextStyle(
@@ -247,7 +406,59 @@ Widget tdsChecker(DataSnapshot snapshot) {
         ),
         children: <TextSpan>[
           TextSpan(
-            text: 'TDS is below 400ppm or above 1500ppm. \n',
+            text: 'TDS is above 1500ppm. \n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Current TDS: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapValue + 'ppm\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'For high TDS, dilute nutrient solution with water or replace it. For low TDS, add more nutrients.' +
+                'Check dosing equipment for proper function. Use a TDS meter for accurate measurements.\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  } else if (tds < 400) {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'TDS is below 400ppm. \n',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -310,7 +521,59 @@ Widget acidityChecker(DataSnapshot snapshot) {
         ),
         children: <TextSpan>[
           TextSpan(
-            text: 'pH is below 5.0pH or above 6.5pH. \n',
+            text: 'pH is above 6.5pH. \n',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Warning: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'Current pH: ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: snapValue + ' pH\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+          TextSpan(
+            text: 'Suggestion: ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: 'For high pH, add pH down solution (phosphoric/nitric acid). For low pH, add pH up solution (potassium hydroxide).' +
+                'Test and adjust pH gradually. Use a digital pH meter for precise readings.\n',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  } else if (acidity < 5.0) {
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 16,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'pH is below 5.0pH. \n',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),

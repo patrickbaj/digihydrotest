@@ -1,4 +1,5 @@
 import 'package:digihydro/mainpages/dashboard.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:digihydro/login/signup_screen.dart';
 import 'package:digihydro/login/forgot_pass1.dart';
@@ -9,9 +10,15 @@ class IndexScreen extends StatefulWidget {
   index createState() => index();
 }
 
+Color errorColor(DataSnapshot snapshot) {
+  return Colors.red;
+}
+
 class index extends State<IndexScreen> {
-  TextEditingController userEmail = TextEditingController();
-  TextEditingController userPass = TextEditingController();
+  final userEmail = TextEditingController();
+  final userPass = TextEditingController();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  String errorMessage = '';
 
   Future<void> signIn() async {
     try {
@@ -19,15 +26,18 @@ class index extends State<IndexScreen> {
         email: userEmail.text.trim(),
         password: userPass.text.trim(),
       );
+      errorMessage = '';
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => dashBoard()),
       );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+    } on FirebaseAuthException catch (error) {
+      //errorMessage = error.message!;
+      if (error.code == 'user-not-found') {
+        errorMessage = 'No user found for that email';
+      } else if (error.code == 'wrong-password') {
+        errorMessage = 'Incorrect Password';
       }
+      setState(() {});
     }
   }
 
@@ -43,6 +53,7 @@ class index extends State<IndexScreen> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 201, 237, 220),
         body: Form(
+          key: _key,
           child: Padding(
             padding: EdgeInsets.all(5),
             child: ListView(
@@ -58,8 +69,9 @@ class index extends State<IndexScreen> {
                 Container(
                   padding: EdgeInsets.fromLTRB(50, 0, 50, 10),
                   margin: EdgeInsets.all(10),
-                  child: TextField(
+                  child: TextFormField(
                     controller: userEmail,
+                    validator: valEmail, //
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email',
@@ -71,8 +83,9 @@ class index extends State<IndexScreen> {
                 Container(
                   padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                   margin: EdgeInsets.all(10),
-                  child: TextField(
+                  child: TextFormField(
                     controller: userPass,
+                    validator: valPass, //
                     obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -82,41 +95,57 @@ class index extends State<IndexScreen> {
                     ),
                   ),
                 ),
-                TextButton(
-                  child: Text('Forgot Password?'),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.fromLTRB(160, 0, 0, 30),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    textStyle: TextStyle(color: Colors.green),
-                  ),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => forgotPass()));
-                  }, // forgot password
-                ),
                 Container(
-                  height: 40,
-                  margin: EdgeInsets.fromLTRB(60, 0, 200, 0),
-                  child: ElevatedButton(
-                    // ignore: sort_child_properties_last
-                    child: const Text(
-                      'Login',
-                      textAlign: TextAlign.center,
+                  margin: EdgeInsets.fromLTRB(65, 0, 0, 0),
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(
+                      color: Colors.red,
                     ),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      backgroundColor: Colors.green,
-                      textStyle: const TextStyle(color: Colors.white),
-                      minimumSize: Size(200, 50),
-                    ),
-                    onPressed: () {
-                      /*Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => homePage()));*/
-                      signIn();
-                    },
                   ),
                 ),
+                /**/
+                Row(children: <Widget>[
+                  Container(
+                    height: 40,
+                    margin: EdgeInsets.fromLTRB(60, 40, 0, 0),
+                    child: ElevatedButton(
+                      // ignore: sort_child_properties_last
+                      child: const Text(
+                        'Login',
+                        textAlign: TextAlign.center,
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        backgroundColor: Colors.green,
+                        textStyle: const TextStyle(color: Colors.white),
+                        minimumSize: Size(120, 50),
+                      ),
+                      onPressed: () {
+                        if (_key.currentState!.validate()) {
+                          signIn();
+                        }
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(40, 40, 50, 0),
+                    child: TextButton(
+                      child: Text('Forgot Password?'),
+                      style: TextButton.styleFrom(
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        textStyle: TextStyle(color: Colors.green),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => forgotPass()));
+                      }, // forgot password
+                    ),
+                  ),
+                ]),
                 Container(
                   height: 140,
                   child: Row(
@@ -147,20 +176,6 @@ class index extends State<IndexScreen> {
                                     builder: (context) => signupPage()));
                           },
                         ),
-                        /*child: ElevatedButton(
-                          padding: EdgeInsets.fromLTRB(25, 12, 25, 12),
-                          textColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          color: Colors.redAccent,
-                          child: Text('Sign Up'),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => signupPage()));
-                          },
-                        ), */
                       )
                     ],
                   ),
@@ -170,4 +185,20 @@ class index extends State<IndexScreen> {
           ),
         ));
   }
+}
+
+String? valEmail(String? formEmail) {
+  if (formEmail == null || formEmail.isEmpty)
+    return 'Email address is required';
+
+  String pattern = r'\w+@\w+\.\w+';
+  RegExp regex = RegExp(pattern);
+  if (!regex.hasMatch(formEmail)) return 'Invalid Email Address';
+
+  return null;
+}
+
+String? valPass(String? formPass) {
+  if (formPass == null || formPass.isEmpty) return 'Password is required.';
+  return null;
 }
