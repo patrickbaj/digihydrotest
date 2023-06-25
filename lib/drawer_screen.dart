@@ -108,7 +108,7 @@ class drawer extends State<drawerPage> {
             Container(
               margin: EdgeInsets.fromLTRB(0, 55, 0, 0),
               child: TextButton(
-                child: Text("Dashboard"),
+                child: Text("Home"),
                 style: TextButton.styleFrom(
                   textStyle: TextStyle(
                     color: Colors.grey,

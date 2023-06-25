@@ -3,6 +3,7 @@ import 'package:digihydro/mainpages/notif.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
 import 'package:digihydro/mainpages/reservoir_screen.dart';
 import 'package:digihydro/mainpages/device_screen.dart';
+import 'package:digihydro/mainpages/history_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -409,10 +410,10 @@ class welcomeScreen extends State<dashBoard> {
                           ),
                         ),
                         onTap: () {
-                          /*Navigator.push(
+                          Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => plantPage()));*/
+                                  builder: (context) => historyPage()));
                         },
                       ),
                     )
