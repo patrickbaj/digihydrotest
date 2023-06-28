@@ -1,5 +1,6 @@
 import 'package:digihydro/mainpages/dashboard.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:digihydro/login/signup_screen.dart';
 import 'package:digihydro/login/forgot_pass1.dart';
@@ -38,6 +39,35 @@ class index extends State<IndexScreen> {
         errorMessage = 'Incorrect Password';
       }
       setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    requestPermission();
+  }
+
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: true,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('Granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('Granted provisional permission');
+    } else {
+      print('Permission denied');
     }
   }
 
