@@ -567,7 +567,7 @@ class welcomeScreen extends State<dashBoard> {
                 ),
               ],
             ),
-          ),
+          ), 
 
 /*PLANTS CONTAINER */
 
@@ -677,9 +677,9 @@ class welcomeScreen extends State<dashBoard> {
                   ],
                 ),
                 Container(
-                  height: 139,
+                  height: 200,
                   child: FirebaseAnimatedList(
-                    query: ref.orderByChild('userId').equalTo(currentUserID),
+                    query: ref.orderByChild('userId').equalTo(currentUserID).limitToFirst(10),
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
                       //if (snapshot == null || snapshot.value == null)
@@ -766,7 +766,6 @@ class welcomeScreen extends State<dashBoard> {
               ],
             ),
           ),
-
 // BUTTONS
           Column(
             children: [

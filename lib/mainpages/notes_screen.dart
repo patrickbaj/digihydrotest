@@ -453,7 +453,9 @@ class displayNote extends State<notesPage> {
                         ),
                       ],
                     );
-                  })),
+                  }
+                )
+              ),
         ],
       ),
     );
