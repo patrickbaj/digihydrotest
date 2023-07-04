@@ -3,9 +3,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/drawer_screen.dart';
+import 'package:digihydro/index_screen.dart' as index;
 import 'package:flutter/material.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'dashboard.dart';
 
@@ -14,17 +15,10 @@ class homePage extends StatefulWidget {
   device createState() => device();
 }
 
-final emptyWidget = Container(
-    /*child: Text(
-    'Air Temperature is below 65°F (18°C) or above 95°F (35°C).\n',
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-    ),
-  ),*/
-    );
+final emptyWidget = Container();
 
 Widget airTempChecker(DataSnapshot snapshot) {
-  print("New Changes 1");
+  //print("New Changes 1");
 
   //var airTemp = double.parse(snapshot.child('Temperature').value.toString());
   var snapValue = snapshot
@@ -512,7 +506,8 @@ Widget acidityChecker(DataSnapshot snapshot) {
       snapshot.child('pH').value.toString().replaceAll(RegExp(r'[^\d\.]'), '');
   print("pH: " + snapValue);
   var acidity = double.parse(snapValue);
-  if (acidity >= 6.5 || acidity < 5.0) {
+  //if (acidity >= 6.5 || acidity < 5.0) {
+  if (acidity >= 6.5) {
     return RichText(
       text: TextSpan(
         style: TextStyle(
@@ -627,10 +622,15 @@ Color iconColor(DataSnapshot snapshot) {
       waterTempChecker(snapshot) != emptyWidget ||
       tdsChecker(snapshot) != emptyWidget ||
       acidityChecker(snapshot) != emptyWidget) {
-    Notif.showNotif(
-        title: "DigiHydro", body: 'Alert Notif texttexttext', fln: localNotif);
+    /*Notif.showNotif(
+        title: "DEVICESCREENYour plants are in danger!",
+        body:
+            'Check on your reservoir and follow the suggestions to save them!',
+        fln: localNotif);*/
+    //index.alertCheck = 1;
     return Colors.red;
   } else {
+    //index.alertCheck = 0;
     return Colors.grey;
   }
 }
@@ -653,7 +653,7 @@ class device extends State<homePage> {
   }
 
   init() async {
-    String deviceToken = await getDeviceToken();
+    /*String deviceToken = await getDeviceToken();
     print("%%%%%%%%%%%%%% DEVICE TOKEN %%%%%%%%%%%%%%%%");
     print(deviceToken);
     print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -680,15 +680,15 @@ class device extends State<homePage> {
           )
         ],
       ).show();
-    });
+    });*/
   }
 
-  //for notifs
+  /*//for notifs
   Future getDeviceToken() async {
     FirebaseMessaging _firebaseMessage = FirebaseMessaging.instance;
     String? deviceToken = await _firebaseMessage.getToken();
     return (deviceToken == null) ? "" : deviceToken;
-  }
+  }*/
 
   Widget build(BuildContext context) {
     return Scaffold(

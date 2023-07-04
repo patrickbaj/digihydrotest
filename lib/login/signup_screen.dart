@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:digihydro/index_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ class signupPage extends StatefulWidget {
 }
 
 class signUp extends State<signupPage> {
+  String? mtoken = " ";
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController growerType = TextEditingController();
@@ -39,7 +41,7 @@ class signUp extends State<signupPage> {
     }
   }
 
-  Future userSignUp() async {
+  Future userSignUp(String token) async {
     if (passwordConfirmed()) {
       try {
         UserCredential userCredential =
@@ -56,6 +58,7 @@ class signUp extends State<signupPage> {
             'password': userPass.text.trim(),
             'growerType': _selecType,
             'userId': user.uid,
+            'token': token,
           });
         }
       } on FirebaseAuthException catch (e) {
@@ -68,6 +71,16 @@ class signUp extends State<signupPage> {
         print(e);
       }
     }
+  }
+
+  Future tokenPlusSignUp() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mtoken = token;
+        print("Device token is $mtoken");
+      });
+      userSignUp(token!);
+    });
   }
 
   final fb = FirebaseDatabase.instance;
@@ -309,7 +322,7 @@ class signUp extends State<signupPage> {
                         ),
                         onPressed: () {
                           if (_key.currentState!.validate()) {
-                            userSignUp();
+                            tokenPlusSignUp();
 
                             Navigator.push(
                                 context,

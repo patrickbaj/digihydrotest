@@ -885,15 +885,3 @@ class welcomeScreen extends State<dashBoard> {
     );
   }
 }
-
-Color iconColorDash(DataSnapshot snapshot) {
-  if (airTempChecker(snapshot) != emptyWidget ||
-      humidityChecker(snapshot) != emptyWidget ||
-      waterTempChecker(snapshot) != emptyWidget ||
-      tdsChecker(snapshot) != emptyWidget ||
-      acidityChecker(snapshot) != emptyWidget) {
-    return Colors.red;
-  } else {
-    return Colors.grey;
-  }
-}
