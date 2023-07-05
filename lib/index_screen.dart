@@ -47,7 +47,7 @@ class index extends State<IndexScreen> {
       if (currentUser != null) {
         currentUserID = currentUser.uid;
       }
-      checkAlert();
+      //checkAlert();
       errorMessage = '';
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => dashBoard()),
@@ -67,9 +67,8 @@ class index extends State<IndexScreen> {
   void initState() {
     super.initState();
     requestPermission();
-    //showToken();
+    showToken();
     initInfo();
-    //checkAlert();
   }
 
   initInfo() {
@@ -81,7 +80,6 @@ class index extends State<IndexScreen> {
     );
     flutterLocalNotificationsPlugin.initialize(initializationsSettings,
         onDidReceiveNotificationResponse: (payload) async {
-      /*onSelectNotification: (String? payload) async {*/
       try {
         if (payload != null /*&& payload.isNotEmpty*/) {
         } else {}
