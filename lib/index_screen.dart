@@ -28,7 +28,7 @@ class index extends State<IndexScreen> {
   final auth = FirebaseAuth.instance;
   final refUser = FirebaseDatabase.instance.ref('Users');
   final refDev = FirebaseDatabase.instance.ref('Devices');
-  late String currentUserID;
+  String? currentUserID;
 
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -46,18 +46,67 @@ class index extends State<IndexScreen> {
       final currentUser = auth.currentUser;
       if (currentUser != null) {
         currentUserID = currentUser.uid;
+      } else {
+        currentUserID = '';
       }
-      //checkAlert();
+      // Reset the failed attempts in the database as the login was successful
+      await FirebaseDatabase.instance.ref('FailedAttempts/$currentUserID').set(
+          {'attempts': 0, 'timestamp': DateTime.now().millisecondsSinceEpoch});
+      checkAlert();
       errorMessage = '';
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => dashBoard()),
       );
     } on FirebaseAuthException catch (error) {
-      //errorMessage = error.message!;
       if (error.code == 'user-not-found') {
         errorMessage = 'No user found for that email';
       } else if (error.code == 'wrong-password') {
         errorMessage = 'Incorrect Password';
+        // Increment the failed attempts in the database
+        final ref =
+            FirebaseDatabase.instance.ref('FailedAttempts/$currentUserID');
+        final snapshot = await ref.get();
+        if (snapshot.exists) {
+          final valueMap = Map<String, dynamic>.from(snapshot.value as Map);
+          final attempts = valueMap['attempts'] ?? 0;
+          final lastAttemptTimestamp = valueMap['timestamp'] ?? 0;
+          final now = DateTime.now().millisecondsSinceEpoch;
+          // If the last failed attempt was more than 1 hour ago, reset the attempts
+          if (now - lastAttemptTimestamp > 3600000) {
+            await ref.set({'attempts': 1, 'timestamp': now});
+          } else {
+            // If there were already 3 failed attempts in the last hour, do not allow the login
+            if (attempts >= 3) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Login Failed'),
+                    content: Text(
+                        'Too many failed attempts, please try again in 1 hour or tap on "Reset Password"'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else {
+              await ref.set({'attempts': attempts + 1, 'timestamp': now});
+            }
+          }
+        } else {
+          await ref.set({
+            'attempts': 1,
+            'timestamp': DateTime.now().millisecondsSinceEpoch
+          });
+        }
+      } else {
+        errorMessage = error.message ?? 'An unknown error occurred';
       }
       setState(() {});
     }
@@ -197,9 +246,9 @@ class index extends State<IndexScreen> {
   }
 
   checkAlert() async {
-    if (alertCheck == 1) {
+    if (alertCheck == 1 && currentUserID != null) {
       print(alertCheck);
-      DataSnapshot snapUser = await refUser.child(currentUserID).get();
+      DataSnapshot snapUser = await refUser.child(currentUserID!).get();
       String token = snapUser.child('token').value.toString();
       print('CHECK ALERT' + token);
       sendPushMessage(token, bodyText, titleText);
