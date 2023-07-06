@@ -45,6 +45,7 @@ dependencies:
   rflutter_alert: ^2.0.4
   flutter_local_notifications: ^14.0.0+2
   http: ^0.13.0
+  fl_chart: ^0.62.0
 
 dev_dependencies:
   flutter_test:

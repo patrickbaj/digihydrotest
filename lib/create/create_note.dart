@@ -16,6 +16,23 @@ class createNote extends StatefulWidget {
 }
 
 class note extends State<createNote> {
+
+  final DatabaseReference refDevice = FirebaseDatabase.instance.ref('Devices');
+  final DatabaseReference destinationReference = FirebaseDatabase.instance.ref().child('noteStats');
+
+
+    Future<Map<dynamic, dynamic>?> FetchData() async {
+    try {
+      DatabaseEvent event = await refDevice.once();
+      DataSnapshot snapshot = event.snapshot;
+      Map<dynamic, dynamic>? sourceData = snapshot.value as Map<dynamic, dynamic>?;
+      return sourceData;
+    } catch (error) {
+      // Handle any errors that occur during the read operation
+      return null;
+    }
+  }
+
   TextEditingController title = TextEditingController();
   TextEditingController userDate = TextEditingController();
   TextEditingController userNote = TextEditingController();
@@ -127,6 +144,48 @@ class note extends State<createNote> {
                   },
                 ),
               ),
+
+              Container(
+                height: 110,
+                width: 100,
+                
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0
+                  )
+                ),
+                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: FirebaseAnimatedList(
+                query: destinationReference, 
+                itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                    Animation<double> animation, int index){
+                      return Container(
+                        padding: EdgeInsets.all(5),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text('Current Data Parameters',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(snapshot.value.toString().replaceAll(RegExp("{|}"),"").replaceAll(RegExp(","),'\n'),)
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                )
+              ),
+
               Container(
                 margin: EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: TextField(
@@ -195,12 +254,14 @@ class note extends State<createNote> {
                           imageUrl = await imageUpload.getDownloadURL();
                         } catch (error) {}
                       }
+                      Map<dynamic, dynamic>? fetchedData = await FetchData();
                       ref.set({
                         "title": title.text,
                         "date": userDate.text,
                         "userId": currentUser?.uid,
                         "userNote": userNote.text,
                         "imageUrl": imageUrl,
+                        "currentData": fetchedData
                       }).asStream();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => notesPage()));

@@ -15,6 +15,21 @@ class notesPage extends StatefulWidget {
 }
 
 class displayNote extends State<notesPage> {
+  final DatabaseReference refDevice = FirebaseDatabase.instance.ref('Devices');
+  final DatabaseReference destinationReference = FirebaseDatabase.instance.ref().child('noteStats');
+
+
+  Future<void> FetchData() async {
+    refDevice.once().then((event) {
+                      DataSnapshot snapshot = event.snapshot;
+                      Map<dynamic, dynamic>? sourceData = snapshot.value as Map<dynamic, dynamic>?;
+
+                      destinationReference.set(sourceData);
+                    
+                  }).catchError((error) {
+                    // Handle any errors that occur during the read operation
+                  });
+  }
   final auth = FirebaseAuth.instance;
   late String currentUserID;
   late String imageUrl;
@@ -163,6 +178,7 @@ class displayNote extends State<notesPage> {
                       ),
                     ),
                     onPressed: () {
+                      FetchData();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -228,6 +244,11 @@ class displayNote extends State<notesPage> {
                                 ],
                               ),
                               Divider(),
+                              Column(
+                                children: [
+                                  Text(snapshot.child('currentData').value.toString().replaceAll(RegExp("{|}"),"").replaceAll(RegExp(","),'\n').replaceAll(RegExp("0420:"),'\n'))
+                                ],
+                              ),
                               Row(
                                 children: [Text(' ')],
                               ),
@@ -240,7 +261,6 @@ class displayNote extends State<notesPage> {
                                           .toString(),
                                       style: TextStyle(
                                         fontSize: 15,
-                                        color: Theme.of(context).primaryColor,
                                       )),
                                 ],
                               ),

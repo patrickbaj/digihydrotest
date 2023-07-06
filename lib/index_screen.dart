@@ -304,7 +304,7 @@ class index extends State<IndexScreen> {
                                   borderRadius: BorderRadius.circular(20)),
                               backgroundColor: Colors.green,
                               textStyle: const TextStyle(color: Colors.white),
-                              minimumSize: Size(120, 50),
+                              minimumSize: Size(100, 50),
                             ),
                             onPressed: () {
                               if (_key.currentState!.validate()) {
@@ -314,7 +314,7 @@ class index extends State<IndexScreen> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(40, 40, 50, 0),
+                          margin: EdgeInsets.fromLTRB(20, 40, 30, 0),
                           child: TextButton(
                             child: Text('Forgot Password?'),
                             style: TextButton.styleFrom(

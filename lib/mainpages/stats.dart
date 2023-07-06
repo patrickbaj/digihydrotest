@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:digihydro/mainpages/notes_screen.dart';
 import 'package:digihydro/mainpages/notif.dart';
 import 'package:digihydro/mainpages/plants_screen.dart';
@@ -12,27 +11,37 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:digihydro/drawer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
 class stats extends StatefulWidget{
   @override
   _statscreen createState() =>  _statscreen();
 }
 
-var rng = Random();
-var num = rng.nextInt(10000);
-final auth = FirebaseAuth.instance;
-late String currentUserID;
-final DatabaseReference refDevice = FirebaseDatabase.instance.ref('Devices');
-final DatabaseReference destinationReference = FirebaseDatabase.instance.ref().child('destination');
+
+
 
 class _statscreen extends State<stats>{
-  @override
-  void initState() {
-    super.initState();
-    final currentUser = auth.currentUser;
-    if (currentUser != null) {
-      currentUserID = currentUser.uid;
-    }
+
+  
+  final DatabaseReference refDevice = FirebaseDatabase.instance.ref('Devices');
+  final DatabaseReference destinationReference = FirebaseDatabase.instance.ref().child('destination');
+
+
+  Future<void> FetchData() async {
+    refDevice.once().then((event) {
+                      DataSnapshot snapshot = event.snapshot;
+                      Map<dynamic, dynamic>? sourceData = snapshot.value as Map<dynamic, dynamic>?;
+                      DateTime now = DateTime.now();
+                      String formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+                      sourceData!['datetime'] = formattedDateTime;
+
+                      destinationReference.set(sourceData);
+                    
+                  }).catchError((error) {
+                    // Handle any errors that occur during the read operation
+                  });
   }
 
   @override
@@ -315,8 +324,43 @@ class _statscreen extends State<stats>{
               ),
             ),
           ),
+
+
+//Fetch data sample           
           Container(
-            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            child: ElevatedButton(
+              onPressed: () {
+                FetchData();
+                },
+              child: Text('Fetch'),
+            ),
+          ),
+
+          Container(
+            height: 50,
+            width: 50,
+            child:FirebaseAnimatedList(
+              query: destinationReference, 
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index){
+                    return Row(
+                      children: [
+                        Column(
+                          children: [
+                            Text(snapshot.child('Humidity').value.toString())
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+              )
+          ),
+
+
+//Chart container
+          Container(
+            height: 300,
+            width: 400,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
@@ -329,131 +373,33 @@ class _statscreen extends State<stats>{
                 ),
               ],
             ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.analytics,
-                            size: 25,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                            child: Text(
-                              'Stats History',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Color(0xFF1a1a1a),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+            child: LineChart(
+              LineChartData(
+                borderData: FlBorderData(
+                  show: true,
+                  border:  Border.all(
+                    color: Colors.black, width: 2
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 12, 15, 0),
-                      child: GestureDetector(
-                        child: Text(
-                          "See More",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 16,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => historyPage()));
-                        },
-                      ),
-                    )
-                  ],
                 ),
-                Divider(
-                  color: Colors.grey,
-                  thickness: 1,
-                  indent: 10,
-                  endIndent: 10,
+                gridData: FlGridData(
+                  show: true,
+                  getDrawingHorizontalLine: (value) {
+                    return FlLine(
+                      color: Colors.black,
+                      strokeWidth: 1,
+                    );
+                  },
+                  drawVerticalLine: true,
+                  getDrawingVerticalLine: (value) {
+                    return FlLine(
+                      color: Colors.black,
+                      strokeWidth: 1,
+                    );
+                  },
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(15, 0, 20, 7), //leftmost
-                      child: Text(
-                        'Date',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xFF272727),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
-                      child: Icon(
-                        Icons.thermostat,
-                        size: 20,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
-                      child: Image.asset(
-                        'images/humidity_percentage_FILL0_wght400_GRAD0_opsz48.png',
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
-                      child: Image.asset(
-                        'images/dew_point_FILL0_wght400_GRAD0_opsz48.png',
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 7),
-                      child: Image.asset(
-                        'images/total_dissolved_solids_FILL0_wght400_GRAD0_opsz48.png',
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 20, 7), //rightmost
-                      child: Image.asset(
-                        'images/water_ph_FILL0_wght400_GRAD0_opsz48.png',
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              ),
             ),
-          ),
-          Container(
-            child: ElevatedButton(
-              onPressed: () {
-                refDevice.once().then((event) {
-                      var data = event.snapshot.value;
-                      destinationReference.set(data);
-                    
-                  }).catchError((error) {
-                    // Handle any errors that occur during the read operation
-                  });
-                },
-              child: Text('Pass Data'),
-            ),
-          ),
+          )
         ],
       ),
     );
