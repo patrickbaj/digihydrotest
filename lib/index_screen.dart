@@ -52,7 +52,7 @@ class index extends State<IndexScreen> {
       // Reset the failed attempts in the database as the login was successful
       await FirebaseDatabase.instance.ref('FailedAttempts/$currentUserID').set(
           {'attempts': 0, 'timestamp': DateTime.now().millisecondsSinceEpoch});
-      checkAlert();
+      //checkAlert();
       errorMessage = '';
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => dashBoard()),
