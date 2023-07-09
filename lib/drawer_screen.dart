@@ -138,7 +138,7 @@ class drawer extends State<drawerPage> {
                 },
               ),
             ),
-            Container(
+            /*Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(
                 child: Text('Statistics'),
@@ -153,7 +153,7 @@ class drawer extends State<drawerPage> {
                       MaterialPageRoute(builder: (context) => stats()));
                 },
               ),
-            ),
+            ),*/
             Container(
               margin: EdgeInsets.fromLTRB(0, 25, 0, 0),
               child: TextButton(

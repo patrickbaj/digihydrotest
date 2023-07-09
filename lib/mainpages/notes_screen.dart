@@ -244,6 +244,21 @@ class displayNote extends State<notesPage> {
                                 ],
                               ),
                               Divider(),
+                              Row(
+                                children: [
+                                  if (imageUrl != null && imageUrl.isNotEmpty)
+                                    Image.network(
+                                      imageUrl,
+                                      height: 300,
+                                      width: 300,
+                                    )
+                                  else
+                                    Container(),
+                                ],
+                              ),
+                              Row(
+                                children: [Text(' ')],
+                              ),
                               Column(
                                 children: [
                                   Text(snapshot.child('currentData').value.toString().replaceAll(RegExp("{|}"),"").replaceAll(RegExp(","),'\n').replaceAll(RegExp("0420:"),'\n'))
@@ -264,18 +279,7 @@ class displayNote extends State<notesPage> {
                                       )),
                                 ],
                               ),
-                              Row(
-                                children: [Text(' ')],
-                              ),
-                              Row(
-                                children: [
-                                  Image.network(
-                                    imageUrl,
-                                    height: 300,
-                                    width: 300,
-                                  )
-                                ],
-                              ),
+                            
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.center,
