@@ -26,6 +26,7 @@ class welcomeScreen extends State<dashBoard> {
   final ref = FirebaseDatabase.instance.ref('Plants');
   final refReserv = FirebaseDatabase.instance.ref('Reservoir');
   final refDevice = FirebaseDatabase.instance.ref('Devices');
+  final refNotes = FirebaseDatabase.instance.ref('Notes');
 
   @override
   void initState() {
@@ -764,6 +765,144 @@ class welcomeScreen extends State<dashBoard> {
                   ),
                 ),
               ],
+            ),
+          ),
+//Notes Container
+          Container(
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+                children: [
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.notes_rounded,
+                            size: 25,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            child: Text(
+                              'Notes List',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xFF1a1a1a),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0, 12, 15, 0),
+                      child: GestureDetector(
+                        child: Text(
+                          "See More",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontSize: 16,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => notesPage()));
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  indent: 10,
+                  endIndent: 10,
+                ),
+                  Container(
+                    height: 300,
+                    child: FirebaseAnimatedList(
+                      query: refNotes.orderByChild('userId').equalTo(currentUserID).limitToFirst(2), 
+                      itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                      Animation<double> animation, int index){
+                          return Wrap(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            snapshot.child('title').value.toString(),
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Theme.of(context).primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            snapshot.child('date').value.toString(),
+                                            textAlign: TextAlign.right,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Theme.of(context).primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Text(snapshot.child('currentData').value.toString().replaceAll(RegExp("{|}"),"").replaceAll(RegExp(","),'\n').replaceAll(RegExp("0420:"),''))
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      ),
+                  ),
+                ],
             ),
           ),
 // BUTTONS

@@ -253,15 +253,13 @@ class displayNote extends State<notesPage> {
                                       width: 300,
                                     )
                                   else
-                                    Container(),
+                                    SizedBox(),
                                 ],
                               ),
-                              Row(
-                                children: [Text(' ')],
-                              ),
+                              SizedBox(height: 10,),
                               Column(
                                 children: [
-                                  Text(snapshot.child('currentData').value.toString().replaceAll(RegExp("{|}"),"").replaceAll(RegExp(","),'\n').replaceAll(RegExp("0420:"),'\n'))
+                                  Text(snapshot.child('currentData').value.toString().replaceAll(RegExp("{|}"),"").replaceAll(RegExp(","),'\n').replaceAll(RegExp("0420:"),''))
                                 ],
                               ),
                               Row(
