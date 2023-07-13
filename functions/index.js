@@ -8,7 +8,7 @@ const refDev = functions.database.ref("Devices/{deviceId}");
 exports.sendNotif = refDev.onWrite(async (change, context) => {
   //const userId = context.params.userId;
   //const FCMToken = await admin.database().ref(`Users/${userId}`).once('value');
-  const FCMTokenSnapshot = await admin.database().ref('Users/jVze0VP0DtSEo42WT9o0ghFHmwP2/token').once('value');
+  const FCMTokenSnapshot = await admin.database().ref('Users/WDYkjIUSyGX2FuuwxqEZOSPoZX72/token').once('value');
   const FCMToken = FCMTokenSnapshot.val(); // Get the token value from the snapshot
 
   //jam: jVze0VP0DtSEo42WT9o0ghFHmwP2
